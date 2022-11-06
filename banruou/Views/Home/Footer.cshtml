@@ -1,0 +1,107 @@
+﻿@model banruou.ViewModel.FooterViewModel
+@using banruou.Models
+
+@{ 
+    var config = (ConfigSite)HttpContext.Current.Application["ConfigSite"];
+
+}
+<section class="footer">
+    <div class="container">
+        <div class="row">
+            <div class=" col-6 col-lg-3">
+                <div class="footer-item">
+                    <div class="footer-title">
+                        <h3>Hỗ trợ khách hàng</h3>
+                    </div>
+                    @if (Model.Policies.Any(a => a.ParentId == null))
+                    {
+                        <div class="footer-list">
+                            <ul>
+                                @foreach (var item in Model.Policies)
+                                {
+                                    <li><a href="@Url.Action("ArticleCategory", "Home", new { url = item.Url })">@item.CategoryName</a></li>
+                                }
+                            </ul>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="col-6 col-lg-3">
+                <div class="footer-item">
+                    <div class="footer-title">
+                        <h3>Danh mục sản phẩm</h3>
+                    </div>
+                    @if (Model.FooterProduct.Any())
+                    {
+                        <div class="footer-list">
+                            <ul>
+                                @foreach (var item in Model.FooterProduct)
+                                {
+                                    <li><a href="@Url.Action("CategoryProduct" , "Home" , new { Url = item.Url })">@item.CategoryName</a></li>
+                                }
+                            </ul>
+                        </div>
+                    }
+
+                </div>
+            </div>
+            <div class="col-6 col-lg-3">
+                <div class="footer-item">
+                    <div class="footer-title">
+                        <h3>Thông tin công ty</h3>
+                    </div>
+                    @if (Model.Introduce.Any(a => a.ParentId == null))
+                    {
+                        <div class="footer-list">
+                            <ul>
+                                @foreach (var item in Model.Introduce)
+                                {
+                                    <li><a href="@Url.Action("ArticleCategory", "Home", new { url = item.Url })">@item.CategoryName</a></li>
+                                }
+
+                            </ul>
+                        </div>
+                    }
+
+                </div>
+            </div>
+            <div class="col-6 col-lg-3">
+                <div class="footer-item">
+                    <div class="footer-title">
+                        <h3>Chúng tôi trên Google Map</h3>
+                    </div>
+                    <div class="footer-list">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3725.7401613682678!2d105.7895476149036!3d20.962947436034!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ad28ea29211f%3A0x604fe71832a3e934!2zS2h1IMSRw7QgdGjhu4sgWGEgTGEsIFBow7pjIExhLCBIw6AgxJDDtG5nLCBIw6AgTuG7mWksIFZp4buHdCBOYW0!5e0!3m2!1svi!2s!4v1666753682107!5m2!1svi!2s" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <hr class="text-white" />
+    </div>
+    <div class="bottom-footer">
+        <div class="container">
+            <div class="bottom-footer-title">
+                <h3>@config.Title</h3>
+            </div>
+            <div class="row">
+                <div class="col-12 col-lg-9">
+                    <div class="bottom-footer-item">
+                        <ul class="list-bottom-footer">
+                            <li>Địa chỉ : @config.Address</li>
+                            <li>Hotline : <a href="tel:@config.Hotline">@config.Hotline</a> - <a href="@config.Hotline2">@config.Hotline2</a></li>
+                            <li>Địa chỉ : @config.Address2</li>
+                            <li>Hotline : <a href="@config.Hotline3">@config.Hotline3</a> - <a href="@config.Hotline4">@config.Hotline4</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-3">
+                    <div class="bottom-footer-item">
+                        <iframe src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2FCongtyquatangEpvina%2F&tabs&width=340&height=130&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId" width="340" height="130" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

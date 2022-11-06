@@ -1,0 +1,57 @@
+﻿@model banruou.ViewModel.InsertQuestionViewModel
+@{ ViewBag.Title = "Thêm câu hỏi";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml"; }
+<h2>Thêm mới câu hỏi</h2>
+@if (ViewBag.Question == "success")
+{
+<div id="AlertBox" class="alert alert-success"><strong>Thêm mới câu hỏi thành công</strong></div>}
+@if (ViewBag.Question == "update")
+{
+<div id="AlertBox" class="alert alert-success"><strong>Cập nhật câu hỏi thành công</strong></div>}
+<a class="btn quick-link" id="create-cat" href="#list-question"><i class="far fa-list mr-1"></i> Danh sách câu hỏi</a>
+<div class="box_content">
+    <div class="row">
+        <div class="col-sm-12 col-lg-12">
+            @using (Html.BeginForm("Question", "Vcms", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+@Html.ValidationSummary(true)
+                <table class="form_table">
+                    <tr>
+                        <td class="form_name">@Html.LabelFor(model => model.Question.QuestionName)</td>
+                        <td class="form_text">@Html.EditorFor(model => model.Question.QuestionName)</td>
+                    </tr>
+                    <tr>
+                        <td class="form_name">@Html.LabelFor(model => model.Question.Body)</td>
+                        <td class="form_text">@Html.TextAreaFor(model => model.Question.Body)</td>
+                    </tr>
+                    <tr>
+                        <td class="form_name">@Html.LabelFor(model => model.Question.Active)</td>
+                        <td class="form_text">@Html.CheckBoxFor(model => model.Question.Active, new { @checked = "checked" })</td>
+                    </tr>
+                    <tr>
+                        <td class="form_name">@Html.LabelFor(model => model.Question.Sort)</td>
+                        <td class="form_text">@Html.EditorFor(model => model.Question.Sort)</td>
+                    </tr>
+                    <tr>
+                        <td class="form_name">@Html.LabelFor(model => model.Question.Url)</td>
+                        <td class="form_text">@Html.EditorFor(model => model.Question.Url)</td>
+                    </tr>
+                    <tr>
+                        <td class="form_name"></td>
+                        <td class="form_text">
+                            <input type="submit" class="btn quick-link" value="Thêm mới" />
+                        </td>
+                    </tr>
+                </table>}
+        </div>
+        <div class="col-sm-12 col-lg-12">
+            @Html.Action("ListQuestion", "Vcms")
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        CKEDITOR.replace("Question_Body");
+    </script>
+    }

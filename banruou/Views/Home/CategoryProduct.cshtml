@@ -1,0 +1,67 @@
+﻿@model banruou.ViewModel.CategoryProduct
+@using PagedList.Mvc
+@{
+    ViewBag.Title = "AllProduct";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@Html.Action("Header")
+<section class="product-list">
+    <div class="container">
+        <div class="product-list-title">
+            <div class="title-item">
+                <h3>@Model.ProductCategory.CategoryName</h3>
+            </div>
+        </div>
+        <div class="list-item">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="list-category">
+                        @Html.Action("GetNavProduct")
+                    </div>
+                </div>
+                @if (Model.Products.Any())
+                {
+                    <div class="col-md-9">
+                        <div class="row">
+                            @foreach (var item in Model.Products)
+                            {
+                                <div class="col-lg-4 col-6">
+                                    <div class="product__item">
+                                        <div class="product__item-img">
+                                            <a href="@Url.Action("ProductDetail" , "Home" , new { url = item.Url })"><img src="@Path.Combine("/images/Product/", item.Image )" alt=""></a>
+                                        </div>
+                                        <div class="product__item-name">
+                                            <a href="@Url.Action("ProductDetail" , "Home" , new { url = item.Url })"><h3>@item.Name</h3></a>
+                                        </div>
+                                        <div class="product__item-price">
+                                            <p>@String.Format("{0:#,##0.##}", item.Price) đ</p>
+                                        </div>
+
+                                        <div class="product__item-btn">
+                                            <a href="@Url.Action("ProductDetail" , "Home" , new { url = item.Url })"><span>Đặt mua</span></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            @if (Model.Products.PageCount > 1)
+                            {
+                                <tr>
+                                    <td colspan="8">@Html.PagedListPager(Model.Products, Page => Url.Action("CategoryProduct", new { Page }))</td>
+                                </tr>
+                            }
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class=" col-md-9 mb-5 mt-5">
+                        <p class="alert alert-success small">Nội dung hiện chưa được cập nhật. Vui lòng quay lại sau !!!!</p>
+                    </div>
+                }
+
+            </div>
+        </div>
+    </div>
+</section>
+@Html.Action("Footer")
+

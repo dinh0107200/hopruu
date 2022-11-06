@@ -1,0 +1,38 @@
+﻿@model banruou.ViewModel.ArticleDetailsViewModel
+@{
+    ViewBag.Title = Model.Article.TitleMeta ?? Model.Article.Subject;
+    ViewBag.Description = Model.Article.DescriptionMeta ?? Model.Article.Description;
+    ViewBag.Canonical = Request.Url?.GetLeftPart(UriPartial.Authority) + Url.Action("ArticleDetail", new { url = Model.Article.Url });
+    if (Model.Article.Image != null)
+    {
+        ViewBag.ImageShare = Request.Url?.GetLeftPart(UriPartial.Authority) + Path.Combine("/images/articles/", Model.Article.Image);
+    }
+}
+@Html.Action("Header")
+
+<section class="post">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-9">
+                <div class="post-title">
+                    <h3>@Model.Article.Subject</h3>
+                </div>
+                <div class="post-date">
+                    <p>Post on</p>
+                    <span>@String.Format("{0:M/d/yyyy}", Model.Article.CreateDate) </span>
+                </div>
+                <div class="post-context">
+                    @Html.Raw(Model.Article.Body)
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="post-related">
+                    @Html.Action("GetNavMenu")
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@Html.Action("Footer")
+

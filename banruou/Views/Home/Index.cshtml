@@ -1,0 +1,330 @@
+﻿@model banruou.ViewModel.HomeViewModel
+@using banruou.Models
+@{
+    var config = (ConfigSite)HttpContext.Current.Application["ConfigSite"];
+    ViewBag.Title = config.Title;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Html.Action("Header")
+@if (Model.Banners.Any(a => a.GroupId == 1))
+{
+    <section class="banner">
+        @foreach (var item in Model.Banners.Where(a => a.GroupId == 1))
+        {
+            <div class="banner-item">
+                <img src="@Path.Combine("/images/banners" , item.Image)" alt="">
+            </div>
+        }
+    </section>
+}
+<section class="plugin">
+    <div class="social-button">
+        <div class="social-button-content">
+            <a href="@config.Facebook" target="_blank" class="mes rung">
+                <img src="https://nocodebuilding.com/wp-content/uploads/2020/07/fb.png" alt="Chat Messenger">
+            </a>
+            <a href="@config.Zalo" target="_blank" class="zalo rung">
+                <img src="https://nocodebuilding.com/wp-content/uploads/2020/07/zl.png" alt="Chat Zalo">
+            </a>
+            <a href="tel:@config.Hotline">
+                <i class="fa-solid fa-phone"></i>
+            </a>
+        </div>
+
+    </div>
+</section>
+<section class="back-to-top">
+    <div class="back-to-top-item">
+        <i class="fa-solid fa-circle-up"></i>
+    </div>
+</section>
+@if (Model.Articles.Any())
+{
+    <section class="sale">
+        <div class="container">
+            <div class="sale-title text-center text-uppercase">
+                <p>Khuyến mại lớn</p>
+            </div>
+            <div class="sale-content">
+                @foreach (var item in Model.Articles.Where(a => a.ArticleCategory.CategoryName == "Khuyến mại" && a.Active))
+                {
+                    <div class="sale-item">
+                        <a href="@Url.Action("ArtilceDetail", "Home", new { url = item.Url })">
+                            <img src="@Path.Combine("/images/articles" , item.Image)" alt="">
+                            <div class="sale-btn text-center">
+                                <span>Nhận ưu đãi</span>
+                            </div>
+                        </a>
+                    </div>
+                }
+
+            </div>
+        </div>
+    </section>
+
+}
+@if (Model.Products.Any(a => a.ProductCategory.CategoryName == "Quà tặng" && a.Home))
+{
+    <section class="gift">
+        <div class="container">
+            <div class="gift-title text-center">
+                <p>Quà trung thu</p>
+            </div>
+            <div class="gift-content">
+                <div class="row">
+                    @foreach (var item in Model.Products.Where(a => a.ProductCategory.CategoryName == "Quà tặng" && a.Active && a.Home).Take(4))
+                    {
+                        <div class=" col-lg-3 col-md-3">
+                            <div class="product-item">
+                                <div class="product-img">
+                                    <a href="@Url.Action("ProductDetail" , "Home" , new { item.Url})">
+                                        <img src="@Path.Combine("/images/Product/" , item.Image)" alt="">
+                                    </a>
+                                </div>
+                                <div class="product-name">
+                                    <a href="@Url.Action("ProductDetail" , "Home" , new { item.Url})">
+                                        <p>@item.Name</p>
+                                    </a>
+                                </div>
+                                <div class="product-price ">
+                                    <p class="">@String.Format("{0:#,##0.##}", item.Price) đ</p>
+                                </div>
+                                <div class="product-btn">
+                                    <a href="@Url.Action("ProductDetail" , "Home" , new { item.Url})">
+                                        <span>Đặt mua</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </section>
+}
+@if (Model.Products.Any())
+{
+    <section class="hot-sale ">
+        <div class="container">
+            <div class="gift-title text-center">
+                <p>Sản phẩm bán chạy</p>
+            </div>
+            <div class="gift-content">
+                <div class="row">
+                    @foreach (var item in Model.Products.Where(a => a.Hot == true).Take(4))
+                    {
+                        <div class="col-lg-3 col-md-6">
+                            <div class="product-item">
+                                <div class="product-img">
+                                    <a href="@Url.Action("ProductDetail" , "Home" ,new {url = item.Url })">
+                                        <img src="@Path.Combine("/images/Product/", item.Image)" alt="">
+                                    </a>
+                                </div>
+                                <div class="product-name">
+                                    <a href="@Url.Action("ProductDetail" , "Home" ,new {url = item.Url })">
+                                        <p>@item.Name</p>
+                                    </a>
+                                </div>
+                                <div class="product-price ">
+                                    <p class="">@String.Format("{0:#,##0.##}", item.Price)đ</p>
+                                </div>
+                                <div class="product-btn">
+                                    <a href="@Url.Action("ProductDetail" , "Home" ,new {url = item.Url })">
+                                        <span>Đặt mua</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </section>
+}
+@if (Model.Products.Any(a => a.ProductCategory.CategoryName == "Hộp da đựng rượu vang"))
+{
+    <section class="classify">
+        <div class="container">
+            <div class="gift-title text-center">
+                <p>Hộp da đựng rượu vang</p>
+            </div>
+            <div class="gift-content">
+                <div class="row">
+                    @foreach (var item in Model.Products.Where(a => a.ProductCategory.CategoryName == "Hộp da đựng rượu vang" && a.Home).Take(8))
+                    {
+                        <div class="col-6 col-lg-3">
+                            <div class="product-item">
+                                <div class="product-img">
+                                    <a href="@Url.Action("ProductDetail" , "Home" ,new {url = item.Url })">
+                                        <img src="@Path.Combine("/images/Product/" , item.Image)" alt="">
+                                    </a>
+                                </div>
+                                <div class="product-name">
+                                    <a href="@Url.Action("ProductDetail" , "Home" ,new {url = item.Url })">
+                                        <p>@item.Name</p>
+                                    </a>
+                                </div>
+                                <div class="product-price ">
+                                    <p class="">@String.Format("{0:#,##0.##}", item.Price)đ</p>
+                                </div>
+                                <div class="product-btn">
+                                    <a href="@Url.Action("ProductDetail" , "Home" ,new {url = item.Url })">
+                                        <span>Đặt mua</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                </div>
+            </div>
+        </div>
+    </section>
+}
+@if (Model.Products.Any(b => b.ProductCategory.CategoryName == "Rượu Vang" && b.Hot))
+{
+    <section class="classify">
+        <div class="container">
+            <div class="gift-title text-center">
+                <p>vang ngon dưới 1tr</p>
+            </div>
+            <div class="gift-content">
+                <div class="row">
+                    @foreach (var item in Model.Products.Where(a => a.ProductCategory.CategoryName == "Rượu vang" && a.Price <= 1000000).Take(4))
+                    {
+                        <div class="col-6 col-lg-3">
+                            <div class="product-item">
+                                <div class="product-img">
+                                    <a href="@Url.Action("ProductDetail" , "Home" ,new {url = item.Url })">
+                                        <img src="@Path.Combine("/images/Product/" , item.Image)" alt="">
+                                    </a>
+                                </div>
+                                <div class="product-name">
+                                    <a href="@Url.Action("ProductDetail" , "Home" ,new {url = item.Url })">
+                                        <p>@item.Name</p>
+                                    </a>
+                                </div>
+                                <div class="product-price ">
+                                    <p class="">@String.Format("{0:#,##0.##}", item.Price)đ</p>
+                                </div>
+                                <div class="product-btn">
+                                    <a href="@Url.Action("ProductDetail" , "Home" ,new {url = item.Url })">
+                                        <span>Đặt mua</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </section>
+
+}
+@if (Model.Products.Any())
+{
+    <section class="classify">
+        <div class="container">
+            <div class="gift-title text-center">
+                <p>Thùng đựng rượu vang</p>
+            </div>
+            <div class="gift-content">
+                <div class="row">
+                    @foreach (var item in Model.Products.Where(a => a.Name == "Thùng đựng rượu vang" && a.Home).Take(4))
+                    {
+                        <div class="col-6 col-lg-3">
+                            <div class="product-item">
+                                <div class="product-img">
+                                    <a href="@Url.Action("ProductDetail" , "Home" ,new {url = item.Url })">
+                                        <img src="@Path.Combine("/images/Product/" , item.Image)" alt="">
+                                    </a>
+                                </div>
+                                <div class="product-name">
+                                    <a href="@Url.Action("ProductDetail" , "Home" ,new {url = item.Url })">
+                                        <p>@item.Name</p>
+                                    </a>
+                                </div>
+                                <div class="product-price ">
+                                    <p class="">@String.Format("{0:#,##0.##}", item.Price)đ</p>
+                                </div>
+                                <div class="product-btn">
+                                    <a href="@Url.Action("ProductDetail" , "Home" ,new {url = item.Url })">
+                                        <span>Đặt mua</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                </div>
+            </div>
+        </div>
+    </section>
+}
+@if (Model.NewArticles.Any())
+{
+    <section class="classify">
+        <div class="container">
+            <div class="gift-title text-center">
+                <p>Bài viết mới nhất</p>
+            </div>
+            <div class="gift-content">
+                <div class="row">
+                    @foreach (var item in Model.NewArticles.Take(1))
+                    {
+                        <div class="col-12 col-md-6">
+                            <div class="feed-item">
+                                <a href="@Url.Action("ArtilceDetail", "Home" , new { url = item.Url })">
+                                    <div class="new-feed-item-imgs">
+                                        <img src="@Path.Combine("/images/articles/" , item.Image)" alt="">
+                                    </div>
+                                    <div class="new-feed-item-name">
+                                        <p>@item.Subject</p>
+                                    </div>
+                                    <hr>
+                                    <div class="new-feed-item-description">
+                                        <p>@item.Description</p>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    }
+
+                    <div class="col-12 col-md-6">
+                        <div class="row">
+                            @foreach (var item in Model.NewArticles.OrderByDescending(a => a.CreateDate).Take(4))
+                            {
+                                <div class="col-6 col-lg-6">
+                                    <div class="feed-item">
+                                        <a href="@Url.Action("ArtilceDetail", "Home" , new { url = item.Url })">
+                                            <div class="new-feed-item-img">
+                                                <img src="@Path.Combine("/images/articles/" , item.Image)" alt="">
+                                            </div>
+                                            <div class="new-feed-item-name">
+                                                <p>@item.Subject</p>
+                                            </div>
+                                            <hr>
+                                            <div class="new-feed-item-description">
+                                                <p>@item.Description</p>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            }
+
+                        </div>
+                    </div>
+                </div>
+                <div class="show-all">
+                    <a href="@Url.Action("AllArtilce" , "Home")">
+                        Xem tất cả
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+}
+
+@Html.Action("Footer")
+

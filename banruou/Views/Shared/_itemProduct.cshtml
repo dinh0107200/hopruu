@@ -1,0 +1,16 @@
+﻿@model banruou.Models.Product
+<div class="product__item">
+    <div class="product__item-img">
+        <a href="@Url.Action("ProductDetail" , "Home" , new { url = Model.Url })"><img src="@Path.Combine("/images/Product/", Model.Image )" alt=""></a>
+    </div>
+    <div class="product__item-name">
+        <a href="@Url.Action("ProductDetail" , "Home" , new { url = Model.Url })"><h3>@Model.Name</h3></a>
+    </div>
+    <div class="product__item-price">
+        <p>@String.Format("{0:#,##0.##}", Model.Price) đ</p>
+    </div>
+
+    <div class="product__item-btn">
+        <a href="@Url.Action("ProductDetail" , "Home" , new { url = Model.Url })"><span>Đặt mua</span></a>
+    </div>
+</div>

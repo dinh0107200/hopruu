@@ -1,0 +1,185 @@
+﻿@model banruou.ViewModel.ListProjectViewModel
+@using PagedList.Mvc
+@using Helpers
+@{ ViewBag.Title = "Danh sách sản phẩm";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml"; }
+<h2>Danh sách dự án</h2>
+@if (ViewBag.Result == "success")
+{
+<div id="AlertBox" class="alert alert-success"><strong>Thêm mới dự án thành công</strong></div>}
+@if (ViewBag.Result == "update")
+{
+<div id="AlertBox" class="alert alert-success"><strong>Cập nhật dự án thành công</strong></div>}
+<a class="btn quick-link" href="@Url.Action("Product")"><i class="fal fa-plus-circle mr-1"></i>Thêm sản phẩm</a>
+<div class="box_content">
+    <form action="@Url.Action("ListProduct")" method="get">
+        <div class="row">
+            <div class="col-3">
+                <label>Danh mục</label>
+                @Html.DropDownListFor(model => model.ParentId, Model.SelectCategories, "Tất cả sản phẩm", new { @class = "form_control", data_item = "root" })
+            </div>
+            <div class="col-3">
+                <label>Danh mục</label>
+                @Html.DropDownListFor(model => model.CatId, Model.ChildCategoryList, "Tất cả sản phẩm", new { @class = "form_control", data_item = "child" })
+            </div>
+            <div class="col-3">
+                <label>Từ khóa</label>
+                @Html.TextBoxFor(a => a.Name, new { @class = "form_control" })
+            </div>
+            <div class="col-3">
+                <label>Sắp xếp</label>
+                <select class="form_control" name="Sort">
+                    <option value="date-desc">Mới nhất</option>
+                    <option value="date-asc" @if (Model.Sort == "date-asc") { @Html.Raw("selected='selected'") }>Cũ nhất</option>
+                    <option value="sort-asc" @if (Model.Sort == "sort-asc") { @Html.Raw("selected='selected'") }>STT nhỏ nhất</option>
+                    <option value="sort-desc" @if (Model.Sort == "sort-desc") { @Html.Raw("selected='selected'") }>STT lớn nhất</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn-search">Tìm kiếm</button>
+        </div>
+    </form>
+    <p>Có tổng số <strong>@Model.Products.TotalItemCount</strong> sản phẩm</p>
+    <form id="projectList">
+        <table class="list_table tablecenter table-striped">
+            <tbody>
+                <tr>
+                    <th style="width: 100px">STT</th>
+                    <th style="width: 50px">Hình ảnh</th>
+                    <th>Tên dự án</th>
+                    <th>Danh mục</th>
+                    <th style="width: 130px">Hoạt động</th>
+                    <th style="width: 130px">Hiện trang chủ</th>
+                    <th style="width: 140px;"></th>
+                </tr>
+                @foreach (var product in Model.Products)
+                {
+    <tr data-id="@product.Id">
+        <td>
+            <input type="hidden" name="ProductId" value="@product.Id" />
+            @Html.EditorFor(a => product.Sort)
+        </td>
+        <td>
+            @if (product.Image != null)
+            {
+<a href="@Url.Action("UpdateProduct", new { proId = product.Id })">
+    <img class="img-border" src="@Path.Combine("/images/Product/", product.Image)" style="width: 100px; height: 80px" />
+</a> }
+else
+{
+@:NO PICTURE
+}
+        </td>
+        <td class="left">
+            <p><a href="@Url.Action("UpdateProduct", new { proId = product.Id })"><strong>@product.Name</strong></a></p>
+        </td>
+        <td>@product.ProductCategory.CategoryName</td>
+        <td>@Html.EditorFor(a => product.Active, new { htmlAttributes = new { id = "Active" } })</td>
+        <td>@Html.EditorFor(a => product.Home, new { htmlAttributes = new { id = "Home" } })</td>
+
+        <td>
+            <a href="javascript:;" onclick="updateInfo(@product.Id)">Cập nhật</a> -
+            @Html.ActionLink("Sửa", "UpdateProduct", new { proId = product.Id })
+            - <a href="javascript:;" onclick="deleteProject('@product.Id')" class="red-warring">Xóa</a>
+        </td>
+    </tr>}
+                @if (Model.Products.PageCount > 1)
+                {
+    <tr>
+        <td colspan="9">@Html.PagedListPager(Model.Products, page => Url.Action("ListProject", new { page, catId = Model.CatId, parentId = Model.ParentId, name = Model.Name, sort = Model.Sort }))</td>
+    </tr>}
+            </tbody>
+        </table>
+    </form>
+</div>
+@section scripts
+{
+    <script type="text/javascript">
+        function deleteProject(id) {
+            if (confirm("Bạn có chắc chắn xóa bài viết này không?")) {
+                $.post("/Product/DeleteProduct", { proId: id }, function (data) {
+                    if (data) {
+                        $.toast({
+                            text: 'Xóa dự án thành công',
+                            position: 'bottom-right',
+                            icon: 'success',
+                        })
+                        $("tr[data-id='" + id + "']").fadeOut();
+                    }
+                    else {
+                        $.toast({
+                            text: 'Quá trình thực hiện không thành công. Hãy thử lại',
+                            icon: 'error',
+                        })
+                    }
+                });
+            }
+        }
+        function updateStatus(id) {
+            var elm = $('tr[data-id="' + id + '"]');
+            var status = elm.find("#ProjectStatus").prop("checked");
+
+            $.post("/Product/UpdateProductQuick", { proId: id, status },
+                function (data) {
+                    if (data) {
+                        elm.find("#statusResult").html("<strong>OK</strong>");
+                        elm.find("#statusResult strong").delay(1000).fadeOut();
+                    } else {
+                        $.toast({
+                            text: 'Quá trình thực hiện không thành công. Hãy thử lại',
+                            position: 'bottom-right',
+                            icon: 'error',
+                        })
+                        window.location.reload();
+                    };
+                });
+        }
+        //function updateInfo(id) {
+        //    var elm = $('tr[data-id="' + id + '"]');
+        //    var sort = elm.find("#product_Sort").val();
+        //    var active = elm.find("input#Active").prop("checked");
+        //    $.post("/Product/UpdateProductQuick", { proId: id, sort, active },
+        //        function (data) {
+        //            if (data) {
+        //                $.toast({
+        //                    text: 'Cập nhật thành công',
+        //                    position: 'bottom-right',
+        //                    icon: 'success',
+        //                })
+        //            } else {
+        //                $.toast({
+        //                    text: 'Quá trình thực hiện không thành công. Hãy thử lại',
+        //                    position: 'bottom-right',
+        //                    icon: 'error',
+        //                })
+        //                window.location.reload();
+        //            };
+        //        });
+        //}
+        function updateInfo(id) {
+            var divId = $("tr[data-id ='" + id + "']");
+            var sort = divId.find("#product_Sort").val();
+            var active = divId.find("input#Active").prop("checked");
+            if (sort == "") {
+                alert("Bạn hãy nhập số thứ tự");
+            }
+            console.log($.post("/Product/QuickUpdate"))
+            $.post("/Product/QuickUpdate", { proId: id, sort, active }, function (data) {
+                if (data) {
+                    $.toast({
+                        text: 'Cập nhật thành công',
+                        position: 'bottom-right',
+                        icon: 'success',
+                    })
+                } else {
+                    $.toast({
+                        text: 'Quá trình thực hiện không thành công. Hãy thử lại',
+                        icon: 'error',
+                    })
+                }
+            })
+        }
+        
+    </script>
+} 

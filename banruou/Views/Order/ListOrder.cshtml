@@ -1,0 +1,72 @@
+﻿@model banruou.ViewModel.ListOrderViewModel
+@using PagedList.Mvc
+@{ ViewBag.Title = "Danh sách liên hệ";
+                Layout = "~/Views/Shared/_AdminLayout.cshtml"; }
+<h2>Danh sách liên hệ đặt hàng</h2>
+<a class="btn quick-link" href="@Url.Action("Index","Vcms")"><i class="fal fa-home mr-1"></i>Về trang chính</a>
+<div class="box_content">
+    <div class="form-search-list">
+        <form action="@Url.Action("ListContact")" method="get" class="ml-0">
+            <p>
+                Tìm theo số điện thoại @Html.TextBoxFor(a => a.Name, new { @class = "w300" })
+                <button type="submit" class="btn-search">Tìm kiếm</button>
+            </p>
+        </form>
+    </div>
+    <p>Có tổng số <strong>@Model.Orders.TotalItemCount</strong> số điện thoại liên hệ</p>
+    <table class="list_table tablecenter table-striped">
+        <tbody>
+            <tr>
+                <th style="width: 100px">Ngày gửi</th>
+                <th style="width: 150px">Họ và tên</th>
+                <th>Số điện thoại</th>
+                <th>Email</th>
+                <th style="width: 200px">Sản phấm</th>
+                <th style="width: 400px">Lời nhắn</th>
+                <th style="width: 60px"></th>
+            </tr>
+            @foreach (var contact in Model.Orders)
+            {
+        <tr data-id="@contact.Id">
+            <td>@contact.CreateDate.ToString("dd/MM/yyyy HH:mm")</td>
+            <td>
+                <strong>@contact.Name</strong>
+            </td>
+            <td>@contact.Phone</td>
+            <td>@contact.Email</td>
+            <td>@contact.NameProduct</td>
+            <td>@contact.Discription</td>
+            <td><a href="javascript:;" onclick="deletecontact('@contact.Id')">Xóa</a></td>
+        </tr>            }
+            @if (Model.Orders.PageCount > 1)
+            {
+<tr>
+    <td colspan="7">@Html.PagedListPager(Model.Orders, page => Url.Action("ListContact", new { page, name = Model.Name }))</td>
+</tr>            }
+        </tbody>
+    </table>
+</div>
+@section scripts
+{
+    <script type="text/javascript">
+    function deletecontact(id) {
+            if (confirm("Bạn có chắc chắn xóa liên hệ này không?")) {
+                $.post("/Order/DeleteOrder", { contactId: id }, function (data) {
+                    if (data) {
+                        $.toast({
+                            text: 'Xóa liên hệ thành công',
+                            position: 'bottom-right',
+                            icon: 'success',
+                        })
+                        $("tr[data-id='" + id + "']").fadeOut();
+                    }
+                    else {
+                        $.toast({
+                            text: 'Quá trình thực hiện không thành công. Hãy thử lại',
+                            icon: 'error',
+                        })
+                    }
+                });
+            }
+        }</script>
+}

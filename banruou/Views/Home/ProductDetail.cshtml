@@ -1,0 +1,198 @@
+﻿@model banruou.ViewModel.ProductDetailViewModel
+@using banruou.Models
+@{
+    var config = (ConfigSite)HttpContext.Current.Application["ConfigSite"];
+    ViewBag.Title = Model.Product.TitleMeta ?? Model.Product.Name;
+    ViewBag.Description = Model.Product.DescriptionMeta ?? Model.Product.Body;
+    ViewBag.Canonical = Request.Url?.GetLeftPart(UriPartial.Authority) + Url.Action("ServiceDetail", new { url = Model.Product.Url });
+    if (Model.Product.Image != null)
+    {
+        ViewBag.ImageShare = Request.Url?.GetLeftPart(UriPartial.Authority) + Path.Combine("/images/services/", Model.Product.Image);
+    }
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@Html.Action("Header", "Home")
+<section class="product-detail">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="product-img">
+                    <div class="item" data-image="@Path.Combine("/images/Product/",Model.Product.Image)"></div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="product-info">
+                    <div class="product-detail-name">
+                        <p>@Model.Product.Name</p>
+                    </div>
+                    <div class="product-detail-price">
+                        <span>Giá :</span>
+                        <p>@String.Format("{0:#,##0.##}", Model.Product.Price)đ</p>
+                    </div>
+                    <div class="mota-ngan">
+                        <p>
+                            Epvina nhận sản xuất hộp rượu quà tặng theo yêu cầu với hơn 1000 mẫu cho quý khách lựa chọn. Liên hệ để được tư vấn và báo giá.
+                            <a href="">@config.Hotline</a>.
+                        </p>
+                    </div>
+                    <div class="form-contact">
+                        <div class="hotline">
+                            <a href="tel:@config.Hotline">Hotline</a>
+                        </div>
+                        <div class="zalo">
+                            <a href="@config.Zalo">Zalo</a>
+                        </div>
+                        <div class="order_btn">
+                           <a href="@Url.Action("Order" , new { Url = Model.Product.Url })" class="text-white">Đặt mua</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-detail-category">
+                    <hr>
+                    <span>Danh mục :</span>
+                    <a href="@Url.Action("CategoryProduct","Home" , new { Url = Model.Product.ProductCategory.Url })">@Model.Product.ProductCategory.CategoryName</a>,
+                    <a href="">@Model.Product.Name</a>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="product-sidebar">
+                    <div class="sidebar-item">
+                        <div class="ship">
+                            <i class="fa-solid fa-truck-fast"></i>
+                            Sản phẩm được miễn phí giao hàng
+                        </div>
+                        <div class="policy">
+                            <div class="policy-title">
+                                <h3>Chính sách bán hàng</h3>
+                            </div>
+                            <div class="policy-item">
+                                <i class="fa-solid fa-circle-check"></i>
+                                Hàng chất lượng cao
+                            </div>
+                            <div class="policy-item">
+                                <i class="fa-solid fa-truck-fast"></i>
+                                Miễn phí giao hàng nội thành
+                            </div>
+                            <div class="policy-item">
+                                <i class="fa-solid fa-rotate"></i>
+                                Công nghệ in hiện đại
+                            </div>
+                            <div class="policy-title">
+                                <h3>Dịch vụ khác</h3>
+                            </div>
+                            <div class="policy-item">
+                                <i class="fa-solid fa-gear"></i>
+                                In logo theo yêu cầu
+                            </div>
+                            <div class="policy-item">
+                                <i class="fa-solid fa-laptop"></i>
+                                Thiết kế miễn phí
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+    </div>
+</section>
+<section class="product-detail-description">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-2">
+                <div class="detail-info-title">
+                    <h3>Thông số</h3>
+                </div>
+            </div>
+            <div class="col-lg-10">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="parameter">
+                            @if (Model.Product.Country != null)
+                            {
+                                <div class="parameter-item">
+                                    <span>Xuất xứ :</span>
+                                    <p>@Model.Product.Country</p>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="parameter">
+                            @if (Model.Product.Capacity != null)
+                            {
+                                <div class="parameter-item">
+                                    <span>Sức chứa :</span>
+                                    <p>@Model.Product.Capacity mL</p>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="parameter">
+                            @if (Model.Product.Application != null)
+                            {
+                                <div class="parameter-item">
+                                    <span>Áp dụng :</span>
+                                    <p>@Model.Product.Application mL</p>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="parameter">
+                            @if (Model.Product.Material != null)
+                            {
+                                <div class="parameter-item">
+                                    <span>Chất liệu :</span>
+                                    <p>@Model.Product.Material</p>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+@if (Model.Products.Any())
+{
+    <section class="related-products">
+        <div class="container">
+            <div class="related-products-title">
+                <h3>Sản phẩm liên quan</h3>
+            </div>
+            <div class="related-products-list">
+                <div class="row">
+                    @foreach (var item in Model.Products.Take(8))
+                    {
+                        <div class="col-lg-3 col-6">
+                            <div class="product-item related-item ">
+                                <div class="product-img">
+                                    <a href="@Url.Action("ProductDetail" , "Home" , new { item.Url })">
+                                        <img src="@Path.Combine("/images/Product/" , item.Image)" alt="">
+                                    </a>
+                                </div>
+                                <div class="product-name">
+                                    <a href="@Url.Action("ProductDetail" , "Home" , new { item.Url })">
+                                        <p>@item.Name</p>
+                                    </a>
+                                </div>
+                                <div class="product-price ">
+                                    <p class="">@String.Format("{0:#,##0.##}", Model.Product.Price)đ</p>
+                                </div>
+                                <div class="product-btn">
+                                    <a href="@Url.Action("ProductDetail" , "Home" , new { item.Url })">
+                                        <span>Đặt mua</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </section>
+}
+@Html.Action("Order")
+@Html.Action("Footer")

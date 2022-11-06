@@ -1,0 +1,39 @@
+﻿@model banruou.ViewModel.AllProductViewModel
+@using PagedList.Mvc
+@{
+    ViewBag.Title = "AllProduct";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@Html.Action("Header")
+<section class="product-list">
+    <div class="container">
+        <div class="product-list-title">
+            <div class="title-item">
+                <h3>Danh sách sản phẩm</h3>
+            </div>
+        </div>
+        <div class="list-item">
+            <div class="row">
+                @if (Model.ProductCategories.Any())
+                {
+                    <div class="col-lg-3">
+                        <div class="list-category">
+                            @Html.Action("GetNavProduct")
+                        </div>
+                    </div>
+                }
+                @if (Model.Products.PageCount > 1)
+                {
+                <tr>
+                    <td colspan="8">@Html.PagedListPager(Model.Products, Page => Url.Action("AllProduct", new { Page }))</td>
+                </tr>
+                }
+                <div class="col-lg-9">
+                    @Html.Action("GetAllProduct");
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+@Html.Action("Footer")
+

@@ -1,0 +1,52 @@
+﻿@model banruou.ViewModel.OrderViewModel
+<section class="order">
+    <div class="order-content">
+        <div class="container">
+            <div class="order-top">
+                <div class="order-title">
+                    <span>Sản phẩm :</span>
+                    <h3>@Model.Products.Name</h3>
+                </div>
+                <div class="btn-close" onclick="closeForm()">
+                    <ion-icon name="close-outline"></ion-icon>
+                </div>
+            </div>
+            <hr>
+        </div>
+        <div class="oder-form">
+            <div class="container">
+                <div class="order-form-title">
+                    <h3>Thông tin của bạn</h3>
+                </div>
+                <form method="post">
+                    @Html.ValidationSummary(true)
+                    @Html.AntiForgeryToken()
+                    <div class="oder-form-item">
+                        @Html.TextBoxFor(a => a.Order.Name, new { @class = "form-input", @placeholder = "Họ tên" })                     
+                        @Html.ValidationMessageFor(a => a.Order.Name)
+                    </div>
+                    <div class="oder-form-item">
+                        @Html.TextBoxFor(a => a.Order.Address, new { @class = "form-input" , @placeholder = "Địa chỉ" })
+                        @Html.ValidationMessageFor(a => a.Order.Address)
+                    </div>
+                    <div class="oder-form-item">
+                        @Html.TextBoxFor(a => a.Order.Phone, new { @class = "form-input" , @placeholder = "Số điện thoại" })
+                        @Html.ValidationMessageFor(a => a.Order.Phone)
+                    </div>
+                    <div class="oder-form-item">
+                        @Html.TextBoxFor(a => a.Order.Email, new { @class = "form-input" , @placeholder = "Email của bạn" })
+                        @Html.ValidationMessageFor(a => a.Order.Email)
+                    </div>
+                    <div class="oder-form-item">
+                        @Html.TextBoxFor(a => a.Order.Discription, new { @class = "form-input" , @placeholder = "Lời nhắn" })
+                        @Html.ValidationMessageFor(a => a.Order.Discription)
+                    </div>
+                    <div class="oder-btn">
+                        <button type="submit">Gửi yêu cầu</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
