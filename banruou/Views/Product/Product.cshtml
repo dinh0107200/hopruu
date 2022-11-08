@@ -1,96 +1,119 @@
 ﻿@model banruou.ViewModel.InsertProjectViewModel
 @{ ViewBag.Title = "Thêm dự án";
-    Layout = "~/Views/Shared/_AdminLayout.cshtml"; }
+    Layout = "~/Views/Shared/_AdminLayout.cshtml"; 
+
+}
 <h2>Thêm sản phẩm</h2>
 <a class="btn quick-link" href="@Url.Action("ListProduct")"><i class="far fa-list mr-1"></i> Danh sách sản phẩm</a>
 <div class="box_content">
     @using (Html.BeginForm("Product", "Product", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
-@Html.ValidationSummary(true)
-                <table class="form_table">
-                    <tr>
-                        <td class="form_name">@Html.LabelFor(model => model.Product.ProductCategoryId)</td>
-                        <td class="form_text">
-                            <select name="CategoryId" class="form_control w300" required="">
-                                <option value="">Danh mục sản phẩm</option>
-                                @foreach (var category in Model.Categories.Where(a => a.ParentId == null))
-                                {
-                <option value="@category.Id">@category.CategoryName</option>
+                @Html.ValidationSummary(true)
+    <table class="form_table">
+        <tr>
+            <td class="form_name">@Html.LabelFor(model => model.Product.ProductCategoryId)</td>
+            <td class="form_text">
+                <select name="CategoryId" class="form_control w300" required="">
+                    <option value="">Danh mục sản phẩm</option>
+                    @foreach (var category in Model.Categories.Where(a => a.ParentId == null))
+                    {
+    <option value="@category.Id">@category.CategoryName</option>
  foreach (var child in Model.Categories.Where(a => a.ParentId == category.Id))
-                                    {
-                <option value="@child.Id"> -- @child.CategoryName</option>}
-                                }
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="form_name">@Html.LabelFor(model => model.Product.Name)</td>
-                        <td class="form_text">@Html.EditorFor(model => model.Product.Name)</td>
-                    </tr>
-                    <tr>
-                        <td class="form_name">@Html.LabelFor(model => model.Product.Price)</td>
-                        <td class="form_text">@Html.EditorFor(model => model.Product.Price)</td>
-                    </tr>
-                    <tr>
-                        <td class="form_name">@Html.LabelFor(model => model.Product.Image)</td>
-                        <td class="form_text">@Html.TextBoxFor(model => model.Product.Image, new { type = "file" }) <span class="red-warring">Chấp nhận ảnh jpg, png, gif, jpeg < 40MB</span></td>
-                    </tr>
-                    <tr>
-                        <td class="form_name">@Html.LabelFor(model => model.Product.Country)</td>
-                        <td class="form_text">@Html.EditorFor(model => model.Product.Country)</td>
-                    </tr>
-                    <tr>
-                        <td class="form_name">@Html.LabelFor(model => model.Product.Application)</td>
-                        <td class="form_text">@Html.EditorFor(model => model.Product.Application)</td>
-                    </tr>
-                    <tr>
-                        <td class="form_name">@Html.LabelFor(model => model.Product.Capacity)</td>
-                        <td class="form_text">@Html.EditorFor(model => model.Product.Capacity)</td>
-                    </tr>
+    {
+    <option value="@child.Id"> -- @child.CategoryName</option>
+}
+}
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td class="form_name">@Html.LabelFor(model => model.Product.Name)</td>
+            <td class="form_text">@Html.EditorFor(model => model.Product.Name)</td>
+        </tr>
+        <tr>
+            <td class="form_name">@Html.LabelFor(model => model.Product.Price)</td>
+            <td class="form_text">@Html.EditorFor(model => model.Product.Price)</td>
+        </tr>
+        <tr>
+            <td class="form_name">@Html.LabelFor(model => model.Product.ListImage)</td>
+            <td class="form_text">
+                <div class="alert alert-info">
+                    <p class="btn btn-success fileinput-button">
+                        <i class="glyphicon glyphicon-plus"></i>
+                        <span>Chọn ảnh...</span>
+                        <input type="file" id="fileupload" name="files[]" accept="image/*" multiple="" />
+                    </p><br />
+                    - Chọn ảnh để upload: (gif, png, jpg, jpeg < 4MB)<br />
+                    - Kích thước: 800x 800px<br />
+                    - Ảnh đầu tiên sẽ là ảnh đại diện<br />
+                </div>
+                <div id="progress" class="progress">
+                    <div class="progress-bar progress-bar-success"></div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td class="form_name"></td>
+            <td class="form_text">
+                <ul id="ListImages"></ul>
+            </td>
+        </tr>
+        <tr>
+            <td class="form_name">@Html.LabelFor(model => model.Product.Country)</td>
+            <td class="form_text">@Html.EditorFor(model => model.Product.Country)</td>
+        </tr>
+        <tr>
+            <td class="form_name">@Html.LabelFor(model => model.Product.Application)</td>x
+            <td class="form_text">@Html.EditorFor(model => model.Product.Application)</td>
+        </tr>
+        <tr>
+            <td class="form_name">@Html.LabelFor(model => model.Product.Capacity)</td>
+            <td class="form_text">@Html.EditorFor(model => model.Product.Capacity)</td>
+        </tr>
 
-                    <tr>
-                        <td class="form_name">@Html.LabelFor(model => model.Product.Material)</td>
-                        <td class="form_text">@Html.EditorFor(model => model.Product.Material)</td>
-                    </tr>
-                    <tr>
-                        <td class="form_name">@Html.LabelFor(model => model.Product.Body)</td>
-                        <td class="form_text">@Html.EditorFor(model => model.Product.Body)</td>
-                    </tr>
-                    <tr>
-                        <td class="form_name">@Html.LabelFor(model => model.Product.Url)</td>
-                        <td class="form_text">@Html.EditorFor(model => model.Product.Url)</td>
-                    </tr>
-                    <tr>
-                        <td class="form_name">@Html.LabelFor(model => model.Product.Home)</td>
-                        <td class="form_text">@Html.CheckBoxFor(model => model.Product.Home)</td>
-                    </tr>
-                    <tr>
-                        <td class="form_name">@Html.LabelFor(model => model.Product.Active)</td>
-                        <td class="form_text">@Html.CheckBoxFor(model => model.Product.Active, new { @checked = "checked" })</td>
-                    </tr>
-                    <tr>
-                        <td class="form_name">@Html.LabelFor(model => model.Product.Hot)</td>
-                        <td class="form_text">@Html.CheckBoxFor(model => model.Product.Hot, new { @checked = "checked" })</td>
-                    </tr>
-                    <tr>
-                        <td class="form_name">@Html.LabelFor(model => model.Product.Sort)</td>
-                        <td class="form_text">@Html.EditorFor(model => model.Product.Sort)</td>
-                    </tr>
-                    <tr>
-                        <td class="form_name">@Html.LabelFor(model => model.Product.TitleMeta)</td>
-                        <td class="form_text">@Html.EditorFor(model => model.Product.TitleMeta)</td>
-                    </tr>
-                    <tr>
-                        <td class="form_name">@Html.LabelFor(model => model.Product.DescriptionMeta)</td>
-                        <td class="form_text">@Html.EditorFor(model => model.Product.DescriptionMeta)</td>
-                    </tr>
-                    <tr>
-                        <td class="form_name"></td>
-                        <td class="form_text">
-                            <input type="submit" class="btn quick-link" value="Thêm mới" />
-                        </td>
-                    </tr>
-                </table>}
+        <tr>
+            <td class="form_name">@Html.LabelFor(model => model.Product.Material)</td>
+            <td class="form_text">@Html.EditorFor(model => model.Product.Material)</td>
+        </tr>
+        <tr>
+            <td class="form_name">@Html.LabelFor(model => model.Product.Body)</td>
+            <td class="form_text">@Html.EditorFor(model => model.Product.Body)</td>
+        </tr>
+        <tr>
+            <td class="form_name">@Html.LabelFor(model => model.Product.Url)</td>
+            <td class="form_text">@Html.EditorFor(model => model.Product.Url)</td>
+        </tr>
+        <tr>
+            <td class="form_name">@Html.LabelFor(model => model.Product.Home)</td>
+            <td class="form_text">@Html.CheckBoxFor(model => model.Product.Home)</td>
+        </tr>
+        <tr>
+            <td class="form_name">@Html.LabelFor(model => model.Product.Active)</td>
+            <td class="form_text">@Html.CheckBoxFor(model => model.Product.Active, new { @checked = "checked" })</td>
+        </tr>
+        <tr>
+            <td class="form_name">@Html.LabelFor(model => model.Product.Hot)</td>
+            <td class="form_text">@Html.CheckBoxFor(model => model.Product.Hot, new { @checked = "checked" })</td>
+        </tr>
+        <tr>
+            <td class="form_name">@Html.LabelFor(model => model.Product.Sort)</td>
+            <td class="form_text">@Html.EditorFor(model => model.Product.Sort)</td>
+        </tr>
+        <tr>
+            <td class="form_name">@Html.LabelFor(model => model.Product.TitleMeta)</td>
+            <td class="form_text">@Html.EditorFor(model => model.Product.TitleMeta)</td>
+        </tr>
+        <tr>
+            <td class="form_name">@Html.LabelFor(model => model.Product.DescriptionMeta)</td>
+            <td class="form_text">@Html.EditorFor(model => model.Product.DescriptionMeta)</td>
+        </tr>
+        <tr>
+            <td class="form_name"></td>
+            <td class="form_text">
+                <input type="submit" class="btn quick-link" value="Thêm mới" />
+            </td>
+        </tr>
+    </table>}
 </div>
 @section scripts{
     <script>CKEDITOR.replace("Product_Body");</script>
@@ -124,11 +147,11 @@
                 }
                 return true;
             },
-            url: "/Uploader/Upload?folder=projects&r=" + Math.random(),
+            url: "/Uploader/Upload?folder=Product&r=" + Math.random(),
             dataType: "json",
             done: function (e, data) {
                 $.each(data.result.files, function (index, file) {
-                    $('#ListImages').append('<li><input type="hidden" name="Pictures" value ="' + file.name + '" /><img src="/images/projects/' + file.name + '?w=80&h=80"/><a href="javascript:;" id="' + i + '" onclick="delfile(' + i + ')"><img src="/content/admin/icon-delete.png" alt="" style="vertical-align:middle" /></a></li>');
+                    $('#ListImages').append('<li><input type="hidden" name="Pictures" value ="' + file.name + '" /><img src="/images/Product/' + file.name + '?w=80&h=80"/><a href="javascript:;" id="' + i + '" onclick="delfile(' + i + ')"><img src="/content/admin/icon-delete.png" alt="" style="vertical-align:middle" /></a></li>');
                 });
                 i = i + 1;
                 $("#progress").fadeOut(2000);
@@ -148,16 +171,5 @@
                 $('#' + divid).parent().fadeOut().remove();
             }
         }
-
-
-        function loadChildCategory(id) {
-            $.getJSON("/ProjectVcms/GetChildCategory", { parentId: id }, function (data) {
-                var items = [];
-                items.push("<option value>Hãy chọn danh mục</option>");
-                $.each(data, function (key, val) {
-                    items.push("<option value='" + val.Id + "'>" + val.CategoryName + "</option>");
-                });
-                $("#ChildCategoryId").html(items.join(""));
-            });
-        }</script>
+    </script>
 }

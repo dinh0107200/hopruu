@@ -212,9 +212,6 @@ namespace banruou.Controllers
             model.Order.CreateDate = DateTime.Now;
             _unitOfWork.OrderRepository.Insert(model.Order);
             _unitOfWork.Save();
-
-            
-
             var body = $"<p>Tên người liên hệ: {model.Order.Name},</p>" +
                        $"<p>Số điện thoại: {model.Order.Phone},</p>" +
                        $"<p>Email: {model.Order.Email},</p>" +

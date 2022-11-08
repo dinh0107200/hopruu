@@ -61,15 +61,15 @@
             @Html.EditorFor(a => product.Sort)
         </td>
         <td>
-            @if (product.Image != null)
+            @if (product.ListImage != null)
             {
-<a href="@Url.Action("UpdateProduct", new { proId = product.Id })">
-    <img class="img-border" src="@Path.Combine("/images/Product/", product.Image)" style="width: 100px; height: 80px" />
-</a> }
-else
-{
-@:NO PICTURE
-}
+        <a href="@Url.Action("UpdateProduct", new { proId = product.Id })">
+            <img class="img-border" src="@Path.Combine("/images/Product/", product.ListImage.Split(',')[0])?w=100&h=100" style="width: 100px; height: 80px" />
+        </a> }
+    else
+    {
+        @:NO PICTURE
+    }
         </td>
         <td class="left">
             <p><a href="@Url.Action("UpdateProduct", new { proId = product.Id })"><strong>@product.Name</strong></a></p>

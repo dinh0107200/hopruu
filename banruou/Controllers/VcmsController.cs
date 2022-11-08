@@ -267,6 +267,7 @@ namespace banruou.Controllers
                 config.Hotline3 = model.Hotline3;
                 config.Hotline4 = model.Hotline4;
                 config.Zalo = model.Zalo;
+                config.Introduce = model.Introduce;
 
                 _unitOfWork.Save();
                 HttpContext.Application["ConfigSite"] = config;

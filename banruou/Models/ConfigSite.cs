@@ -64,5 +64,7 @@ namespace banruou.Models
         public string Address { get; set; }
         [Display(Name = "Địa chỉ 2"), StringLength(500, ErrorMessage = "Tối đa 50 ký tự"), UIHint("TextBox")]
         public string Address2 { get; set; }
+        [Display(Name ="Giới thiệu ngắn") , DataType(DataType.MultilineText)]
+        public string Introduce { get; set; }
     }
 }

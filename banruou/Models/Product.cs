@@ -15,6 +15,8 @@ namespace banruou.Models
         public string Name { get; set; }
         [Display(Name = "Ảnh đại diện" ),StringLength(500 )]
         public string Image { get; set; }
+        [Display(Name = "Danh sách ảnh"), UIHint("UploadMultiFile")]
+        public string ListImage { get; set; }
         [Display(Name ="Giá")]
         public int Price { get; set; }
         [Display(Name = "Quốc gia"), StringLength(100, ErrorMessage = "Tối đa 100 ký tự")]

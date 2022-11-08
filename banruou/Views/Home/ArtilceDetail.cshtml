@@ -1,4 +1,5 @@
 ﻿@model banruou.ViewModel.ArticleDetailsViewModel
+@using banruou.Models
 @{
     ViewBag.Title = Model.Article.TitleMeta ?? Model.Article.Subject;
     ViewBag.Description = Model.Article.DescriptionMeta ?? Model.Article.Description;
@@ -7,28 +8,60 @@
     {
         ViewBag.ImageShare = Request.Url?.GetLeftPart(UriPartial.Authority) + Path.Combine("/images/articles/", Model.Article.Image);
     }
+    var config = (ConfigSite)HttpContext.Current.Application["ConfigSite"];
 }
 @Html.Action("Header")
 
 <section class="post">
+    <nav aria-label="breadcrumb" style="background: #cccccc24; margin-bottom: 30px; ">
+        <div class="container">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="@Url.Action("Index")">Trang chủ</a></li>
+                <li class="breadcrumb-item"><a href="@Url.Action("AllArtilce")">@Model.Article.ArticleCategory.CategoryName</a></li>
+                <li class="breadcrumb-item active" aria-current="page">@Model.Article.Subject</li>
+            </ol>
+        </div>
+    </nav>
     <div class="container">
         <div class="row">
-            <div class="col-lg-9">
+            <div class="col-lg-4">
+                <div id="toctoc"></div>
+            </div>
+            <div class="col-12 col-lg-8 ">
                 <div class="post-title">
                     <h3>@Model.Article.Subject</h3>
                 </div>
-                <div class="post-date">
-                    <p>Post on</p>
-                    <span>@String.Format("{0:M/d/yyyy}", Model.Article.CreateDate) </span>
+                <div class="content">
+                    <div class="post-context">
+                        @Html.Raw(Model.Article.Body)
+                    </div>
                 </div>
-                <div class="post-context">
-                    @Html.Raw(Model.Article.Body)
+                <div class="info-contact">
+                    <div class="info-contact-title">
+                        <span class="text-danger">Thông tin liên hệ :</span>
+                    </div>
+                    <div class="info-contact-item">
+                        <span>Địa chỉ Hà Nội<p> : @config.Address</p></span>
+                        <div class="hotline">
+                            <div class="hotlin-tile">
+                                <span>Hotline :</span>
+                            </div>
+                            <a href=""> @config.Hotline</a> -
+                            <a href=""> @config.Hotline2</a>
+                        </div>
+                    </div>
+                    <div class="info-contact-item">
+                        <span>Địa chỉ TP.HCM <p> : @config.Address2</p></span>
+                        <div class="hotline">
+                            <div class="hotlin-tile">
+                                <span>Hotline :</span>
+                            </div>
+                            <a href=""> @config.Hotline3</a> -
+                            <a href=""> @config.Hotline4</a>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="col-lg-3">
-                <div class="post-related">
-                    @Html.Action("GetNavMenu")
-                </div>
+                <div class="fb-comments" data-href="@ViewBag.Canonical" data-numposts="10" data-width="100%"></div>
             </div>
         </div>
     </div>

@@ -1,0 +1,32 @@
+.smooth-scroll {
+  scroll-behavior: smooth;
+}
+
+#toctoc {
+  width: 100%;
+  margin-bottom: 2rem;
+  text-align: left;
+  #toctoc-head {
+    padding: .8rem 1rem;
+    display: flex;
+    justify-content: space-between;
+    a:hover { opacity: .9;  }
+  }
+  #toctoc-body {
+  padding: .5rem 1rem;
+    font-size: 1rem;
+    .link { margin: .2rem 0; }
+    a {
+      display: flex;
+      align-items: center;
+      gap: .4rem;
+      &:hover::after { content: "👈"; }
+    }
+    .link-h3 { padding-left: 1rem; }
+    .link-h4 { padding-left: 2rem; }
+    .link-h5 { padding-left: 3rem; }
+    .link-h6 { padding-left: 4rem; }
+  }
+  a { text-decoration: none; }
+}
+

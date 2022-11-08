@@ -29,21 +29,23 @@
         <td class="form_text">@Html.TextBoxFor(model => model.Image, new { type = "file" }) <span class="red-warring">Kích thươc: 180px - 50px</span></td>
     </tr>
     @if (Model.Image != null)
-                        {
-        <tr>
-            <td class="form_name"></td>
-            <td class="form_text"><img class="img-border" src="@Path.Combine("/images/configs/", Model.Image)?w=150" /></td>
-        </tr>}
+    {
+<tr>
+    <td class="form_name"></td>
+    <td class="form_text"><img class="img-border" src="@Path.Combine("/images/configs/", Model.Image)?w=150" /></td>
+</tr>
+}
     <tr>
         <td class="form_name">@Html.LabelFor(model => model.Favicon)</td>
         <td class="form_text">@Html.TextBoxFor(model => model.Favicon, new { type = "file" }) <span class="red-warring">Kích thươc: 64px - 64px</span></td>
     </tr>
     @if (Model.Favicon != null)
-                        {
-        <tr>
-            <td class="form_name"></td>
-            <td class="form_text"><img class="img-border" src="@Path.Combine("/images/configs/", Model.Favicon)?w=150" /></td>
-        </tr>}
+    {
+<tr>
+    <td class="form_name"></td>
+    <td class="form_text"><img class="img-border" src="@Path.Combine("/images/configs/", Model.Favicon)?w=150" /></td>
+</tr>
+}
     <tr>
         <td class="form_name">@Html.LabelFor(model => model.AboutImage)</td>
         <td class="form_text">@Html.TextBoxFor(model => model.AboutImage, new { type = "file" }) <span class="red-warring">Kích thươc: 470px - 600px</span></td>
@@ -53,8 +55,11 @@
 <tr>
     <td class="form_name"></td>
     <td class="form_text"><img class="img-border" src="@Path.Combine("/images/configs/", Model.AboutImage)?w=150" /></td>
-</tr>
-}
+</tr>}
+    <tr>
+        <td class="form_name">@Html.LabelFor(model => model.Introduce)</td>
+        <td class="form_text">@Html.EditorFor(model => model.Introduce)</td>
+    </tr>
     <tr>
         <td class="form_name">@Html.LabelFor(model => model.AboutText)</td>
         <td class="form_text">@Html.EditorFor(model => model.AboutText)</td>

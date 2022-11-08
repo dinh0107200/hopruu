@@ -182,12 +182,17 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
+    <Compile Include="Controllers\UploaderController.cs" />
     <Compile Include="Controllers\VcmsController.cs" />
     <Compile Include="DAL\DataEntities.cs" />
     <Compile Include="DAL\GenericRepository.cs" />
     <Compile Include="DAL\UnitOfWork.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202211070341275_Introduce.cs" />
+    <Compile Include="Migrations\202211070341275_Introduce.designer.cs">
+      <DependentUpon>202211070341275_Introduce.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Admin.cs" />
@@ -334,6 +339,12 @@
     <Content Include="Content\themes\base\tabs.css" />
     <Content Include="Content\themes\base\theme.css" />
     <Content Include="Content\themes\base\tooltip.css" />
+    <Content Include="Content\toctoc.css">
+      <DependentUpon>toctoc.scss</DependentUpon>
+    </Content>
+    <Content Include="Content\toctoc.min.css">
+      <DependentUpon>toctoc.css</DependentUpon>
+    </Content>
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -1074,6 +1085,7 @@
     <Content Include="Content\login.less" />
     <Content Include="Content\style.scss" />
     <Content Include="Scripts\main.js" />
+    <Content Include="Scripts\toctoc.js" />
     <Content Include="webfonts\fa-brands-400.svg" />
     <Content Include="webfonts\fa-duotone-900.svg" />
     <Content Include="webfonts\fa-light-300.svg" />
@@ -1103,6 +1115,7 @@
     <Content Include="Content\font\RobotoCondensed-Regular.ttf" />
     <Content Include="Content\Layout\layout.scss" />
     <Content Include="Content\Layout\_mixin.scss" />
+    <Content Include="Content\toctoc.scss" />
     <None Include="Scripts\jquery-3.6.0.intellisense.js" />
     <Content Include="Scripts\isotope.pkgd.min.js" />
     <Content Include="Scripts\jquery-3.6.0.js" />
@@ -1308,9 +1321,18 @@
     <Content Include="Views\Home\GetNavProduct.cshtml" />
     <Content Include="Views\Home\Order.cshtml" />
     <Content Include="Views\Order\ListOrder.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\DateTimePicker.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\EditorBox.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\MoneyBox.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\NumberBox.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\Password.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\TextArea.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\TextBox.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\UploadMultiFile.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Uploader\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -1322,6 +1344,11 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\202211070341275_Introduce.resx">
+      <DependentUpon>202211070341275_Introduce.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

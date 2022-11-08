@@ -13,7 +13,7 @@
             </div>
         </div>
         <div class="header-rp-lg">
-            <a href="@Url.Action("Index" , "Home")">
+            <a class="header-rp-link" href="@Url.Action("Index" , "Home")">
                 @if(config.Image != null)
             {
                 <img src="@Path.Combine("/images/configs/" , config.Image)" alt="@config.Title" />

@@ -51,7 +51,10 @@
                 {
                     <div class="sale-item">
                         <a href="@Url.Action("ArtilceDetail", "Home", new { url = item.Url })">
-                            <img src="@Path.Combine("/images/articles" , item.Image)" alt="">
+                            @if (item.Image != null)
+                            {
+                                <img src="@Path.Combine("/images/articles" ,  item.Image)" alt="">
+                            }
                             <div class="sale-btn text-center">
                                 <span>Nhận ưu đãi</span>
                             </div>
@@ -79,7 +82,10 @@
                             <div class="product-item">
                                 <div class="product-img">
                                     <a href="@Url.Action("ProductDetail" , "Home" , new { item.Url})">
-                                        <img src="@Path.Combine("/images/Product/" , item.Image)" alt="">
+                                        @if (item.Image != null)
+                                        {
+                                            <img src="@Path.Combine("/images/Product/", item.ListImage.Split(',')[0])" alt="">
+                                        }
                                     </a>
                                 </div>
                                 <div class="product-name">
@@ -118,7 +124,7 @@
                             <div class="product-item">
                                 <div class="product-img">
                                     <a href="@Url.Action("ProductDetail" , "Home" ,new {url = item.Url })">
-                                        <img src="@Path.Combine("/images/Product/", item.Image)" alt="">
+                                        <img src="@Path.Combine("/images/Product/", item.ListImage.Split(',')[0])" alt="">
                                     </a>
                                 </div>
                                 <div class="product-name">
@@ -157,7 +163,7 @@
                             <div class="product-item">
                                 <div class="product-img">
                                     <a href="@Url.Action("ProductDetail" , "Home" ,new {url = item.Url })">
-                                        <img src="@Path.Combine("/images/Product/" , item.Image)" alt="">
+                                        <img src="@Path.Combine("/images/Product/", item.ListImage.Split(',')[0])" alt="">
                                     </a>
                                 </div>
                                 <div class="product-name">
@@ -197,7 +203,7 @@
                             <div class="product-item">
                                 <div class="product-img">
                                     <a href="@Url.Action("ProductDetail" , "Home" ,new {url = item.Url })">
-                                        <img src="@Path.Combine("/images/Product/" , item.Image)" alt="">
+                                        <img src="@Path.Combine("/images/Product/" ,  item.ListImage.Split(',')[0]))" alt="">
                                     </a>
                                 </div>
                                 <div class="product-name">
@@ -237,7 +243,7 @@
                             <div class="product-item">
                                 <div class="product-img">
                                     <a href="@Url.Action("ProductDetail" , "Home" ,new {url = item.Url })">
-                                        <img src="@Path.Combine("/images/Product/" , item.Image)" alt="">
+                                        <img src="@Path.Combine("/images/Product/" , item.ListImage.Split(',')[0])" alt="">
                                     </a>
                                 </div>
                                 <div class="product-name">

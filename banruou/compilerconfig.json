@@ -18,5 +18,9 @@
   {
     "outputFile": "Content/Layout/layout.css",
     "inputFile": "Content/Layout/layout.scss"
+  },
+  {
+    "outputFile": "Content/toctoc.css",
+    "inputFile": "Content/toctoc.scss"
   }
 ]

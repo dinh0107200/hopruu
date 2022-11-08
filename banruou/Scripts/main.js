@@ -1,4 +1,15 @@
-$(document).ready(function(){
+﻿$(document).ready(function () {
+    $.toctoc({
+        target: '.content',
+        headText: "Mục lục bài viết",
+        headLinkText: ['Hiện', 'Ẩn'],
+        headBackgroundColor: '#edf6ff',
+        borderColor: '#edf6ff',
+        bodyBackgroundColor: '#edf6ff',
+        headTextColor: '#000',
+        smooth: true,
+        opened: false,
+    });
     $('.banner').slick({
         arrows: true,
         autoplay: true,

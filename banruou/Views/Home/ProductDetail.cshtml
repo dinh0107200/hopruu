@@ -13,146 +13,100 @@
 }
 @Html.Action("Header", "Home")
 <section class="product-detail">
+    <nav aria-label="breadcrumb">
+        <div class="container bg">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="@Url.Action("Index")">Trang chủ</a></li>
+                <li class="breadcrumb-item"><a href="@Url.Action( "CategoryProduct" ,"Home" , new { url = Model.Product.ProductCategory.Url })">@Model.Product.ProductCategory.CategoryName</a></li>
+                <li class="breadcrumb-item active" aria-current="page">@Model.Product.Name</li>
+            </ol>
+        </div>
+    </nav>
     <div class="container">
         <div class="row">
-            <div class="col-lg-3">
-                <div class="product-img">
-                    <div class="item" data-image="@Path.Combine("/images/Product/",Model.Product.Image)"></div>
-                </div>
+            <div class="col-lg-4">
+                @if (Model.Product.Image != null)
+                {
+                    <div class="product-detail-img">
+                        <img src="@Path.Combine("/images/Product/", Model.Product.ListImage.Split(',')[0])" alt="">
+                    </div>
+                }
+
+
             </div>
-            <div class="col-lg-6">
-                <div class="product-info">
+            <div class="col-lg-5">
+                <div class="product-detail-infor">
                     <div class="product-detail-name">
-                        <p>@Model.Product.Name</p>
+                        <h3 class="text-danger">@Model.Product.Name</h3>
                     </div>
-                    <div class="product-detail-price">
-                        <span>Giá :</span>
-                        <p>@String.Format("{0:#,##0.##}", Model.Product.Price)đ</p>
-                    </div>
-                    <div class="mota-ngan">
-                        <p>
-                            Epvina nhận sản xuất hộp rượu quà tặng theo yêu cầu với hơn 1000 mẫu cho quý khách lựa chọn. Liên hệ để được tư vấn và báo giá.
-                            <a href="">@config.Hotline</a>.
-                        </p>
-                    </div>
-                    <div class="form-contact">
-                        <div class="hotline">
-                            <a href="tel:@config.Hotline">Hotline</a>
-                        </div>
-                        <div class="zalo">
-                            <a href="@config.Zalo">Zalo</a>
-                        </div>
-                        <div class="order_btn">
-                           <a href="@Url.Action("Order" , new { Url = Model.Product.Url })" class="text-white">Đặt mua</a>
-                        </div>
+                    <hr>
+                    <div class="product-detail-name">
+                        <h3 class="text-danger">
+                            @String.Format("{0:n0}", @Model.Product.Price) đ                       
+                        </h3>
                     </div>
                 </div>
-                <div class="product-detail-category">
-                    <hr>
-                    <span>Danh mục :</span>
-                    <a href="@Url.Action("CategoryProduct","Home" , new { Url = Model.Product.ProductCategory.Url })">@Model.Product.ProductCategory.CategoryName</a>,
-                    <a href="">@Model.Product.Name</a>
+                <div class="product-detail-discription">
+                    @if (Model.Product.Material != null)
+                    {
+                        <div class="detail-discription-item fst-italic text-muted">
+                            <span>Chất liệu :</span>
+                            <span>@Model.Product.Material</span>
+                        </div>
+                    }
+                    @if (Model.Product.Country != null)
+                    {
+                        <div class="detail-discription-item fst-italic text-muted">
+                            <span>Xuất sứ  :</span>
+                            <span>@Model.Product.Country</span>
+                        </div>
+                    }
+                    @if (Model.Product.Capacity != null)
+                    {
+                        <div class="detail-discription-item fst-italic text-muted">
+                            <span>Sức chứa :</span>
+                            <span>@Model.Product.Capacity</span>
+                        </div>
+                    }
+                </div>
+                <div class="introduction text-muted">
+                    <p>@config.Introduce</p>
+                </div>
+                <div class="product-detail-btn">
+                    <div class="row">
+                        <div class="col-6 col-lg-4">
+                            <div class="btn-item">
+                                <a class="btn btn-danger" data-bs-toggle="modal" href="#exampleModalToggle" role="button"> <i class="fa-solid fa-cart-shopping"></i> Đặt mua hàng</a>
+                            </div>
+                        </div>
+                        <div class="col-6 col-lg-4">
+                            <div class="btn-item">
+                                <a href="tel:@config.Hotline" class="btn btn-primary"><i class="fa-sharp fa-solid fa-headphones"></i> Liên hệ tư vấn</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="col-lg-3">
-                <div class="product-sidebar">
-                    <div class="sidebar-item">
-                        <div class="ship">
-                            <i class="fa-solid fa-truck-fast"></i>
-                            Sản phẩm được miễn phí giao hàng
-                        </div>
-                        <div class="policy">
-                            <div class="policy-title">
-                                <h3>Chính sách bán hàng</h3>
-                            </div>
-                            <div class="policy-item">
-                                <i class="fa-solid fa-circle-check"></i>
-                                Hàng chất lượng cao
-                            </div>
-                            <div class="policy-item">
-                                <i class="fa-solid fa-truck-fast"></i>
-                                Miễn phí giao hàng nội thành
-                            </div>
-                            <div class="policy-item">
-                                <i class="fa-solid fa-rotate"></i>
-                                Công nghệ in hiện đại
-                            </div>
-                            <div class="policy-title">
-                                <h3>Dịch vụ khác</h3>
-                            </div>
-                            <div class="policy-item">
-                                <i class="fa-solid fa-gear"></i>
-                                In logo theo yêu cầu
-                            </div>
-                            <div class="policy-item">
-                                <i class="fa-solid fa-laptop"></i>
-                                Thiết kế miễn phí
-                            </div>
-                        </div>
+                <div class="customer-care fst-italic text-muted">
+                    <span>Chăm sóc khách hàng</span>
+                    <p>Gợi ý khiếu lại (8h00 - 17h30)</p>
+                    <div class="customer-item">
+                        <span class="fw-bolder">Hà Nội: </span>
+                        <a class="text-muted" href="tel:@config.Hotline"> @config.Hotline</a>
+                    </div>
+                    <div class="customer-item">
+                        <span class="fw-bolder">HCM: </span>
+                        <a class="text-muted" href="tel:@config.Hotline3"> @config.Hotline3</a>
+                    </div>
+                    <div class="customer-item">
+                        <span class="fw-bolder">Email: </span>
+                        <a class="text-muted" href="mailto:@config.Email"> @config.Email</a>
                     </div>
                 </div>
             </div>
         </div>
         <hr>
-    </div>
-</section>
-<section class="product-detail-description">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-2">
-                <div class="detail-info-title">
-                    <h3>Thông số</h3>
-                </div>
-            </div>
-            <div class="col-lg-10">
-                <div class="row">
-                    <div class="col-lg-6">
-                        <div class="parameter">
-                            @if (Model.Product.Country != null)
-                            {
-                                <div class="parameter-item">
-                                    <span>Xuất xứ :</span>
-                                    <p>@Model.Product.Country</p>
-                                </div>
-                            }
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="parameter">
-                            @if (Model.Product.Capacity != null)
-                            {
-                                <div class="parameter-item">
-                                    <span>Sức chứa :</span>
-                                    <p>@Model.Product.Capacity mL</p>
-                                </div>
-                            }
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="parameter">
-                            @if (Model.Product.Application != null)
-                            {
-                                <div class="parameter-item">
-                                    <span>Áp dụng :</span>
-                                    <p>@Model.Product.Application mL</p>
-                                </div>
-                            }
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="parameter">
-                            @if (Model.Product.Material != null)
-                            {
-                                <div class="parameter-item">
-                                    <span>Chất liệu :</span>
-                                    <p>@Model.Product.Material</p>
-                                </div>
-                            }
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 </section>
 @if (Model.Products.Any())

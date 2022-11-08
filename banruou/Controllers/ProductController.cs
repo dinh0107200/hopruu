@@ -222,58 +222,23 @@ namespace banruou.Controllers
         {
             if (ModelState.IsValid)
             {
-                var isPost = true;
-                var file = Request.Files["Product.Image"];
-                if (file != null && file.ContentLength > 0)
+                model.Product.ListImage = fc["Pictures"];
+                model.Product.ProductCategoryId = model.CategoryId ?? model.ParentId;
+                model.Product.Url = HtmlHelpers.ConvertToUnSign(null, model.Product.Url ?? model.Product.Name);
+
+                var count = _unitOfWork.ProductRepository.GetQuery(a => a.Url == model.Product.Url).Count();
+                if (count > 1)
                 {
-                    if (!HtmlHelpers.CheckFileExt(file.FileName, "jpg|jpeg|png|gif"))
-                    {
-                        ModelState.AddModelError("", @"Chỉ chấp nhận định dạng jpg, png, gif, jpeg");
-                        isPost = false;
-                    }
-                    else
-                    {
-
-                        if (file.ContentLength > 4000 * 1024)
-                        {
-                            ModelState.AddModelError("", @"Dung lượng lớn hơn 4MB. Hãy thử lại");
-                            isPost = false;
-                        }
-                        else
-                        {
-                            var imgFileName = DateTime.Now.ToFileTimeUtc() + Path.GetExtension(file.FileName);
-                            var imgPath = "/images/Product/" + DateTime.Now.ToString("yyyy/MM/dd");
-                            HtmlHelpers.CreateFolder(Server.MapPath(imgPath));
-
-                            model.Product.Image = DateTime.Now.ToString("yyyy/MM/dd") + "/" + imgFileName;
-
-                            var newImage = Image.FromStream(file.InputStream);
-                            var fixSizeImage = HtmlHelpers.FixedSize(newImage, 800, 600, false);
-                            HtmlHelpers.SaveJpeg(Server.MapPath(Path.Combine(imgPath, imgFileName)), fixSizeImage, 90);
-                        }
-                    }
-                }
-                if (isPost)
-                {
-                    model.Product.Url = HtmlHelpers.ConvertToUnSign(null, model.Product.Url ?? model.Product.Name);
-                    var url = _unitOfWork.ProductRepository.GetQuery(a => a.Url == model.Product.Url);
-                    if (url != null)
-                    {
-                        model.Product.Url += "-" + DateTime.Now.Millisecond;
-                    }
-                    model.Product.ProductCategoryId = model.CategoryId ?? model.ParentId;
-                    _unitOfWork.ProductRepository.Insert(model.Product);
+                    model.Product.Url += "-" + DateTime.Now.Millisecond;
                     _unitOfWork.Save();
                 }
+
+                _unitOfWork.ProductRepository.Insert(model.Product);
+                _unitOfWork.Save();
+
                 return RedirectToAction("ListProduct", new { result = "success" });
             }
-            model.ProjectCategoryList = ParentProductCategoryList;
-            model.ChildCategoryList = new SelectList(new List<ProductCategory>(), "Id", "CategoryName");
-
-            if (model.ParentId > 0)
-            {
-                model.ChildCategoryList = new SelectList(ProductCategories.Where(a => a.ParentId == model.ParentId), "Id", "CategoryName");
-            }
+            model.Categories = ProductCategories;
             return View(model);
         }
         public ActionResult UpdateProduct(int proId = 0)
@@ -307,63 +272,30 @@ namespace banruou.Controllers
             }
             if (ModelState.IsValid)
             {
-                var isPost = true;
-                var file = Request.Files["Product.Image"];
-                if (file != null && file.ContentLength > 0)
+                product.ListImage = fc["Pictures"] == "" ? null : fc["Pictures"];
+                product.Url = HtmlHelpers.ConvertToUnSign(null, model.Product.Url ?? model.Product.Name);
+                product.ProductCategoryId = model.CategoryId ?? model.ParentId;
+                product.Name = model.Product.Name;
+                product.Body = model.Product.Body;
+                product.Active = model.Product.Active;
+                product.Home = model.Product.Home;
+                product.TitleMeta = model.Product.TitleMeta;
+                product.DescriptionMeta = model.Product.DescriptionMeta;
+                product.Sort = model.Product.Sort;
+                product.Capacity = model.Product.Capacity;
+                product.Application = model.Product.Application;
+                product.Country = model.Product.Country;
+                product.Material = model.Product.Material;
+                product.Price = model.Product.Price;
+                product.Hot = model.Product.Hot;
+                var count = _unitOfWork.ProductRepository.GetQuery(m => m.Url == product.Url).Count();
+                if (count > 1)
                 {
-                    if (!HtmlHelpers.CheckFileExt(file.FileName, "jpg|jpeg|png|gif"))
-                    {
-                        ModelState.AddModelError("", @"Chỉ chấp nhận định dạng jpg, png, gif, jpeg");
-                        isPost = false;
-                    }
-                    else
-                    {
-                        var imgFileName = HtmlHelpers.ConvertToUnSign(null, Path.GetFileNameWithoutExtension(file.FileName)) + "-" + DateTime.Now.Millisecond + Path.GetExtension(file.FileName);
-                        if (file.ContentLength > 4000 * 1024)
-                        {
-                            ModelState.AddModelError("", @"Dung lượng lớn hơn 4MB. Hãy thử lại");
-                            isPost = false;
-                        }
-                        else
-                        {
-                            var imgPath = "/images/Product/" + DateTime.Now.ToString("yyyy/MM/dd");
-                            HtmlHelpers.CreateFolder(Server.MapPath(imgPath));
-                            HtmlHelpers.DeleteFile(Server.MapPath("/images/Product/" + product.Image));
-                            product.Image = DateTime.Now.ToString("yyyy/MM/dd") + "/" + imgFileName;
-
-                            var newImage = Image.FromStream(file.InputStream);
-                            var fixSizeImage = HtmlHelpers.FixedSize(newImage, 800, 600, false);
-                            HtmlHelpers.SaveJpeg(Server.MapPath(Path.Combine(imgPath, imgFileName)), fixSizeImage, 90);
-                        }
-                    }
+                    product.Url = model.Product.Url += "-" + model.Product.Id;
+                    _unitOfWork.Save();
                 }
-                if (isPost)
-                {
-                    product.Image = fc["Product.Image"];
-                    product.Url = HtmlHelpers.ConvertToUnSign(null, model.Product.Url ?? model.Product.Name);                   
-                    product.ProductCategoryId = model.CategoryId ?? model.ParentId;
-                    product.Name = model.Product.Name;
-                    product.Body = model.Product.Body;
-                    product.Active = model.Product.Active;
-                    product.Home = model.Product.Home;
-                    product.TitleMeta = model.Product.TitleMeta;
-                    product.DescriptionMeta = model.Product.DescriptionMeta;
-                    product.Sort = model.Product.Sort;
-                    product.Capacity = model.Product.Capacity;
-                    product.Application = model.Product.Application;
-                    product.Country = model.Product.Country;
-                    product.Material = model.Product.Material;
-                    product.Price = model.Product.Price;
-                    product.Hot = model.Product.Hot;
-                    var count = _unitOfWork.ProductRepository.GetQuery(m => m.Url == product.Url).Count();
-                    if (count > 1)
-                    {
-                       product.Url = model.Product.Url += "-" + model.Product.Id;
-                        _unitOfWork.Save();
-                    }
-                }
-
                 _unitOfWork.Save();
+
                 return RedirectToAction("ListProduct", new { result = "update" });
             }
             model.ProjectCategoryList = ParentProductCategoryList;
