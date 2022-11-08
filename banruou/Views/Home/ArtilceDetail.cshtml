@@ -24,44 +24,75 @@
     </nav>
     <div class="container">
         <div class="row">
-            <div class="col-lg-4">
-                <div id="toctoc"></div>
-            </div>
             <div class="col-12 col-lg-8 ">
-                <div class="post-title">
-                    <h3>@Model.Article.Subject</h3>
-                </div>
-                <div class="content">
-                    <div class="post-context">
-                        @Html.Raw(Model.Article.Body)
+                <div class="artilce">
+                    <div class="post-title">
+                        <h3>@Model.Article.Subject</h3>
                     </div>
-                </div>
-                <div class="info-contact">
-                    <div class="info-contact-title">
-                        <span class="text-danger">Thông tin liên hệ :</span>
-                    </div>
-                    <div class="info-contact-item">
-                        <span>Địa chỉ Hà Nội<p> : @config.Address</p></span>
-                        <div class="hotline">
-                            <div class="hotlin-tile">
-                                <span>Hotline :</span>
-                            </div>
-                            <a href=""> @config.Hotline</a> -
-                            <a href=""> @config.Hotline2</a>
+                    <div class="content">
+                        <div class="post-context">
+                            @Html.Raw(Model.Article.Body)
                         </div>
                     </div>
-                    <div class="info-contact-item">
-                        <span>Địa chỉ TP.HCM <p> : @config.Address2</p></span>
-                        <div class="hotline">
-                            <div class="hotlin-tile">
-                                <span>Hotline :</span>
+                    <div class="info-contact">
+                        <div class="info-contact-title">
+                            <span class="text-danger">Thông tin liên hệ :</span>
+                        </div>
+                        <div class="info-contact-item">
+                            <span>Địa chỉ Hà Nội<p> : @config.Address</p></span>
+                            <div class="hotline">
+                                <div class="hotlin-tile">
+                                    <span>Hotline :</span>
+                                </div>
+                                <a href=""> @config.Hotline</a> -
+                                <a href=""> @config.Hotline2</a>
                             </div>
-                            <a href=""> @config.Hotline3</a> -
-                            <a href=""> @config.Hotline4</a>
+                        </div>
+                        <div class="info-contact-item">
+                            <span>Địa chỉ TP.HCM <p> : @config.Address2</p></span>
+                            <div class="hotline">
+                                <div class="hotlin-tile">
+                                    <span>Hotline :</span>
+                                </div>
+                                <a href=""> @config.Hotline3</a> -
+                                <a href=""> @config.Hotline4</a>
+                            </div>
                         </div>
                     </div>
+                    <div class="fb-comments" data-href="@ViewBag.Canonical" data-numposts="10" data-width="100%"></div>
                 </div>
-                <div class="fb-comments" data-href="@ViewBag.Canonical" data-numposts="10" data-width="100%"></div>
+            </div>
+            <div class="col-lg-4">
+                @if (Model.Articles.Any())
+                {
+                <div class="hot-new">
+                    <div class="hot-new-heading">
+                        <h3>Tin tức mới cập nhật</h3>
+                    </div>
+                    @foreach (var item in Model.Articles.OrderByDescending(a => a.CreateDate))
+                    {
+                        <hr>
+                        <div class="hot-new-item">
+                            <div class="hot-new-img">
+                                <a href="@Url.Action("ArtilceDetail", "Home" , new { url = item.Url })">
+                                    <img src="@Path.Combine("/images/articles/", item.Image)" alt="">
+                                </a>
+                            </div>
+                            <div class="hot-item-content">
+                                <div class="hot-new-title">
+                                    <a href="@Url.Action("ArtilceDetail", "Home" , new { url = item.Url })"> @item.Subject</a>
+                                </div>
+                                <div class="hot-new-date">
+                                    <span class="text-muted">@String.Format("{0:MM/dd/yyyy}", item.CreateDate)</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    }
+
+                </div>
+                }
+
             </div>
         </div>
     </div>
