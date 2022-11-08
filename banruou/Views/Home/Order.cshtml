@@ -27,12 +27,12 @@
 
                         </div>
                         <div class="oder-form-item">
-                            @Html.EditorFor(a => a.Order.Email, new { @placeholder = "Email của bạn" })
+                            @Html.TextBoxFor(a => a.Order.Email, new { @placeholder = "Email của bạn" })
                             @Html.ValidationMessageFor(a => a.Order.Email)
 
                         </div>
                         <div class="oder-form-item">
-                            @Html.TextBoxFor(a => a.Order.Discription, new { @placeholder = "Lời nhắn , ghi chú" })
+                            @Html.EditorFor(a => a.Order.Discription, new { @placeholder = "Lời nhắn , ghi chú" })
                         </div>
                         <div class="modal-footer">
                             <button class="btn btn-primary" type="submit">Gửi yêu cầu</button>
