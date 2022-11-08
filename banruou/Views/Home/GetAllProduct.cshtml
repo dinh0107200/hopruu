@@ -9,7 +9,13 @@
         <div class="col-lg-4 col-6">
             <div class="product__item">
                 <div class="product__item-img">
-                    <a href="@Url.Action("ProductDetail" , "Home" , new { url = item.Url })"><img src="@Path.Combine("/images/Product/", item.Image )" alt=""></a>
+                    @if (item.ListImage != null)
+                    {
+                        <a href="@Url.Action("ProductDetail" , "Home" , new { url = item.Url })">
+                            <img src="@Path.Combine("/images/Product/", item.ListImage.Split(',')[0])" alt="">
+                        </a>
+
+                    }
                 </div>
                 <div class="product__item-name">
                     <a href="@Url.Action("ProductDetail" , "Home" , new { url = item.Url })"><h3>@item.Name</h3></a>

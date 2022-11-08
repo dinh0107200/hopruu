@@ -124,7 +124,7 @@
                             <div class="product-item related-item ">
                                 <div class="product-img">
                                     <a href="@Url.Action("ProductDetail" , "Home" , new { item.Url })">
-                                        <img src="@Path.Combine("/images/Product/" , item.Image)" alt="">
+                                        <img src="@Path.Combine("/images/Product/" , item.ListImage.Split(',')[0])" alt="">
                                     </a>
                                 </div>
                                 <div class="product-name">
