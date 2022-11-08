@@ -278,7 +278,6 @@
     <Content Include="Content\Layout\layout.min.css">
       <DependentUpon>layout.css</DependentUpon>
     </Content>
-    <Content Include="Content\Layout\style.css" />
     <Content Include="Content\login.css">
       <DependentUpon>login.less</DependentUpon>
     </Content>
