@@ -27,7 +27,7 @@
 
                         </div>
                         <div class="oder-form-item">
-                            @Html.EditorFor(a => a.Order.Email, new { @placeholder = "Email của bạn" })
+                            @Html.TextBoxFor(a => a.Order.Email, new { @placeholder = "Email của bạn" })
                             @Html.ValidationMessageFor(a => a.Order.Email)
 
                         </div>
