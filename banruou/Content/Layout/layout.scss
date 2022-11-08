@@ -1487,16 +1487,12 @@ table {
     .post {
         padding-top: 93px;
     }
-
-    .post nav {
-        height: 30px !important;
+    .post nav{
+        height:30px !important;
     }
-
-    .breadcrumb {
-        font-size: 8px;
-    }
-
-    .header-repon {
+    .breadcrumb{
+        font-size:8px;
+    } .header-repon {
         height: 100%;
         justify-content: center;
     }
@@ -1518,16 +1514,6 @@ table {
     .menu-item {
         top: -8px;
         width: 70%;
-    }
-
-    .info-contact-item {
-        line-height: 20px;
-        margin-bottom: 30px;
-        font-size: 14px;
-    }
-
-    .hotline {
-        margin-top: 20px;
     }
 
     .list-menu {
@@ -2195,4 +2181,12 @@ table {
         padding: 10px;
         margin-bottom:40px;
     }
+}
+.info-contact-item{
+    line-height:20px;
+    margin-bottom:30px;
+
+}
+.hotline{
+    margin-top:20px;
 }
