@@ -31,8 +31,10 @@
                             @Html.ValidationMessageFor(a => a.Order.Email)
 
                         </div>
-                        <div class="oder-form-item">
-                            @Html.EditorFor(a => a.Order.Discription, new { @placeholder = "Lời nhắn , ghi chú" })
+                        <div class="oder-form-item form_name">
+                            <tr>
+                                <td class="form_text">@Html.TextAreaFor(model => model.Order.Discription , new { @placeholder = "Lời nhắn (nếu có)" , rows = 5})</td>
+                            </tr>
                         </div>
                         <div class="modal-footer">
                             <button class="btn btn-primary" type="submit">Gửi yêu cầu</button>

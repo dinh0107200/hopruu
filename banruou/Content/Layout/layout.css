@@ -1692,7 +1692,7 @@ table {
     height: 90px;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     transition: .7s ease;
 }
     .hot-new-item:hover {
@@ -1729,4 +1729,8 @@ table {
     border-radius: 10px;
     padding: 20px;
     box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
+}
+.oder-form-item textarea {
+    width:100%;
+    outline:none;
 }
