@@ -1,15 +1,5 @@
 ﻿$(document).ready(function () {
-    $.toctoc({
-        target: '.content',
-        headText: "Mục lục bài viết",
-        headLinkText: ['Hiện', 'Ẩn'],
-        headBackgroundColor: '#edf6ff',
-        borderColor: '#edf6ff',
-        bodyBackgroundColor: '#edf6ff',
-        headTextColor: '#000',
-        smooth: true,
-        opened: false,
-    });
+    
     $('.banner').slick({
         arrows: true,
         autoplay: true,
@@ -18,6 +8,26 @@
         prevArrow: '<ion-icon name="chevron-back-outline"></ion-icon>',
         nextArrow: '<ion-icon class="nextbtn" name="chevron-forward-outline"></ion-icon>'
     });
+    $('.product-detail-list').slick({
+        arrows: false,
+    })
+    $('.product-slide').slick({
+        arrows: false,
+        asNavFor: '.product-detail-list',
+        focusOnSelect: true,
+        vertical: true,
+        slidesToShow: 3,
+        responsive: [
+            {
+                breakpoint: 480,
+                settings: {
+                    slidesToShow: 3,
+                    vertical: false,
+
+                }
+            }
+            ]
+    })
     $('.sale-content').slick({
         slidesToShow: 3,
         slidesToScroll: 1,
@@ -28,7 +38,16 @@
         prevArrow: '<ion-icon name="chevron-back-outline"></ion-icon>',
         nextArrow: '<ion-icon class="nextbtn" name="chevron-forward-outline"></ion-icon>'
       });
-      
+    $.toctoc({
+        target: '.post-context',
+        headText: "Mục lục bài viết",
+        headLinkText: ['', ''],
+        headBackgroundColor: '#ddd',
+        borderColor: '#edf6ff',
+        bodyBackgroundColor: '#edf6ff',
+        headTextColor: '#000',
+        opened: true,
+    });
       $(document).ready(function(){
     
         //Check to see if the window is top if not then display button

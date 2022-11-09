@@ -25,13 +25,32 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-4">
-                @if (Model.Product.Image != null)
+                @if (Model.Product.ListImage != null)
                 {
-                    <div class="product-detail-img border">
-                        <img src="@Path.Combine("/images/Product/", Model.Product.ListImage.Split(',')[0])" alt="">
+                    var arr = Model.Product.ListImage.Split(',');
+                    <div class="row">
+                        <div class="col-lg-3 order-lg-0 order-1">
+                            <div class="product-slide">
+                                @foreach (var item in arr)
+                                {
+                                    <div class="product-slide-item ">
+                                        <img src="@Path.Combine("/images/Product/", item)" alt="">
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <div class="col-lg-9 order-lg-1 order-0">
+                            <div class="product-detail-list border-2">
+                                @foreach (var item in arr)
+                                {
+                                    <div class="product-detail-img">
+                                        <img src="@Path.Combine("/images/Product/", item)" alt="">
+                                    </div>
+                                }
+                            </div>
+                        </div>
                     </div>
                 }
-
 
             </div>
             <div class="col-lg-5">
@@ -40,25 +59,32 @@
                         <h3 class="text-danger">@Model.Product.Name</h3>
                     </div>
                     <hr>
-                    <div class="product-detail-name">
-                        <h3 class="text-danger">
-                            @String.Format("{0:n0}", @Model.Product.Price) đ                       
-                        </h3>
-                    </div>
+                    @if (Model.Product.Price == null)
+                    {
+                        <div class="product-detail-name">
+                            <h3 class="text-danger"><a href="tel:@config.Hotline">Liên  hệ</a></h3>
+                        </div>
+                    }
+                    @if (Model.Product.Price != null)
+                    {
+                        <div class="product-detail-name">
+                            <h3 class="text-danger">@String.Format("{0:n0}", Model.Product.Price) đ</h3>
+                        </div>
+                    }
                 </div>
                 <div class="product-detail-discription">
+                    @if (Model.Product.Country != null)
+                    {
+                        <div class="detail-discription-item fst-italic text-muted">
+                            <span>Xuất sứ :</span>
+                            <span>@Model.Product.Country</span>
+                        </div>
+                    }
                     @if (Model.Product.Material != null)
                     {
                         <div class="detail-discription-item fst-italic text-muted">
                             <span>Chất liệu :</span>
                             <span>@Model.Product.Material</span>
-                        </div>
-                    }
-                    @if (Model.Product.Country != null)
-                    {
-                        <div class="detail-discription-item fst-italic text-muted">
-                            <span>Xuất sứ  :</span>
-                            <span>@Model.Product.Country</span>
                         </div>
                     }
                     @if (Model.Product.Capacity != null)
@@ -68,22 +94,23 @@
                             <span>@Model.Product.Capacity</span>
                         </div>
                     }
+                    @if (Model.Product.Application != null)
+                    {
+                        <div class="detail-discription-item fst-italic text-muted">
+                            <span>Ứng dụng :</span>
+                            <span>@Model.Product.Application</span>
+                        </div>
+                    }
                 </div>
                 <div class="introduction text-muted">
-                    <p>@config.Introduce</p>
+                    <p>Nhận thiết kế và in Logo lên sản phẩm theo yêu cầu, liên hệ ngay với EPVINA để được báo giá chi tiết.</p>
                 </div>
                 <div class="product-detail-btn">
-                    <div class="row">
-                        <div class="col-6 col-lg-4">
-                            <div class="btn-item">
-                                <a class="btn btn-danger" data-bs-toggle="modal" href="#exampleModalToggle" role="button"> <i class="fa-solid fa-cart-shopping"></i> Đặt mua hàng</a>
-                            </div>
-                        </div>
-                        <div class="col-6 col-lg-4">
-                            <div class="btn-item">
-                                <a href="tel:@config.Hotline" class="btn btn-primary"><i class="fa-sharp fa-solid fa-headphones"></i> Liên hệ tư vấn</a>
-                            </div>
-                        </div>
+                    <div class="btn-item">
+                        <a class="btn btn-danger" data-bs-toggle="modal" href="#exampleModalToggle" role="button"> <i class="fa-solid fa-cart-shopping"></i> Đặt mua hàng</a>
+                    </div>
+                    <div class="btn-item">
+                        <a href="" class="btn btn-primary"><i class="fa-sharp fa-solid fa-headphones"></i> Liên hệ tư vấn</a>
                     </div>
                 </div>
             </div>
@@ -93,22 +120,37 @@
                     <p>Gợi ý khiếu lại (8h00 - 17h30)</p>
                     <div class="customer-item">
                         <span class="fw-bolder">Hà Nội: </span>
-                        <a class="text-muted" href="tel:@config.Hotline"> @config.Hotline</a>
+                        <p> 02437678915</p>
                     </div>
                     <div class="customer-item">
                         <span class="fw-bolder">HCM: </span>
-                        <a class="text-muted" href="tel:@config.Hotline3"> @config.Hotline3</a>
+                        <p> 02437678915</p>
                     </div>
                     <div class="customer-item">
                         <span class="fw-bolder">Email: </span>
-                        <a class="text-muted" href="mailto:@config.Email"> @config.Email</a>
+                        <p> quatangep.vn@gmail.com</p>
                     </div>
                 </div>
             </div>
         </div>
-        <hr>
     </div>
 </section>
+@if (Model.Product.Body != null)
+{
+    <section class="product-artilce">
+        <div class="container">
+            <div class=" row">
+                <div class="col-lg-9">
+                    <div class="product-artilce-content border">
+                        @Html.Raw(Model.Product.Body)
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </section>
+}
+
 @if (Model.Products.Any())
 {
     <section class="related-products">
