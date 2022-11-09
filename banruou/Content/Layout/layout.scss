@@ -954,7 +954,7 @@ table {
 }
 
 .product__item {
-    margin-top: 30px;
+    margin-bottom:30px;
     width: 100%;
     box-shadow: RGB(99 99 99 / 50%) 0px 2px 8px 0px;
 }
@@ -975,6 +975,7 @@ table {
     
 }
 .product__item-name{
+    height:30px;
     padding-top: 10px;
     text-align: center;
     h3{
@@ -2189,4 +2190,13 @@ table {
 }
 .hotline{
     margin-top:20px;
+}
+.product__item{
+    a{
+        img{
+            width:100%;
+            height:300px;
+            object-fit:contain;
+        }
+    }
 }
