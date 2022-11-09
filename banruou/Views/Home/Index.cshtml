@@ -49,17 +49,19 @@
             <div class="sale-content">
                 @foreach (var item in Model.Articles.Where(a => a.ArticleCategory.CategoryName == "Khuyến mại" && a.Active))
                 {
-                    <div class="sale-item">
-                        <a href="@Url.Action("ArtilceDetail", "Home", new { url = item.Url })">
-                            @if (item.Image != null)
-                            {
-                                <img src="@Path.Combine("/images/articles" ,  item.Image)" alt="">
-                            }
-                            <div class="sale-btn text-center">
-                                <span>Nhận ưu đãi</span>
-                            </div>
+                <div class="sale-item">
+                    <a href="@Url.Action("ArtilceDetail", "Home", new { url = item.Url })">
+                        @if (item.Image != null)
+                        {
+                            <img src="@Path.Combine("/images/articles" ,  item.Image)" alt="">
+                        }
+                    </a>
+                    <div class="sale-btn text-center">
+                        <a href="@Url.Action()">
+                            <span>Nhận ưu đãi</span>
                         </a>
                     </div>
+                </div>
                 }
 
             </div>
@@ -120,7 +122,7 @@
                 <div class="row">
                     @foreach (var item in Model.Products.Where(a => a.Hot == true).Take(4))
                     {
-                        <div class="col-lg-3 col-md-6">
+                        <div class="col-lg-3 col-6">
                             <div class="product-item">
                                 <div class="product-img">
                                     <a href="@Url.Action("ProductDetail" , "Home" ,new {url = item.Url })">

@@ -28,7 +28,12 @@
                 <div class="artilce">
                     <div class="post-title">
                         <h3>@Model.Article.Subject</h3>
+                        <hr />
                     </div>
+                    <div>
+                        <p class="text-muted">Ngày đăng: @String.Format("{0:MM/dd/yyyy}",Model.Article.CreateDate) </p> 
+                    </div>
+                    <div id="toctoc" class="border"></div>
                     <div class="content">
                         <div class="post-context">
                             @Html.Raw(Model.Article.Body)
@@ -56,6 +61,21 @@
                                 </div>
                                 <a href=""> @config.Hotline3</a> -
                                 <a href=""> @config.Hotline4</a>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="btn-share mt-3 d-flex"  >
+                       <h3>Chia sẻ : </h3>
+                        <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+                            <div class="btn-group mr-2" role="group" aria-label="First group">
+                                <a href="" class="btn btn-primary"><i class="fa-brands fa-facebook-f"></i></a>
+                            </div>
+                            <div class="btn-group mr-2" role="group" aria-label="Second group">
+                                <a href="" class="btn btn-danger"><i class="fa-brands fa-instagram"></i></a>
+                            </div>
+                            <div class="btn-group" role="group" aria-label="Third group">
+                                <a href="" class="btn btn-info"><i class="fa-brands fa-twitter"></i></a>
                             </div>
                         </div>
                     </div>

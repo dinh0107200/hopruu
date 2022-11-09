@@ -38,7 +38,7 @@ namespace banruou.Controllers
             };
             return View(model);
         }
-        [Route("Chi-tiet/{url}.html")]
+        [Route("{url}.html")]
         public ActionResult ProductDetail(string url)
         {
             var product = _unitOfWork.ProductRepository.GetQuery( a => a.Url == url && a.Active).FirstOrDefault();
