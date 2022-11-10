@@ -120,7 +120,6 @@
                         <ul class="list-menu d-flex align-items-center">
                             <li><a href="@Url.Action("Index")">Trang chủ</a></li>
                             <li><a href="@Url.Action("AllProduct")">Sản phẩm</a></li>
-
                             @if (Model.IntroduceCat.Any(a => a.ParentId == null))
                             {
                                 foreach (var item in Model.IntroduceCat.Where(a => a.ParentId == null))
