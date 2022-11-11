@@ -19,7 +19,7 @@ namespace banruou.Models
         public string Description { get; set; }
         [Display(Name = "Nội dung")]
         public string Body { get; set; }
-        [Display(Name = "Ảnh đại diện"), Required(ErrorMessage ="Chưa tải ảnh lên") , UIHint("ImageArticle")]
+        [Display(Name = "Ảnh đại diện"), UIHint("ImageArticle")]
         public string Image { get; set; }
 
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy HH:mm}")]

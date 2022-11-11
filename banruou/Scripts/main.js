@@ -106,13 +106,4 @@
 
   listMenu.addEventListener('click' , showMenu)
   listMenu.addEventListener('click' , changeMenu)
-const orderBtn = document.querySelector('.order_btn')
-const ShowOrder = document.querySelector('.order')
-const closeOrder = document.querySelector('.btn-close')
-function showForm() {
-    ShowOrder.classList.add("active");
-}
-function closeForm() {
-    ShowOrder.classList.remove("active");
-}
-orderBtn.addEventListener('click', showForm)
+

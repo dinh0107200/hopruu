@@ -93,17 +93,23 @@
                     {
                         <hr>
                         <div class="hot-new-item">
-                            <div class="hot-new-img">
-                                <a href="@Url.Action("ArtilceDetail", "Home" , new { url = item.Url })">
-                                    <img src="@Path.Combine("/images/articles/", item.Image)" alt="">
-                                </a>
-                            </div>
-                            <div class="hot-item-content">
-                                <div class="hot-new-title">
-                                    <a href="@Url.Action("ArtilceDetail", "Home" , new { url = item.Url })"> @item.Subject</a>
+                            <div class="row">
+                                <div class="col-lg-3">
+                                    <div class="hot-new-img">
+                                        <a href="@Url.Action("ArtilceDetail", "Home" , new { url = item.Url })">
+                                            <img src="@Path.Combine("/images/articles/", item.Image)" alt="">
+                                        </a>
+                                    </div>
                                 </div>
-                                <div class="hot-new-date">
-                                    <span class="text-muted">@String.Format("{0:MM/dd/yyyy}", item.CreateDate)</span>
+                                <div class="col-lg-9">
+                                    <div class="hot-item-content">
+                                        <div class="hot-new-title">
+                                            <a href="@Url.Action("ArtilceDetail", "Home" , new { url = item.Url })"> @item.Subject</a>
+                                        </div>
+                                        <div class="hot-new-date">
+                                            <span class="text-muted">@String.Format("{0:MM/dd/yyyy}", item.CreateDate)</span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

@@ -24,6 +24,7 @@
     <div class="menu-item">
         <ul class="list-menu">
             <li><a href="@Url.Action("Index")">Trang chủ</a></li>
+            <li><a href="@Url.Action("AllProduct")">Sản phẩm</a></li>
 
             @if (Model.IntroduceCat.Any(a => a.ParentId == null))
             {

@@ -16,7 +16,7 @@
             <div class="row">
                 @if (Model.ProductCategories.Any())
                 {
-                    <div class="col-lg-3">
+                    <div class="col-lg-3 order-lg-0 order-1">
                         <div class="list-category">
                             @Html.Action("GetNavProduct")
                         </div>
@@ -28,8 +28,8 @@
                     <td colspan="8">@Html.PagedListPager(Model.Products, Page => Url.Action("AllProduct", new { Page }))</td>
                 </tr>
                 }
-                <div class="col-lg-9">
-                    @Html.Action("GetAllProduct");
+                <div class="col-lg-9 order-lg-1 order-0">
+                    @Html.Action("GetAllProduct")
                 </div>
             </div>
         </div>

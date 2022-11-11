@@ -51,7 +51,7 @@
       <HintPath>..\packages\AjaxMin.5.14.5506.26202\lib\net40\AjaxMin.dll</HintPath>
     </Reference>
     <Reference Include="CKFinder">
-      <HintPath>..\..\..\Downloads\CKFinder.dll</HintPath>
+      <HintPath>..\..\..\..\Downloads\CKFinder.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.dll</HintPath>
@@ -60,7 +60,7 @@
       <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Helpers">
-      <HintPath>..\..\..\Downloads\Helpers.dll</HintPath>
+      <HintPath>..\..\..\..\Downloads\Helpers.dll</HintPath>
     </Reference>
     <Reference Include="HtmlAgilityPack, Version=1.11.46.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
       <HintPath>..\packages\HtmlAgilityPack.1.11.46\lib\Net45\HtmlAgilityPack.dll</HintPath>
@@ -68,8 +68,8 @@
     <Reference Include="ImageResizer, Version=5.0.7.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ImageResizer.5.0.7-preview-04\lib\net472\ImageResizer.dll</HintPath>
     </Reference>
-    <Reference Include="Imazen.Common, Version=0.7.6.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Imazen.Common.0.7.6\lib\netstandard2.0\Imazen.Common.dll</HintPath>
+    <Reference Include="Imazen.Common, Version=0.7.7.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Imazen.Common.0.7.7\lib\net461\Imazen.Common.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=4.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.4.1.0-preview1\lib\net472\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>

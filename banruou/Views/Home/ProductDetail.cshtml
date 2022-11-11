@@ -29,7 +29,7 @@
                 {
                     var arr = Model.Product.ListImage.Split(',');
                     <div class="row">
-                        <div class="col-lg-3 order-lg-0 order-1">
+                        <div class="col-lg-3 col-md-2 order-lg-0 order-md-1 order-1">
                             <div class="product-slide">
                                 @foreach (var item in arr)
                                 {
@@ -39,8 +39,8 @@
                                 }
                             </div>
                         </div>
-                        <div class="col-lg-9 order-lg-1 order-0">
-                            <div class="product-detail-list border-2">
+                        <div class="col-lg-9 col-md-10 order-lg-1  order-0">
+                            <div class="product-detail-list  border-2">
                                 @foreach (var item in arr)
                                 {
                                     <div class="product-detail-img">
