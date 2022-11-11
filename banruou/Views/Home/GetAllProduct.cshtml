@@ -18,6 +18,7 @@
                 <div class="product__item-name">
                     <a href="@Url.Action("ProductDetail" , "Home" , new { url = item.Url })"><h3>@item.Name</h3></a>
                 </div>
+                <div class="space"></div>
                 <div class="product__item-price">
                     <p>@String.Format("{0:#,##0.##}", item.Price) đ</p>
                 </div>

@@ -94,14 +94,14 @@
                         <hr>
                         <div class="hot-new-item">
                             <div class="row">
-                                <div class="col-lg-3">
+                                <div class="col-lg-3 col-3">
                                     <div class="hot-new-img">
                                         <a href="@Url.Action("ArtilceDetail", "Home" , new { url = item.Url })">
                                             <img src="@Path.Combine("/images/articles/", item.Image)" alt="">
                                         </a>
                                     </div>
                                 </div>
-                                <div class="col-lg-9">
+                                <div class="col-lg-9 col-9">
                                     <div class="hot-item-content">
                                         <div class="hot-new-title">
                                             <a href="@Url.Action("ArtilceDetail", "Home" , new { url = item.Url })"> @item.Subject</a>

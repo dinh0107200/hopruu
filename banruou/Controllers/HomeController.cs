@@ -216,6 +216,7 @@ namespace banruou.Controllers
                        $"<p>Số điện thoại: {model.Order.Phone},</p>" +
                        $"<p>Email: {model.Order.Email},</p>" +
                        $"<p>Nội dung: {model.Order.Discription}</p>" +
+                       $"<p>Sản phẩm: {model.Order.NameProduct}</p>" +
                        $"<p>Đây là hệ thống gửi email tự động, vui lòng không phản hồi lại email này.</p>";
             MailMessage ms = new MailMessage(System.Configuration.ConfigurationManager.AppSettings["Email"].ToString(), ConfigSite.Email);
             ms.Subject = $"Email liên hệ từ " + Request.Url?.Host;
