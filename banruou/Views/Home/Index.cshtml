@@ -279,7 +279,7 @@
             </div>
             <div class="gift-content">
                 <div class="row">
-                    @foreach (var item in Model.NewArticles.Take(1))
+                    @foreach (var item in Model.NewArticles.OrderByDescending(a => a.CreateDate).Take(1))
                     {
                         <div class="col-12 col-md-6">
                             <div class="feed-item">
