@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace banruou.Models
 {
@@ -11,7 +9,7 @@ namespace banruou.Models
         public int Id { get; set; }
         [Display(Name = "Tên danh mục"), Required(ErrorMessage = "Hãy nhập tên danh mục"), StringLength(100, ErrorMessage = "Tối đa 100 ký tự"), UIHint("TextBox")]
         public string CategoryName { get; set; }
-        [Display(Name = "Trích dẫn ngắn"), UIHint("TextArea") , DataType(DataType.MultilineText)]
+        [Display(Name = "Trích dẫn ngắn"), UIHint("TextArea"), DataType(DataType.MultilineText)]
         public string Description { get; set; }
         [Display(Name = "Đường dẫn"), StringLength(500, ErrorMessage = "Tối đa 500 ký tự"), UIHint("TextBox")]
         public string Url { get; set; }
@@ -30,11 +28,16 @@ namespace banruou.Models
         public string TitleMeta { get; set; }
         [Display(Name = "Thẻ mô tả"), StringLength(500, ErrorMessage = "Tối đa 500 ký tự"), UIHint("TextArea")]
         public string DescriptionMeta { get; set; }
-        [Display(Name = "Ảnh bìa"), StringLength(500), UIHint("ImageArticleCat")]
+        [Display(Name = "Ảnh bìa"), StringLength(500)]
         public string Image { get; set; }
         [Display(Name = "Loại danh mục")]
         public TypePost TypePost { get; set; }
         public virtual ICollection<Article> Articles { get; set; }
+
+        [ForeignKey("ParentId")]
+        public virtual ArticleCategory ParentCategory { get; set; }
+        public virtual ICollection<ArticleCategory> Categories { get; set; }
+
 
         public ArticleCategory()
         {

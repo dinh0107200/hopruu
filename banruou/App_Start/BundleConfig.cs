@@ -1,5 +1,4 @@
-﻿using System.Web;
-using System.Web.Optimization;
+﻿using System.Web.Optimization;
 
 namespace banruou
 {
@@ -23,17 +22,13 @@ namespace banruou
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.bundle.js",
-                      "~/Scripts/bootstrap.js",
                       "~/Scripts/jquery.fancybox.js",
                       "~/Scripts/slick.js",
                       "~/Scripts/jquery.toast.js",
                       "~/Scripts/aos.js",
                       "~/Scripts/lazysizes.min.js",
-                      "~/Scripts/waypoints.min.js",
-                      "~/Scripts/jquery.countup.min.js",
-                      "~/Scripts/paraxify.min.js",
-                      "~/Scripts/scripts.js",
-                      "~/Scripts/jquery-migrate.min.js"));
+                      "~/Scripts/toctoc.js",
+                      "~/Scripts/main.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
@@ -43,7 +38,8 @@ namespace banruou
                       "~/Content/slick.css",
                       "~/Content/jquery.toast.css",
                       "~/Content/jquery.fancybox.css",
-                      "~/Content/Layout/style.css"
+                      "~/Content/toctoc.css",
+                      "~/Content/layout.css"
                       ));
 
             bundles.Add(new StyleBundle("~/Content/admincss").Include(

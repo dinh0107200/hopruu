@@ -1,46 +1,79 @@
+$orange: #FF6600;
+$blue: #3a91c5;
+
+.btn-primary {
+    background: $orange;
+    border-color: $orange;
+
+    &:hover {
+        opacity: .9;
+        background: $orange;
+        border-color: $orange;
+    }
+}
+
+.field-validation-error {
+    color: #f00;
+}
+
 @mixin background-color {
     background: rgb(39,39,47);
 }
+
 @mixin color {
     color: #3a91c5;
 }
+
+@mixin color-orange {
+    color: #FF6600;
+}
+
 @font-face {
     font-family: 'Roboto-Regular';
     font-display: swap;
-    src: url('../font/Roboto-Regular.ttf') format('truetype');
+    src: url('font/Roboto-Regular.ttf') format('truetype');
 }
-@font-face{
+
+@font-face {
     font-family: 'Roboto-Bold';
     font-display: swap;
-    src: url('../font/RobotoCondensed-Bold.ttf') format('truetype');
+    src: url('font/RobotoCondensed-Bold.ttf') format('truetype');
 }
-@font-face{
+
+@font-face {
     font-family: 'Roboto-italic';
     font-display: swap;
-    src: url('../font/Roboto-Italic.ttf') format('truetype');
+    src: url('font/Roboto-Italic.ttf') format('truetype');
 }
+
 @font-face {
     font-family: 'VNF-Comic Sans';
     font-display: swap;
-    src: url('../font/VNF-Comic Sans.ttf') format('truetype');
+    src: url('font/VNF-Comic Sans.ttf') format('truetype');
 }
+
 @mixin Roboto-Regular {
     font-family: 'Roboto-Regular';
 }
+
 @mixin Montserrat-Bold {
     font-family: 'Montserrat-Bold';
 }
+
 @mixin VNI-Shella {
     font-family: 'VNI-ShellaL';
 }
+
 @mixin VNF-Comic {
     font-family: 'VNF-Comic Sans';
 }
+
 @mixin maxWidth($value) {
     @media (max-width: $value) {
         @content;
     }
 }
+
 @mixin backgroundFooter {
-    background: linear-gradient(to bottom, RGB(0 0 0 / 65%), RGB(0 0 0 / 89%)), url('../images/img-main/MMFC6778-by-E.-Kheraj-1400x565.jpg');
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 65%), rgba(0, 0, 0, 89%)), url('images/img-main/footer-img.jpg');
 }

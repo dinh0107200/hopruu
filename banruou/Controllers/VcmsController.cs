@@ -1,5 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using banruou.DAL;
+using banruou.Models;
+using banruou.ViewModel;
+using Helpers;
+using PagedList;
+using System;
 using System.Data.Entity;
 using System.Drawing;
 using System.IO;
@@ -7,11 +11,6 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
-using banruou.DAL;
-using banruou.Models;
-using banruou.ViewModel;
-using Helpers;
-using PagedList;
 namespace banruou.Controllers
 {
     [Authorize]
@@ -58,6 +57,7 @@ namespace banruou.Controllers
             return RedirectToAction("Login", "Vcms");
         }
         #endregion
+
         #region Admin
         public ActionResult Index()
         {
@@ -69,6 +69,7 @@ namespace banruou.Controllers
                 Banners = _unitOfWork.BannerRepository.GetQuery().Count(),
                 //Feedbacks = _unitOfWork.FeedbackRepository.GetQuery().Count(),
                 Product = _unitOfWork.ProductRepository.GetQuery().Count(),
+                OrderCount = _unitOfWork.OrderRepository.GetQuery().Count()
                 //Services = _unitOfWork.ServiceRepository.GetQuery().Count(),
             };
             return View(model);
@@ -197,6 +198,7 @@ namespace banruou.Controllers
             return View(model);
         }
         #endregion
+
         #region ConfigSite
         public ActionResult ConfigSite(string result = "")
         {
@@ -258,7 +260,7 @@ namespace banruou.Controllers
                 config.Email = model.Email;
                 config.LiveChat = model.LiveChat;
                 config.Address = model.Address;
-                config.Address2 = model.Address2;
+                config.ProductNote = model.ProductNote;
                 config.AboutText = model.AboutText;
                 config.AboutUrl = model.AboutUrl;
                 config.InfoFooter = model.InfoFooter;
@@ -276,6 +278,7 @@ namespace banruou.Controllers
             return View("ConfigSite", model);
         }
         #endregion
+
         #region Question
         [ChildActionOnly]
         public ActionResult ListQuestion()
@@ -360,6 +363,38 @@ namespace banruou.Controllers
             return true;
         }
         #endregion
+
+        #region Contact
+        public ActionResult ListContact(int? page, string name)
+        {
+            var pageNumber = page ?? 1;
+            const int pageSize = 15;
+            var contact = _unitOfWork.ContactRepository.Get(orderBy: l => l.OrderByDescending(a => a.Id));
+            if (!string.IsNullOrEmpty(name))
+            {
+                contact = contact.Where(l => l.Mobile.ToLower().Contains(name.ToLower()));
+            }
+            var model = new ListContactViewModel
+            {
+                Contacts = contact.ToPagedList(pageNumber, pageSize),
+                Name = name
+            };
+            return View(model);
+        }
+        [HttpPost]
+        public bool DeleteContact(int contactId = 0)
+        {
+            var contact = _unitOfWork.ContactRepository.GetById(contactId);
+            if (contact == null)
+            {
+                return false;
+            }
+            _unitOfWork.ContactRepository.Delete(contact);
+            _unitOfWork.Save();
+            return true;
+        }
+        #endregion
+
         protected override void Dispose(bool disposing)
         {
             _unitOfWork.Dispose();

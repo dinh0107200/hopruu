@@ -3,15 +3,12 @@
 
 <div class="list-category post-name-related">
     <div class="list-category-title">
-        <h3>
-            Danh mục bài viết
-        </h3>
+        Danh mục bài viết
     </div>
     <ul class="list-item-category">
         @foreach (var item in Model.ArticleCategories.Take(5))
         {
             <li><a href="@Url.Action( "ShowArtilceCategory" ,"Home" , new { url = item.Url })">@item.CategoryName</a></li>
-            <hr>
         }
     </ul>
 </div>

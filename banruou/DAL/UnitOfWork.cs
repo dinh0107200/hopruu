@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using banruou.Models;
+﻿using banruou.Models;
+using System;
 namespace banruou.DAL
 {
     public class UnitOfWork : IDisposable
@@ -17,7 +14,11 @@ namespace banruou.DAL
         private GenericRepository<ArticleCategory> _articleCategoryRepository;
         private GenericRepository<Article> _ArticleRepository;
         private GenericRepository<Order> _OrderRepository;
+        private GenericRepository<Contact> _contactRepository;
 
+
+        public GenericRepository<Contact> ContactRepository =>
+            _contactRepository ?? (_contactRepository = new GenericRepository<Contact>(_context));
 
         public GenericRepository<Admin> AdminRepository =>
             _adminRepository ?? (_adminRepository = new GenericRepository<Admin>(_context));

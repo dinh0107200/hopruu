@@ -10,42 +10,49 @@
 {
     <section class="list-new-feed">
         <div class="container">
-            <div class="list-new-feed-title">
-                <h3>Danh sách bài viết</h3>
-            </div>
-            <div class="list-new-feed-item">
-                <div class="row">
-                    <div class="row">
-                        @foreach (var item in Model.Articles)
-                        {
-                            <div class="col-md-3">
-                                <div class="feed-item">
-                                    <a href="@Url.Action("ArtilceDetail", "Home" , new { url = item.Url })">
-                                        <div class="new-feed-item-img">
-                                            <img src="@Path.Combine("/images/articles/" , item.Image)" alt="">
-                                        </div>
-                                        <div class="new-feed-item-name">
-                                            <p>@item.Subject</p>
-                                        </div>
-                                        <hr>
-                                        <div class="new-feed-item-description">
-                                            <p>@item.Description</p>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-                        }
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
+                @if (Model.RootCategory != null)
+                {
+                    <li class="breadcrumb-item"><a href="@Url.Action("ArticleCategory", new{url = Model.RootCategory.Url})">@Model.RootCategory.CategoryName</a></li>
 
+                }
+                <li class="breadcrumb-item active">@Model.Category.CategoryName</li>
+            </ul>
+
+            <div class="row">
+                @foreach (var item in Model.Articles)
+                {
+                    <div class="col-md-3">
+                        <div class="feed-item">
+                            <a href="@Url.Action("ArticleDetail", "Home", new { url = item.Url })">
+                                <div class="new-feed-item-img">
+                                    <img src="@Path.Combine("/images/articles/", item.Image)" alt="">
+                                </div>
+                                <div class="new-feed-item-name">
+                                    <p>@item.Subject</p>
+                                </div>
+                                <hr>
+                                <div class="new-feed-item-description">
+                                    <p>@item.Description</p>
+                                </div>
+                            </a>
+                        </div>
                     </div>
-                </div>
+                }
             </div>
+            @if (Model.Articles.PageCount > 1)
+            {
+                <div class="text-center">
+                    @Html.PagedListPager(Model.Articles, page => Url.Action("ArticleCategory", new { page, url = Model.Category.Url }))
+                </div>
+            }
         </div>
     </section>
 }
 else
 {
     <div class="container">
-
         <div class="mb-5 mt-5">
             <p class="alert alert-success small">Nội dung hiện chưa được cập nhật. Vui lòng quay lại sau !!!!</p>
         </div>

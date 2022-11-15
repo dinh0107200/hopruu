@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
 
 namespace banruou.Models
 {
@@ -13,20 +10,20 @@ namespace banruou.Models
          Required(ErrorMessage = "Hãy nhập tên sản phẩm"), StringLength(150, ErrorMessage = "Tối đa 150 ký tự"),
          UIHint("TextBox")]
         public string Name { get; set; }
-        [Display(Name = "Ảnh đại diện" ),StringLength(500 )]
+        [Display(Name = "Ảnh đại diện"), StringLength(500)]
         public string Image { get; set; }
         [Display(Name = "Danh sách ảnh"), UIHint("UploadMultiFile")]
         public string ListImage { get; set; }
-        [Display(Name ="Giá")]
-        public int Price { get; set; }
+        [Display(Name = "Giá")]
+        public int? Price { get; set; }
         [Display(Name = "Quốc gia"), StringLength(100, ErrorMessage = "Tối đa 100 ký tự")]
         public string Country { get; set; }
 
-        [Display(Name="Dung tích"), StringLength(100 , ErrorMessage ="Tối đa 100 ký tự")]
+        [Display(Name = "Dung tích"), StringLength(100, ErrorMessage = "Tối đa 100 ký tự")]
         public string Capacity { get; set; }
-        [Display(Name ="Ứng dụng")]
+        [Display(Name = "Ứng dụng")]
         public string Application { get; set; }
-        [Display(Name ="Chất liệu")]
+        [Display(Name = "Chất liệu")]
         public string Material { get; set; }
         [Display(Name = "Mô tả chi tiết"), UIHint("EditorBox")]
         public string Body { get; set; }

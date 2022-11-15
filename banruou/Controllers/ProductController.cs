@@ -1,16 +1,14 @@
 ﻿using banruou.DAL;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
 using banruou.Models;
 using banruou.ViewModel;
 using Helpers;
-using System.IO;
-using System.Data.Entity;
 using PagedList;
-using System.Drawing;
+using System;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.IO;
+using System.Linq;
+using System.Web.Mvc;
 
 namespace banruou.Controllers
 {
@@ -137,9 +135,9 @@ namespace banruou.Controllers
             _unitOfWork.ProductCategoryRepository.Delete(category);
             _unitOfWork.Save();
             return true;
-        }   
+        }
         [HttpPost]
-        public bool UpdateProductCategory(int sort = 1, bool active = false, bool menu = false, int projectCatId = 0)
+        public bool UpdateProductCategory(int sort = 1, bool active = false, bool menu = false, bool home = false, int projectCatId = 0)
         {
             var projectCat = _unitOfWork.ProductCategoryRepository.GetById(projectCatId);
             if (projectCat == null)
@@ -149,14 +147,12 @@ namespace banruou.Controllers
             projectCat.CategorySort = sort;
             projectCat.CategoryActive = active;
             projectCat.ShowMenu = menu;
+            projectCat.ShowHome = home;
 
             _unitOfWork.Save();
             return true;
         }
         #endregion
-
-
-
 
         #region product
         public ActionResult ListProduct(int? page, string name, int? parentId, int catId = 0, string sort = "date-desc", string result = "")

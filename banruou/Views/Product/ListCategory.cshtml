@@ -7,61 +7,67 @@
         <th>Đường dẫn</th>
         <th>Hoạt động</th>
         <th>Hiện menu</th>
+        <th>Trang chủ</th>
         <th style="width: 140px;"></th>
     </tr>
     <tbody id="sortable-cat">
         @foreach (var category in Model.Where(a => a.ParentId == null))
         {
-    <tr data-id="@category.Id" style="background: #ededed;">
-        <td style="width: 150px;">
-            <input type="number" name="Sort" value="@category.CategorySort" class="form_control w100" />
-        </td>
-        <td>
-            @if (category.Image != null)
-            {
-    <img class="img-border" src="@Path.Combine("/images/ProductCategory/", category.Image)" /> }
-else
-{
-    <span>No Image</span>}
-        </td>
-        <td class="left"><strong>@category.CategoryName</strong></td>
-        <td>@category.Url</td>
-        <td>@Html.EditorFor(a => category.CategoryActive, new { htmlAttributes = new { id = "Active" } })</td>
-        <td>@Html.EditorFor(a => category.ShowMenu, new { htmlAttributes = new { id = "Menu" } })</td>
-        <td>
-            <a href="javascript:;" onclick="updateProjectCategory('@category.Id')">Cập nhật - </a>
-            <a href="@Url.Action("UpdateCategory" , new { catId = category.Id })">Sửa</a> -
-            <a href="javascript:;" onclick="deleteProjectCategory('@category.Id')" style="color: red">Xóa</a>
-        </td>
-    </tr> foreach (var child in Model.Where(a => a.ParentId == category.Id))
+            <tr data-id="@category.Id" style="background: #ededed;">
+                <td style="width: 150px;">
+                    <input type="number" name="Sort" value="@category.CategorySort" class="form_control w100" />
+                </td>
+                <td>
+                    @if (category.Image != null)
                     {
-    <tr data-id="@child.Id">
-        <td style="width: 150px;">
-            <input type="number" name="Sort" value="@child.CategorySort" class="form_control w100" />
-        </td>
-        <td>
-            @if (category.Image != null)
+                        <img class="img-border" src="@Path.Combine("/images/ProductCategory/", category.Image)" /> }
+                    else
+                    {
+                        <span>No Image</span>}
+                </td>
+                <td class="left"><strong>@category.CategoryName</strong></td>
+                <td>@category.Url</td>
+                <td>@Html.EditorFor(a => category.CategoryActive, new { htmlAttributes = new { id = "Active" } })</td>
+                <td>@Html.EditorFor(a => category.ShowMenu, new { htmlAttributes = new { id = "Menu" } })</td>
+                <td>@Html.EditorFor(a => category.ShowHome, new { htmlAttributes = new { id = "Home" } })</td>
+                <td>
+                    <a href="javascript:;" onclick="UpdateProductCategory('@category.Id')">Cập nhật - </a>
+                    <a href="@Url.Action("UpdateCategory" , new { catId = category.Id })">Sửa</a> -
+                    <a href="javascript:;" onclick="deleteProjectCategory('@category.Id')" style="color: red">Xóa</a>
+                </td>
+            </tr>
+            foreach (var child in Model.Where(a => a.ParentId == category.Id))
             {
-    @Html.DisplayFor(model => category.Image) }
-else
-{
-    <span>No Image</span>}
-        </td>
-        <td class="left"><strong><i class="fal fa-window-minimize"></i> @child.CategoryName</strong></td>
-        <td>@child.Url</td>
-        <td>@Html.EditorFor(a => child.CategoryActive, new { htmlAttributes = new { id = "Active" } })</td>
-        <td>@Html.EditorFor(a => child.ShowMenu, new { htmlAttributes = new { id = "Menu" } })</td>
-        <td>
-            <a href="javascript:;" onclick="UpdateProductCategory('@child.Id')">Cập nhật - </a>
-            
-            <a href="@Url.Action("UpdateCategory" , new { catId = child.Id })">Sửa</a> -
-            <a href="javascript:;" onclick="deleteProjectCategory('@child.Id')" style="color: red">Xóa</a>
-        </td>
-    </tr>}
-                }
+                <tr data-id="@child.Id">
+                    <td style="width: 150px;">
+                        <input type="number" name="Sort" value="@child.CategorySort" class="form_control w100" />
+                    </td>
+                    <td>
+                        @if (category.Image != null)
+                        {
+                            @Html.DisplayFor(model => category.Image) }
+                        else
+                        {
+                            <span>No Image</span>}
+                    </td>
+                    <td class="left"><strong><i class="fal fa-window-minimize"></i> @child.CategoryName</strong></td>
+                    <td>@child.Url</td>
+                    <td>@Html.EditorFor(a => child.CategoryActive, new { htmlAttributes = new { id = "Active" } })</td>
+                    <td>@Html.EditorFor(a => child.ShowMenu, new { htmlAttributes = new { id = "Menu" } })</td>
+                    <td>@Html.EditorFor(a => child.ShowHome, new { htmlAttributes = new { id = "Home" } })</td>
+                    <td>
+                        <a href="javascript:;" onclick="UpdateProductCategory('@child.Id')">Cập nhật - </a>
+
+                        <a href="@Url.Action("UpdateCategory" , new { catId = child.Id })">Sửa</a> -
+                        <a href="javascript:;" onclick="deleteProjectCategory('@child.Id')" style="color: red">Xóa</a>
+                    </td>
+                </tr>
+            }
+        }
     </tbody>
 </table>
-<script type="text/javascript">function deleteProjectCategory(id) {
+<script type="text/javascript">
+    function deleteProjectCategory(id) {
         if (confirm("Bạn có chắc chắn xóa danh mục này không?")) {
             $.post("/Product/DeleteCategory", { catId: id }, function (data) {
                 if (data) {
@@ -85,10 +91,11 @@ else
         var sort = divId.find("input[name=Sort]").val();
         var active = divId.find("input#Active").prop("checked");
         var menu = divId.find("input#Menu").prop("checked");
+        var home = divId.find("input#Home").prop("checked");
         if (sort == "") {
             alert("Bạn hãy nhập số thứ tự");
         }
-        $.post("/Product/UpdateProductCategory", { projectCatId: id, sort, active, menu }, function (data) {
+        $.post("/Product/UpdateProductCategory", { projectCatId: id, sort, active, menu, home }, function (data) {
             if (data) {
                 $.toast({
                     text: 'Cập nhật thành công',

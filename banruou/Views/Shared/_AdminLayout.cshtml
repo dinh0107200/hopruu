@@ -17,10 +17,10 @@
             <div class="app-header__logo">
                 @if (config.Image != null)
                 {
-    <a href="@Url.Action("Index","Home")" target="_blank"><img class="logo-admin" src="@Path.Combine("/images/configs/", config.Image)" alt="logo" /></a> }
-else
-{
-<a href="@Url.Action("Index","Home")" target="_blank"><img class="logo-admin" src="~/Content/images/logo-icon/logo.png" /></a>}
+                    <a href="@Url.Action("Index","Home")" target="_blank"><img class="logo-admin" src="@Path.Combine("/images/configs/", config.Image)" alt="logo" /></a> }
+                else
+                {
+                    <a href="@Url.Action("Index","Home")" target="_blank"><img class="logo-admin" src="~/Content/images/logo-icon/logo.png" /></a>}
                 <a id="btn-show" onclick="myFunction()"><i class="fal fa-bars"></i><i class="fal fa-times"></i></a>
             </div>
             <div class="app-header__content">
@@ -46,7 +46,7 @@ else
             <div class="left_menu_profile">
                 <ul class="drop-bar">
                     <li data-id="0">
-                        <a class="root expand mb-3" href="@Url.Action("Index","Vcms")">
+                        <a class="root expand" href="@Url.Action("Index","Vcms")">
                             Tổng quan website
                             <i class="far fa-tachometer icon"></i>
                         </a>
@@ -77,11 +77,17 @@ else
                         </div>
                     </li>
                     <li data-id="5">
+                        <a class="root"><i class="far fa-shopping-cart icon"></i><span>Quản lý đặt hàng</span><i class="fas fa-caret-down"></i></a>
+                        <div class="sub hidden">
+                            <div>@Html.ActionLink("Tất cả đơn hàng", "ListOrder", "Order", null, new { @class = "text_link" })</div>
+                        </div>
+                    </li>
+                    @*<li data-id="5">
                         <a class="root"><i class="fal fa-question-circle icon"></i><span>Quản lý Câu hỏi</span><i class="fas fa-caret-down"></i></a>
                         <div class="sub hidden">
                             <div>@Html.ActionLink("Thêm mới câu hỏi", "Question", "Vcms", null, new { @class = "text_link" })</div>
                         </div>
-                    </li>
+                    </li>*@
                     <li data-id="8">
                         <a class="root"><i class="fal fa-file-edit icon"></i><span>Quản lý Quảng cáo</span><i class="fas fa-caret-down"></i></a>
                         <div class="sub hidden">
@@ -90,9 +96,9 @@ else
                         </div>
                     </li>
                     <li data-id="9">
-                        <a class="root"><i class="far fa-address-book icon"></i><span>Quản lý Liên hệ đặt hàng</span><i class="fas fa-caret-down"></i></a>
+                        <a class="root"><i class="far fa-address-book icon"></i><span>Quản lý Liên hệ</span><i class="fas fa-caret-down"></i></a>
                         <div class="sub hidden">
-                            <div>@Html.ActionLink("Danh sách liên hệ", "ListOrder", "Order", null, new { @class = "text_link" })</div>
+                            <div>@Html.ActionLink("Tất cả liên hệ", "ListContact", "Vcms", null, new { @class = "text_link" })</div>
                         </div>
                     </li>
                 </ul>

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace banruou.Models
 {
@@ -23,7 +19,7 @@ namespace banruou.Models
         public string Url { get; set; }
         [Display(Name = "Thứ tự"), Required(ErrorMessage = "Hãy nhập thứ tự"), RegularExpression(@"\d+", ErrorMessage = "Chỉ nhập số nguyên"), UIHint("NumberBox")]
         public int Sort { get; set; }
-        [Display(Name = "Nội dung giới thiệu"), UIHint("EditorBox") , DataType(DataType.MultilineText)]
+        [Display(Name = "Nội dung giới thiệu"), UIHint("EditorBox"), DataType(DataType.MultilineText)]
         public string Content { get; set; }
     }
 }

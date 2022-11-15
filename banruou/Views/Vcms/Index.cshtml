@@ -1,6 +1,10 @@
 ﻿@model banruou.ViewModel.InfoAdminViewModel
 @{ ViewBag.Title = "Welcome to website";
-                Layout = "~/Views/Shared/_AdminLayout.cshtml"; }
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var info = new DirectoryInfo(Server.MapPath("~/"));
+    var totalSize = info.EnumerateFiles("*", SearchOption.AllDirectories).Sum(file => file.Length);
+    var totalMb = totalSize / 1024 / 1024;
+}
 <div class="top-title">
     <div class="media">
         <p><i class="fal fa-home-lg-alt"></i></p>
@@ -48,16 +52,16 @@
             </div>
         </div>
     </div>
-    <div class="col-sm-12 col-md-6 col-lg-3 mt-md-5 mt-3">
-        <div class="overview-item">
-            <div class="icon icon-order"> <i class="fal fa-comments"></i></div>
-            <a class="stretched-link" href="@Url.Action("ListFeedback","Contact")">Phản hồi</a>
-            <p class="counter">@*@Model.Feedbacks*@</p>
-            <div class="info">
-                <i class="far fa-history mr-1"></i> Cập nhật mới nhất
+    @*<div class="col-sm-12 col-md-6 col-lg-3 mt-md-5 mt-3">
+            <div class="overview-item">
+                <div class="icon icon-order"> <i class="fal fa-comments"></i></div>
+                <a class="stretched-link" href="@Url.Action("ListFeedback","Contact")">Phản hồi</a>
+                <p class="counter">@Model.Feedbacks</p>
+                <div class="info">
+                    <i class="far fa-history mr-1"></i> Cập nhật mới nhất
+                </div>
             </div>
-        </div>
-    </div>
+        </div>*@
     <div class="col-sm-12 col-md-6 col-lg-3 mt-md-5 mt-3">
         <div class="overview-item">
             <div class="icon icon-cart"><i class="fal fa-ad mr-1"></i></div>
@@ -71,10 +75,30 @@
     <div class="col-sm-12 col-md-6 col-lg-3 mt-md-5 mt-3">
         <div class="overview-item">
             <div class="icon icon-city"><i class="fal fa-mailbox"></i></div>
-            <a class="stretched-link" href="@Url.Action("ListContact","Contact")">Liên hệ</a>
-            <p class="counter">@*@Model.Contacts*@</p>
+            <a class="stretched-link" href="@Url.Action("ListContact","Vcms")">Liên hệ</a>
+            <p class="counter">@Model.Contacts</p>
+            <div class="info">
+                <i class="far fa-history mr-1"></i> Liên hệ
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-12 col-md-6 col-lg-3 mt-md-5 mt-3">
+        <div class="overview-item">
+            <div class="icon icon-order"><i class="fal fa-shopping-cart"></i></div>
+            <a class="stretched-link" href="@Url.Action("ListOrder","Order")">Đặt hàng</a>
+            <p class="counter">@Model.OrderCount</p>
             <div class="info">
                 <i class="far fa-history mr-1"></i> Cập nhật mới nhất
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-12 col-md-6 col-lg-3 mt-md-5 mt-3">
+        <div class="overview-item">
+            <div class="icon icon-item"><i class="fal fa-hdd"></i></div>
+            <a class="stretched-link" href="#">Hosting</a>
+            <p class="counter">@totalMb MB</p>
+            <div class="info">
+                <i class="far fa-history mr-1"></i> Dung lượng lưu trữ
             </div>
         </div>
     </div>

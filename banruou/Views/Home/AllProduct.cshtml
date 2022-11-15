@@ -1,35 +1,42 @@
 ﻿@model banruou.ViewModel.AllProductViewModel
 @using PagedList.Mvc
 @{
-    ViewBag.Title = "AllProduct";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Sản phẩm";
+    ViewBag.Canonical = Request.Url?.GetLeftPart(UriPartial.Authority) + Url.Action("AllProduct");
+    ViewBag.Robots = "noindex";
 }
 @Html.Action("Header")
 <section class="product-list">
     <div class="container">
-        <div class="product-list-title">
-            <div class="title-item">
-                <h3>Danh sách sản phẩm</h3>
-            </div>
-        </div>
         <div class="list-item">
             <div class="row">
-                @if (Model.ProductCategories.Any())
-                {
-                    <div class="col-lg-3 order-lg-0 order-1">
-                        <div class="list-category">
-                            @Html.Action("GetNavProduct")
-                        </div>
+                <div class="col-lg-3 order-lg-0 order-1">
+                    <div class="list-category">
+                        @Html.Action("GetNavProduct")
                     </div>
-                }
-                @if (Model.Products.PageCount > 1)
-                {
-                <tr>
-                    <td colspan="8">@Html.PagedListPager(Model.Products, Page => Url.Action("AllProduct", new { Page }))</td>
-                </tr>
-                }
+                </div>
                 <div class="col-lg-9 order-lg-1 order-0">
-                    @Html.Action("GetAllProduct")
+                    @if (Model.Products.Any())
+                    {
+                        <div class="row">
+                            @foreach (var item in Model.Products)
+                            {
+                                <div class="col-lg-4 col-6">
+                                    @Html.Partial("_itemProduct", item)
+                                </div>
+                            }
+                        </div>
+                        if (Model.Products.PageCount > 1)
+                        {
+                            <div class="text-center">
+                                @Html.PagedListPager(Model.Products, page => Url.Action("AllProduct", new { page }))
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="alert alert-info">Không có sản phẩm nào.</div>
+                    }
                 </div>
             </div>
         </div>

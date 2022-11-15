@@ -3,31 +3,18 @@
 
 @if (Model.Products.Any())
 {
-<div class="row">
-    @foreach (var item in Model.Products)
-    {
-        <div class="col-lg-4 col-6">
-            <div class="product__item">
-                    @if (item.ListImage != null)
-                    {
-                        <a href="@Url.Action("ProductDetail" , "Home" , new { url = item.Url })">
-                            <img src="@Path.Combine("/images/Product/", item.ListImage.Split(',')[0])" alt="">
-                        </a>
-
-                    }
-                <div class="product__item-name">
-                    <a href="@Url.Action("ProductDetail" , "Home" , new { url = item.Url })"><h3>@item.Name</h3></a>
-                </div>
-                <div class="product__item-price">
-                    <p>@String.Format("{0:#,##0.##}", item.Price) đ</p>
-                </div>
-
-                <div class="product__item-btn">
-                    <a href="@Url.Action("ProductDetail" , "Home" , new { url = item.Url })"><span>Đặt mua</span></a>
-                </div>
+    <div class="row">
+        @foreach (var item in Model.Products)
+        {
+            <div class="col-lg-4 col-6">
+                @Html.Partial("_itemProduct", item)
             </div>
+        }
+    </div>
+    if (Model.Products.PageCount > 1)
+    {
+        <div class="text-center">
+            @Html.PagedListPager(Model.Products, page => Url.Action("GetAllProduct", new { page }))
         </div>
     }
-</div>
 }
-

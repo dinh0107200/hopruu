@@ -4,185 +4,132 @@
     var config = (ConfigSite)HttpContext.Current.Application["ConfigSite"];
     ViewBag.Title = Model.Product.TitleMeta ?? Model.Product.Name;
     ViewBag.Description = Model.Product.DescriptionMeta ?? Model.Product.Body;
-    ViewBag.Canonical = Request.Url?.GetLeftPart(UriPartial.Authority) + Url.Action("ServiceDetail", new { url = Model.Product.Url });
+    ViewBag.Canonical = Request.Url?.GetLeftPart(UriPartial.Authority) + Url.Action("ProductDetail", new { url = Model.Product.Url });
     if (Model.Product.Image != null)
     {
         ViewBag.ImageShare = Request.Url?.GetLeftPart(UriPartial.Authority) + Path.Combine("/images/services/", Model.Product.Image);
     }
-    Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@Html.Action("Header", "Home")
+@Html.Action("Header")
 <section class="product-detail">
-    <nav aria-label="breadcrumb">
-        <div class="container bg">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="@Url.Action("Index")">Trang chủ</a></li>
-                <li class="breadcrumb-item"><a href="@Url.Action( "CategoryProduct" ,"Home" , new { url = Model.Product.ProductCategory.Url })">@Model.Product.ProductCategory.CategoryName</a></li>
-                <li class="breadcrumb-item active" aria-current="page">@Model.Product.Name</li>
-            </ol>
-        </div>
-    </nav>
     <div class="container">
-        <div class="row">
-            <div class="col-lg-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="@Url.Action("Index")">Trang chủ</a></li>
+            <li class="breadcrumb-item"><a href="@Url.Action( "CategoryProduct" ,"Home" , new { url = Model.Product.ProductCategory.Url })">@Model.Product.ProductCategory.CategoryName</a></li>
+            <li class="breadcrumb-item active" aria-current="page">@Model.Product.Name</li>
+        </ol>
+        <div class="row paddig-section">
+            <div class="col-lg-6">
                 @if (Model.Product.ListImage != null)
                 {
                     var arr = Model.Product.ListImage.Split(',');
-                    <div class="row">
-                        <div class="col-lg-3 col-md-2 order-lg-0 order-md-1 order-1">
-                            <div class="product-slide">
-                                @foreach (var item in arr)
-                                {
-                                    <div class="product-slide-item ">
-                                        <img src="@Path.Combine("/images/Product/", item)" alt="">
-                                    </div>
-                                }
+                    <div class="product-detail-list">
+                        @foreach (var item in arr)
+                        {
+                            <div class="product-detail-img">
+                                <img src="@Path.Combine("/images/Product/", item)" alt="@Model.Product.Name">
                             </div>
-                        </div>
-                        <div class="col-lg-9 col-md-10 order-lg-1  order-0">
-                            <div class="product-detail-list  border-2">
-                                @foreach (var item in arr)
-                                {
-                                    <div class="product-detail-img">
-                                        <img src="@Path.Combine("/images/Product/", item)" alt="">
-                                    </div>
-                                }
+                        }
+                    </div>
+                    <div class="product-slide">
+                        @foreach (var item in arr)
+                        {
+                            <div class="product-slide-item">
+                                <img src="@Path.Combine("/images/Product/", item)" alt="@Model.Product.Name">
                             </div>
-                        </div>
+                        }
                     </div>
                 }
-
             </div>
-            <div class="col-lg-5">
+            <div class="col-lg-6">
                 <div class="product-detail-infor">
-                    <div class="product-detail-name">
-                        <h3 class="text-danger">@Model.Product.Name</h3>
-                    </div>
+                    <h1 class="product-detail-name">
+                        @Model.Product.Name
+                    </h1>
                     <hr>
                     @if (Model.Product.Price == null)
                     {
-                        <div class="product-detail-name">
-                            <h3 class="text-danger"><a href="tel:@config.Hotline">Liên  hệ</a></h3>
+                        <div class="price-detail">
+                            <a href="tel:@config.Hotline">Liên hệ</a>
                         </div>
                     }
-                    @if (Model.Product.Price != null)
+                    else if (Model.Product.Price != null)
                     {
-                        <div class="product-detail-name">
-                            <h3 class="text-danger">@String.Format("{0:n0}", Model.Product.Price) đ</h3>
+                        <div class="price-detail">
+                            @($"{Model.Product.Price:n0}") đ
                         </div>
                     }
+                    <hr />
                 </div>
                 <div class="product-detail-discription">
                     @if (Model.Product.Country != null)
                     {
-                        <div class="detail-discription-item fst-italic text-muted">
+                        <div class="detail-discription-item text-muted">
                             <span>Xuất sứ :</span>
                             <span>@Model.Product.Country</span>
                         </div>
                     }
                     @if (Model.Product.Material != null)
                     {
-                        <div class="detail-discription-item fst-italic text-muted">
+                        <div class="detail-discription-item text-muted">
                             <span>Chất liệu :</span>
                             <span>@Model.Product.Material</span>
                         </div>
                     }
                     @if (Model.Product.Capacity != null)
                     {
-                        <div class="detail-discription-item fst-italic text-muted">
+                        <div class="detail-discription-item text-muted">
                             <span>Sức chứa :</span>
                             <span>@Model.Product.Capacity</span>
                         </div>
                     }
                     @if (Model.Product.Application != null)
                     {
-                        <div class="detail-discription-item fst-italic text-muted">
+                        <div class="detail-discription-item text-muted">
                             <span>Ứng dụng :</span>
                             <span>@Model.Product.Application</span>
                         </div>
                     }
                 </div>
-                <div class="introduction text-muted">
-                    <p>Nhận thiết kế và in Logo lên sản phẩm theo yêu cầu, liên hệ ngay với EPVINA để được báo giá chi tiết.</p>
-                </div>
-                <div class="product-detail-btn">
-                    <div class="btn-item">
-                        <a class="btn btn-danger" data-bs-toggle="modal" href="#exampleModalToggle" role="button"> <i class="fa-solid fa-cart-shopping"></i> Đặt mua hàng</a>
+                <div class="row my-3">
+                    <div class="col-6">
+                        <a class="btn btn-danger btn-block" data-bs-toggle="modal" href="#exampleModalToggle" role="button"> <i class="fa fa-bags-shopping"></i> Đặt mua hàng</a>
                     </div>
-                    <div class="btn-item">
-                        <a href="" class="btn btn-primary"><i class="fa-sharp fa-solid fa-headphones"></i> Liên hệ tư vấn</a>
+                    <div class="col-6">
+                        <a href="tel:@config.Hotline" class="btn btn-primary btn-block"><i class="fa fa-headphones"></i> Liên hệ tư vấn</a>
                     </div>
                 </div>
-            </div>
-            <div class="col-lg-3">
-                <div class="customer-care fst-italic text-muted">
-                    <span>Chăm sóc khách hàng</span>
-                    <p>Gợi ý khiếu lại (8h00 - 17h30)</p>
-                    <div class="customer-item">
-                        <span class="fw-bolder">Hà Nội: </span>
-                        <p> 02437678915</p>
+                @if (config.ProductNote != null)
+                {
+                    <div class="customer-care text-muted">
+                        @Html.Raw(config.ProductNote)
                     </div>
-                    <div class="customer-item">
-                        <span class="fw-bolder">HCM: </span>
-                        <p> 02437678915</p>
-                    </div>
-                    <div class="customer-item">
-                        <span class="fw-bolder">Email: </span>
-                        <p> quatangep.vn@gmail.com</p>
-                    </div>
-                </div>
+                }
             </div>
         </div>
+
+        @if (Model.Product.Body != null)
+        {
+            <div class="product-artilce-content border">
+                @Html.Raw(Model.Product.Body)
+            </div>
+        }
     </div>
 </section>
-@if (Model.Product.Body != null)
-{
-    <section class="product-artilce">
-        <div class="container">
-            <div class=" row">
-                <div class="col-lg-9">
-                    <div class="product-artilce-content border">
-                        @Html.Raw(Model.Product.Body)
-                    </div>
-                </div>
-            </div>
-            
-        </div>
-    </section>
-}
 
 @if (Model.Products.Any())
 {
     <section class="related-products">
         <div class="container">
-            <div class="related-products-title">
-                <h3>Sản phẩm liên quan</h3>
+            <div class="gift-title text-center">
+                <h2>Sản phẩm liên quan</h2>
             </div>
             <div class="related-products-list">
                 <div class="row">
                     @foreach (var item in Model.Products.Take(8))
                     {
-                        <div class="col-lg-3 col-6">
-                            <div class="product-item related-item ">
-                                <div class="product-img">
-                                    <a href="@Url.Action("ProductDetail" , "Home" , new { item.Url })">
-                                        <img src="@Path.Combine("/images/Product/" , item.ListImage.Split(',')[0])" alt="">
-                                    </a>
-                                </div>
-                                <div class="product-name">
-                                    <a href="@Url.Action("ProductDetail" , "Home" , new { item.Url })">
-                                        <p>@item.Name</p>
-                                    </a>
-                                </div>
-                                <div class="product-price ">
-                                    <p class="">@String.Format("{0:#,##0.##}", Model.Product.Price)đ</p>
-                                </div>
-                                <div class="product-btn">
-                                    <a href="@Url.Action("ProductDetail" , "Home" , new { item.Url })">
-                                        <span>Đặt mua</span>
-                                    </a>
-                                </div>
-                            </div>
+                        <div class="col-lg-3 col-md-4 col-6">
+                            @Html.Partial("_itemProduct", item)
                         </div>
                     }
                 </div>
@@ -192,3 +139,10 @@
 }
 @Html.Action("Order")
 @Html.Action("Footer")
+
+@section scripts
+{
+    <script>
+        productJs();
+    </script>
+}

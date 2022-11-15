@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace banruou.Models
 {
@@ -11,13 +7,23 @@ namespace banruou.Models
         public int Id { get; set; }
         [Display(Name = "Tên đăng nhập", Description = "Tên đăng nhập"), Required(ErrorMessage = "Hãy điền tên đăng nhập"), RegularExpression(@"[a-z0-9]{4,10}", ErrorMessage = "Chỉ nhập chữ thường và số 0-9, từ 4-10 ký tự"), UIHint("TextBox")]
         public string Username { get; set; }
-        [Display(Name="Mật khẩu"), Required(ErrorMessage = "Hãy nhập mật khẩu"), StringLength(60, ErrorMessage = "Tối đa 60 ký tự"), UIHint("Password")]
+        [Display(Name = "Mật khẩu"), Required(ErrorMessage = "Hãy nhập mật khẩu"), StringLength(60, ErrorMessage = "Tối đa 60 ký tự"), UIHint("Password")]
         public string Password { get; set; }
         [Display(Name = "Hoạt động", Description = "Hoạt động")]
         public bool Active { get; set; }
+
+        public RoleAdmin Role { get; set; }
+
         public Admin()
         {
             Active = true;
         }
+    }
+
+    public enum RoleAdmin
+    {
+        Admin,
+        Editor,
+        Copywriter
     }
 }

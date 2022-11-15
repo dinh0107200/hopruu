@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace banruou.Models
 {
@@ -11,7 +9,7 @@ namespace banruou.Models
         public int Id { get; set; }
         [Display(Name = "Tên danh mục dự án"), Required(ErrorMessage = "Hãy nhập tên danh mục"), StringLength(80, ErrorMessage = "Tối đa 80 ký tự"), UIHint("TextBox")]
         public string CategoryName { get; set; }
-        [Display(Name = "Giới thiệu ngắn"), StringLength(500, ErrorMessage = "Tối đa 500 ký tự"), UIHint("TextArea") , DataType(DataType.MultilineText)]
+        [Display(Name = "Giới thiệu ngắn"), StringLength(500, ErrorMessage = "Tối đa 500 ký tự"), UIHint("TextArea"), DataType(DataType.MultilineText)]
         public string Description { get; set; }
         [Display(Name = "Ảnh đại diện"), StringLength(500)]
         public string Image { get; set; }
@@ -33,7 +31,14 @@ namespace banruou.Models
         public string TitleMeta { get; set; }
         [Display(Name = "Thẻ mô tả"), StringLength(500, ErrorMessage = "Tối đa 500 ký tự"), UIHint("TextArea")]
         public string DescriptionMeta { get; set; }
-        //public virtual ICollection<Project> Projects { get; set; }
+        [Display(Name = "Nội dung"), UIHint("EditorBox")]
+        public string Body { get; set; }
+
+        public virtual ICollection<Product> Products { get; set; }
+        [ForeignKey("ParentId")]
+        public virtual ProductCategory ParentCategory { get; set; }
+        public virtual ICollection<ProductCategory> Categories { get; set; }
+
         public ProductCategory()
         {
             CategoryActive = true;

@@ -6,49 +6,41 @@
 
 }
 @Html.Action("Header")
-<section class="back-to-top">
-    <div class="back-to-top-item">
-        <i class="fa-solid fa-circle-up"></i>
-    </div>
-</section>
-<section class="list-new-feed">
-    <div class="container">
-        <div class="list-new-feed-title">
-            <h3>Danh sách bài viết</h3>
-        </div>
-        <div class="list-new-feed-item">
-            <div class="row">
-                <div class="col-md-3">
-                    <div class="list-category">
-                        @Html.Action("GetNavMenu")
-                    </div>
-                </div>
-                <div class="col-md-9">
-                    <div class="row">
-                        @foreach (var item in Model.Articles)
-                        {
-                            <div class="col-md-4">
-                                <div class="feed-item">
-                                    <a href="@Url.Action("ArtilceDetail", "Home" , new { url = item.Url })">
-                                        <div class="new-feed-item-img">
-                                            <img src="@Path.Combine("/images/articles/" , item.Image)" alt="">
-                                        </div>
-                                        <div class="new-feed-item-name">
-                                            <p>@item.Subject</p>
-                                        </div>
-                                        <hr>
-                                        <div class="new-feed-item-description">
-                                            <p>@item.Description</p>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-                            }
-                    </div>
-                </div>
+<div class="container">
+    <ul class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
+        <li class="breadcrumb-item active">Tin tức</li>
+    </ul>
 
+    <div class="row paddig-section">
+        <div class="col-md-3">
+            <div class="list-category">
+                @Html.Action("GetNavMenu")
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="row">
+                @foreach (var item in Model.Articles)
+                {
+                    <div class="col-md-4">
+                        <div class="feed-item">
+                            <a href="@Url.Action("ArticleDetail", "Home", new { url = item.Url })">
+                                <div class="new-feed-item-img">
+                                    <img src="@Path.Combine("/images/articles/", item.Image)" alt="">
+                                </div>
+                                <div class="new-feed-item-name">
+                                    <p>@item.Subject</p>
+                                </div>
+                                <hr>
+                                <div class="new-feed-item-description">
+                                    <p>@item.Description</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                }
             </div>
         </div>
     </div>
-</section>
+</div>
 @Html.Action("Footer")

@@ -1,0 +1,112 @@
+﻿@model banruou.Models.Contact
+@using banruou.Models
+@{
+    var config = (ConfigSite)HttpContext.Current.Application["ConfigSite"];
+    ViewBag.Title = "Liên hệ";
+    ViewBag.Robots = "noindex";
+    ViewBag.Canonical = Request.Url?.GetLeftPart(UriPartial.Authority) + Url.Action("Contact");
+}
+@Html.Action("Header")
+<div class="bg-breadcrumb">
+    <div class="container">
+        <ol class="breadcrumb px-0 m-0">
+            <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home")">Trang chủ</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Liên hệ</li>
+        </ol>
+    </div>
+</div>
+
+<div class="py-4">
+    <div class="container">
+        <div class="row mb-4 justify-content-center">
+            <div class="col-6 col-md-4 col-lg-4">
+                <div class="block-button">
+                    <a href="mailto:@config.Email" rel="noindex">
+                        <div class="icon">
+                            <span>
+                                <i class="fas fa-envelope"></i>
+                            </span>
+                        </div>
+                    </a>
+                    <div class="name">Email</div>
+                    <p>@config.Email</p>
+                </div>
+            </div>
+            <div class="col-6 col-md-4 col-lg-4">
+                <div class="block-button">
+                    <a href="tel:@config.Hotline" rel="noindex">
+                        <div class="icon">
+                            <span>
+                                <i class="fas fa-phone-alt"></i>
+                            </span>
+                        </div>
+                    </a>
+                    <div class="name">Điện thoại</div>
+                    <p>@config.Hotline</p>
+                </div>
+            </div>
+            <div class="col-12 col-md-4 col-lg-4">
+                <div class="block-button">
+                    <a href="#" rel="nofollow">
+                        <div class="icon">
+                            <span>
+                                <i class="fas fa-paper-plane"></i>
+                            </span>
+                        </div>
+                    </a>
+                    <div class="name">Địa chỉ</div>
+                    <p>@config.Address</p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6 order-lg-0 order-1">
+                @if (config.GoogleMap != null)
+                {
+                    <div class="embed-responsive embed-responsive-4by3">
+                        @Html.Raw(config.GoogleMap)
+                    </div>
+                }
+            </div>
+            <div class="col-lg-6 order-lg-1 order-0 mb-lg-0 mb-4">
+                <div class="box-border shadow">
+                    <div class="contact-title">
+                        GỬI LIÊN HỆ CHO CHÚNG TÔI
+                    </div>
+                    @using (Html.BeginForm("Contact", "Home", FormMethod.Post, new { @class = "form-contact-page" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true)
+                        <div class="form-group">
+                            @Html.TextBoxFor(a => a.Fullname, new { @class = "form-control", placeholder = "Họ và tên" })
+                            @Html.ValidationMessageFor(a => a.Fullname)
+                        </div>
+                        <div class="form-group">
+                            @Html.TextBoxFor(a => a.Mobile, new { @class = "form-control", placeholder = "Điện thoại" })
+                            @Html.ValidationMessageFor(a => a.Mobile)
+                        </div>
+                        <div class="form-group">
+                            @Html.TextBoxFor(a => a.Email, new { @class = "form-control", placeholder = "Email" })
+                            @Html.ValidationMessageFor(a => a.Email)
+                        </div>
+                        <div class="form-group">
+                            @Html.TextBoxFor(a => a.Address, new { @class = "form-control", placeholder = "Địa chỉ" })
+                            @Html.ValidationMessageFor(a => a.Address)
+                        </div>
+                        <div class="form-group">
+                            @Html.TextAreaFor(a => a.Body, new { @class = "form-control", placeholder = "Lời nhắn (nếu có)" })
+                            @Html.ValidationMessageFor(a => a.Body)
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Gửi liên hệ</button>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@Html.Action("Footer")
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+}

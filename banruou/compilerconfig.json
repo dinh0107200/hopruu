@@ -12,12 +12,8 @@
     "inputFile": "Content/style.scss"
   },
   {
-    "outputFile": "Content/Layout/style.css",
-    "inputFile": "Content/Layout/style.scss"
-  },
-  {
-    "outputFile": "Content/Layout/layout.css",
-    "inputFile": "Content/Layout/layout.scss"
+    "outputFile": "Content/layout.css",
+    "inputFile": "Content/layout.scss"
   },
   {
     "outputFile": "Content/toctoc.css",

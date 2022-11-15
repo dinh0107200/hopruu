@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using banruou.Models;
 using System.Data.Entity;
-using System.Linq;
-using System.Web;
-using banruou.Models;
 namespace banruou.DAL
 {
     public class DataEntities : DbContext
@@ -16,7 +12,8 @@ namespace banruou.DAL
         public DbSet<ProductCategory> ProductCategories { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Article> Articles { get; set; }
-        public DbSet <ArticleCategory> ArticleCategories { get; set; }
+        public DbSet<ArticleCategory> ArticleCategories { get; set; }
         public DbSet<Order> Orders { get; set; }
+        public DbSet<Contact> Contacts { get; set; }
     }
 }

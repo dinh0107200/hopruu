@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using banruou.Models;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
-using banruou.Models;
 namespace banruou.ViewModel
 {
     public class ChangePasswordModel
@@ -34,6 +30,7 @@ namespace banruou.ViewModel
         public int Feedbacks { get; set; }
         public int Services { get; set; }
         public int Product { get; set; }
+        public int OrderCount { get; set; }
     }
     public class EditAdminViewModel
     {
@@ -50,9 +47,17 @@ namespace banruou.ViewModel
     {
         public Question Question { get; set; }
     }
+
     public class ListOrderViewModel
     {
         public PagedList.IPagedList<Order> Orders { get; set; }
         public string Name { get; set; }
     }
+
+    public class ListContactViewModel
+    {
+        public PagedList.IPagedList<Contact> Contacts { get; set; }
+        public string Name { get; set; }
+    }
+
 }

@@ -1,0 +1,96 @@
+﻿@model banruou.ViewModel.ArticleDetailsViewModel
+@using banruou.Models
+@{
+    ViewBag.Title = Model.Article.TitleMeta ?? Model.Article.Subject;
+    ViewBag.Description = Model.Article.DescriptionMeta ?? Model.Article.Description;
+    ViewBag.Canonical = Request.Url?.GetLeftPart(UriPartial.Authority) + Url.Action("ArticleDetail", new { url = Model.Article.Url });
+    if (Model.Article.Image != null)
+    {
+        ViewBag.ImageShare = Request.Url?.GetLeftPart(UriPartial.Authority) + Path.Combine("/images/articles/", Model.Article.Image);
+    }
+    var config = (ConfigSite)HttpContext.Current.Application["ConfigSite"];
+}
+@Html.Action("Header")
+
+<section class="post">
+    <nav aria-label="breadcrumb" style="background: #cccccc24; margin-bottom: 30px; ">
+        <div class="container">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="@Url.Action("Index")">Trang chủ</a></li>
+                <li class="breadcrumb-item"><a href="@Url.Action("AllArtilce")">@Model.Article.ArticleCategory.CategoryName</a></li>
+                <li class="breadcrumb-item active" aria-current="page">@Model.Article.Subject</li>
+            </ol>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-lg-8">
+                <div class="artilce">
+                    <div class="post-title">
+                        <h3>@Model.Article.Subject</h3>
+                        <hr />
+                    </div>
+                    <div>
+                        <p class="text-muted">Ngày đăng: @($"{Model.Article.CreateDate:dd/MM/yyyy}") </p>
+                    </div>
+                    <div id="toctoc" class="border"></div>
+                    <div class="content">
+                        <div class="post-context product-artilce-content">
+                            @Html.Raw(Model.Article.Body)
+                        </div>
+                    </div>
+                    @if (config.Introduce != null)
+                    {
+                        <div class="info-contact">
+                            @Html.Raw(config.Introduce)
+                        </div>
+                    }
+                    <hr />
+                    <div class="btn-share mt-3 d-flex">
+                        <div>Chia sẻ : </div>
+                        <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+                            <div class="btn-group mr-2" role="group" aria-label="First group">
+                                <button class="btn btn-primary" onclick="window.open('https://www.facebook.com/sharer.php?url=' + encodeURIComponent(location.href) + '&amp;t=' + encodeURIComponent(document.title)); return false;"><i class="fab fa-facebook-f"></i></button>
+                            </div>
+                            <div class="btn-group mr-2" role="group" aria-label="Second group">
+                                <button class="btn btn-danger"><i class="fab fa-instagram"></i></button>
+                            </div>
+                            <div class="btn-group" role="group" aria-label="Third group">
+                                <button class="btn btn-info"><i class="fab fa-twitter"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="fb-comments" data-href="@ViewBag.Canonical" data-numposts="10" data-width="100%"></div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                @if (Model.Articles.Any())
+                {
+                    <div class="hot-new">
+                        <div class="hot-new-heading">
+                            Tin liên quan
+                        </div>
+                        @foreach (var item in Model.Articles.OrderByDescending(a => a.CreateDate))
+                        {
+                            <div class="media media-lastest">
+                                @if (item.Image != null)
+                                {
+                                    <a href="@Url.Action("ArticleDetail", "Home", new { url = item.Url })">
+                                        <img src="@Path.Combine("/images/articles/", item.Image)" alt="@item.Subject">
+                                    </a>
+                                }
+                                <div class="media-body">
+                                    <a href="@Url.Action("ArticleDetail", "Home", new { url = item.Url })">@item.Subject</a>
+                                    <div class="date-post"><i class="fal fa-calendar-alt"></i> @($"{item.CreateDate:MM/dd/yyyy}")</div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</section>
+
+@Html.Action("Footer")
+

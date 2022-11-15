@@ -1,25 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using banruou.Models;
+﻿using banruou.Models;
 using PagedList;
+using System.Collections.Generic;
 
 namespace banruou.ViewModel
 {
     public class HomeViewModel
     {
-       public IEnumerable<Article> Articles { get; set; }
-       public IEnumerable<Article> NewArticles { get; set; }
-       public IEnumerable<Banner> Banners { get; set; }
-       public IEnumerable<ProductCategory> ProductCategories { get; set; }
-       public IEnumerable<Product> Products { get; set; }
-       public ProductCategory ProductCategory { get; set; }
+        public IEnumerable<Article> NewArticles { get; set; }
+        public IEnumerable<Banner> Banners { get; set; }
+        public IEnumerable<HomeBlock> HomeBlocks { get; set; }
+        public IEnumerable<ProductCategory> Categories { get; set; }
+
+        public class HomeBlock
+        {
+            public ProductCategory Category { get; set; }
+            public IEnumerable<Product> Products { get; set; }
+        }
     }
     public class ProductDetailViewModel
     {
         public Product Product { get; set; }
-        public IEnumerable<Product> Products { get; set; } 
+        public IEnumerable<Product> Products { get; set; }
     }
     public class AllProductViewModel
     {
@@ -79,27 +80,27 @@ namespace banruou.ViewModel
         public IEnumerable<ArticleCategory> ArticleCategories { get; set; }
         public IEnumerable<ArticleCategory> IntroduceCat { get; set; }
     }
-    public  class GetNavProduct
+    public class GetNavProduct
     {
         public IEnumerable<ProductCategory> ProductCategories { get; set; }
+        public int CategoryId { get; set; }
     }
 
 
-    public  class PluginViewModel
+    public class PluginViewModel
     {
         public IEnumerable<ConfigSite> configSites { get; set; }
     }
     public class HeaderViewModel
     {
-        public IEnumerable<ArticleCategory> Articles { get; set;  }
+        public IEnumerable<ArticleCategory> ArticleCategories { get; set; }
         public IEnumerable<ProductCategory> ProductCategories { get; set; }
-        public IEnumerable<ArticleCategory> IntroduceCat { get; set; }
     }
     public class FooterViewModel
     {
         public IEnumerable<ArticleCategory> ArticleCategories { get; set; }
         public IEnumerable<ArticleCategory> Introduce { get; set; }
-        public IEnumerable<ArticleCategory > Policies { get; set; }
+        public IEnumerable<ArticleCategory> Policies { get; set; }
         public IEnumerable<ProductCategory> FooterProduct { get; set; }
     }
     public class OrderViewModel
