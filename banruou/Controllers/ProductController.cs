@@ -19,7 +19,7 @@ namespace banruou.Controllers
         private IEnumerable<ProductCategory> ProductCategories => _unitOfWork.ProductCategoryRepository.Get(a => a.CategoryActive, q => q.OrderBy(a => a.CategorySort));
         private SelectList ParentProductCategoryList => new SelectList(ProductCategories.Where(a => a.ParentId == null), "Id", "CategoryName");
 
-        #region product category
+        #region Product category
         public ActionResult ListCategory()
         {
             var allcats = _unitOfWork.ProductCategoryRepository.Get(orderBy: q => q.OrderBy(a => a.CategorySort));
@@ -30,14 +30,21 @@ namespace banruou.Controllers
             ViewBag.NewsCat = result;
             ViewBag.RootCats =
                 new SelectList(ProductCategories.Where(a => a.ParentId == null), "Id", "CategoryName");
-            return View(new ProductCategory { CategorySort = 1 });
+
+            var model = new InsertProductCategoryViewModel
+            {
+                Category = new ProductCategory { CategorySort = 1 },
+                GroupPropertyOfProducts = _unitOfWork.GroupPropertyOfProductRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort))
+            };
+
+            return View(model);
         }
         [HttpPost, ValidateInput(false)]
-        public ActionResult ProductCategory(ProductCategory category, FormCollection fc)
+        public ActionResult ProductCategory(InsertProductCategoryViewModel model, FormCollection fc)
         {
             if (ModelState.IsValid)
             {
-                var file = Request.Files["Image"];
+                var file = Request.Files["Category.Image"];
                 if (file != null && file.ContentLength > 0)
                 {
                     if (file.ContentType != "image/jpeg" & file.ContentType != "image/png" && file.ContentType != "image/gif")
@@ -56,18 +63,34 @@ namespace banruou.Controllers
                             HtmlHelpers.CreateFolder(Server.MapPath(imgPath));
                             var imgFileName = DateTime.Now.ToFileTimeUtc() + Path.GetExtension(file.FileName);
 
-                            category.Image = DateTime.Now.ToString("yyyy/MM/dd") + "/" + imgFileName;
+                            model.Category.Image = DateTime.Now.ToString("yyyy/MM/dd") + "/" + imgFileName;
                             file.SaveAs(Server.MapPath(Path.Combine(imgPath, imgFileName)));
                         }
                     }
                 }
-                category.Url = HtmlHelpers.ConvertToUnSign(null, category.Url ?? category.CategoryName);
-                _unitOfWork.ProductCategoryRepository.Insert(category);
+
+                var groupProperty = fc["GroupProperty"];
+                if (!string.IsNullOrEmpty(groupProperty))
+                {
+                    model.Category.GroupPropertyOfProductId = Convert.ToInt32(groupProperty);
+                }
+
+                model.Category.Url = HtmlHelpers.ConvertToUnSign(null, model.Category.Url ?? model.Category.CategoryName);
+                _unitOfWork.ProductCategoryRepository.Insert(model.Category);
                 _unitOfWork.Save();
+
+                var count = _unitOfWork.ProductCategoryRepository.GetQuery(a => a.Url == model.Category.Url).Count();
+                if (count > 1)
+                {
+                    model.Category.Url += "-" + model.Category.Id;
+                    _unitOfWork.Save();
+                }
                 return RedirectToAction("ProductCategory", new { result = "success" });
             }
             ViewBag.RootCats = new SelectList(ProductCategories.Where(a => a.ParentId == null), "Id", "CategoryName");
-            return View(category);
+            model.GroupPropertyOfProducts = _unitOfWork.GroupPropertyOfProductRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
+
+            return View(model);
         }
         public ActionResult UpdateCategory(int catId = 0)
         {
@@ -76,15 +99,21 @@ namespace banruou.Controllers
             {
                 return RedirectToAction("ProductCategory");
             }
+
+            var model = new InsertProductCategoryViewModel
+            {
+                Category = category,
+                GroupPropertyOfProducts = _unitOfWork.GroupPropertyOfProductRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort))
+            };
             ViewBag.RootCats = new SelectList(ProductCategories.Where(a => a.ParentId == null), "Id", "CategoryName");
-            return View(category);
+            return View(model);
         }
         [HttpPost, ValidateInput(false)]
-        public ActionResult UpdateCategory(ProductCategory category, FormCollection fc)
+        public ActionResult UpdateCategory(InsertProductCategoryViewModel model, FormCollection fc)
         {
             if (ModelState.IsValid)
             {
-                var file = Request.Files["Image"];
+                var file = Request.Files["Category.Image"];
                 if (file != null && file.ContentLength > 0)
                 {
                     if (file.ContentType != "image/jpeg" & file.ContentType != "image/png" && file.ContentType != "image/gif")
@@ -103,26 +132,46 @@ namespace banruou.Controllers
                             HtmlHelpers.CreateFolder(Server.MapPath(imgPath));
                             var imgFileName = DateTime.Now.ToFileTimeUtc() + Path.GetExtension(file.FileName);
 
-                            if (System.IO.File.Exists(Server.MapPath("/images/productCategory/" + category.Image)))
+                            if (System.IO.File.Exists(Server.MapPath("/images/productCategory/" + model.Category.Image)))
                             {
-                                System.IO.File.Delete(Server.MapPath("/images/productCategory/" + category.Image));
+                                System.IO.File.Delete(Server.MapPath("/images/productCategory/" + model.Category.Image));
                             }
-                            category.Image = DateTime.Now.ToString("yyyy/MM/dd") + "/" + imgFileName;
+                            model.Category.Image = DateTime.Now.ToString("yyyy/MM/dd") + "/" + imgFileName;
                             file.SaveAs(Server.MapPath(Path.Combine(imgPath, imgFileName)));
                         }
                     }
                 }
                 else
                 {
-                    category.Image = fc["CurrentFile"];
+                    model.Category.Image = fc["CurrentFile"];
                 }
-                category.Url = HtmlHelpers.ConvertToUnSign(null, category.Url ?? category.CategoryName);
-                _unitOfWork.ProductCategoryRepository.Update(category);
+                model.Category.Url = HtmlHelpers.ConvertToUnSign(null, model.Category.Url ?? model.Category.CategoryName);
+
+                var groupProperty = fc["GroupProperty"];
+                if (!string.IsNullOrEmpty(groupProperty))
+                {
+                    model.Category.GroupPropertyOfProductId = Convert.ToInt32(groupProperty);
+                }
+                else
+                {
+                    model.Category.GroupPropertyOfProductId = null;
+                }
+                _unitOfWork.ProductCategoryRepository.Update(model.Category);
                 _unitOfWork.Save();
+
+                var count = _unitOfWork.ProductCategoryRepository.GetQuery(a => a.Url == model.Category.Url).Count();
+                if (count > 1)
+                {
+                    model.Category.Url += "-" + model.Category.Id;
+                    _unitOfWork.Save();
+                }
+
                 return RedirectToAction("ProductCategory", new { result = "update" });
             }
             ViewBag.RootCats = new SelectList(ProductCategories.Where(a => a.ParentId == null), "Id", "CategoryName");
-            return View(category);
+            model.GroupPropertyOfProducts =
+                _unitOfWork.GroupPropertyOfProductRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
+            return View(model);
         }
         [HttpPost]
         public bool DeleteCategory(int catId = 0)
@@ -154,12 +203,12 @@ namespace banruou.Controllers
         }
         #endregion
 
-        #region product
-        public ActionResult ListProduct(int? page, string name, int? parentId, int catId = 0, string sort = "date-desc", string result = "")
+        #region Product
+        public ActionResult ListProduct(int? page, string name, int? parentId, int? catId, string sort, string result = "")
         {
             ViewBag.Result = result;
             var pageNumber = page ?? 1;
-            const int pageSize = 15;
+            const int pageSize = 20;
             var projects = _unitOfWork.ProductRepository.GetQuery().AsNoTracking();
             if (catId > 0)
             {
@@ -206,10 +255,11 @@ namespace banruou.Controllers
         }
         public ActionResult Product()
         {
+            var count = _unitOfWork.ProductRepository.GetQuery().Count();
             var model = new InsertProjectViewModel
             {
-                Product = new Product { Sort = 1, Active = true },
-                Categories = ProductCategories,
+                Product = new Product { Sort = count + 1, Active = true },
+                Categories = ProductCategories
             };
             return View(model);
         }
@@ -219,18 +269,52 @@ namespace banruou.Controllers
             if (ModelState.IsValid)
             {
                 model.Product.ListImage = fc["Pictures"];
-                model.Product.ProductCategoryId = model.CategoryId ?? model.ParentId;
+                //model.Product.ProductCategoryId = model.CategoryId ?? model.ParentId;
                 model.Product.Url = HtmlHelpers.ConvertToUnSign(null, model.Product.Url ?? model.Product.Name);
+                _unitOfWork.ProductRepository.Insert(model.Product);
+                _unitOfWork.Save();
+
+                var categoryIds = fc.GetValues("CategoryIds");
+                if (categoryIds != null)
+                {
+                    foreach (var id in categoryIds)
+                    {
+                        var categoryId = Convert.ToInt32(id);
+                        var property = _unitOfWork.ProductCategoryRepository.GetById(categoryId);
+                        property?.Products.Add(model.Product);
+                    }
+                    _unitOfWork.Save();
+                }
+
 
                 var count = _unitOfWork.ProductRepository.GetQuery(a => a.Url == model.Product.Url).Count();
                 if (count > 1)
                 {
-                    model.Product.Url += "-" + DateTime.Now.Millisecond;
+                    model.Product.Url += "-" + model.Product.Id;
                     _unitOfWork.Save();
                 }
 
-                _unitOfWork.ProductRepository.Insert(model.Product);
-                _unitOfWork.Save();
+                var propertyProducts = fc.GetValues("PropertyOfProducts");
+                var propertyNames = fc.GetValues("PropertyNames");
+                if (propertyProducts != null && propertyNames != null)
+                {
+                    for (var i = 0; i < propertyProducts.Length; i++)
+                    {
+                        var pp = propertyProducts[i];
+                        var pn = propertyNames[i];
+
+                        //if (string.IsNullOrEmpty(pn)) continue;
+
+                        var newPropery = new PropertyAndProductDetail
+                        {
+                            ProductId = model.Product.Id,
+                            PropertyOfProductId = Convert.ToInt32(pp),
+                            Name = pn
+                        };
+                        _unitOfWork.PropertyAndProductDetailRepository.Insert(newPropery);
+                    }
+                    _unitOfWork.Save();
+                }
 
                 return RedirectToAction("ListProduct", new { result = "success" });
             }
@@ -248,14 +332,15 @@ namespace banruou.Controllers
             {
                 Product = product,
                 Categories = ProductCategories,
-                ParentId = product.ProductCategory.ParentId ?? product.ProductCategoryId,
-                ProjectCategoryList = ParentProductCategoryList,
-                CategoryId = product.ProductCategoryId,
+                //ParentId = product.ProductCategory.ParentId ?? product.ProductCategoryId,
+                //ProjectCategoryList = ParentProductCategoryList,
+                //CategoryId = product.ProductCategoryId,
+                GroupPropertyOfProducts = _unitOfWork.GroupPropertyOfProductRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort))
             };
-            if (model.ParentId > 0)
-            {
-                model.ChildCategoryList = new SelectList(ProductCategories.Where(a => a.ParentId == model.ParentId), "Id", "CategoryName");
-            }
+            //if (model.ParentId > 0)
+            //{
+            //    model.ChildCategoryList = new SelectList(ProductCategories.Where(a => a.ParentId == model.ParentId), "Id", "CategoryName");
+            //}
             return View(model);
         }
         [HttpPost, ValidateInput(false)]
@@ -270,7 +355,7 @@ namespace banruou.Controllers
             {
                 product.ListImage = fc["Pictures"] == "" ? null : fc["Pictures"];
                 product.Url = HtmlHelpers.ConvertToUnSign(null, model.Product.Url ?? model.Product.Name);
-                product.ProductCategoryId = model.CategoryId ?? model.ParentId;
+                //product.ProductCategoryId = model.CategoryId ?? model.ParentId;
                 product.Name = model.Product.Name;
                 product.Body = model.Product.Body;
                 product.Active = model.Product.Active;
@@ -284,20 +369,56 @@ namespace banruou.Controllers
                 product.Material = model.Product.Material;
                 product.Price = model.Product.Price;
                 product.Hot = model.Product.Hot;
-                var count = _unitOfWork.ProductRepository.GetQuery(m => m.Url == product.Url).Count();
-                if (count > 1)
+
+                if (product.ProductCategories.Any())
                 {
-                    product.Url = model.Product.Url += "-" + model.Product.Id;
-                    _unitOfWork.Save();
+                    product.ProductCategories.Clear();
+                }
+                if (product.PropertyAndProductDetails.Any())
+                {
+                    product.PropertyAndProductDetails.Clear();
                 }
                 _unitOfWork.Save();
+                var categoryIds = fc.GetValues("CategoryIds");
+                if (categoryIds != null)
+                {
+                    foreach (var id in categoryIds)
+                    {
+                        var categoryId = Convert.ToInt32(id);
+                        var property = _unitOfWork.ProductCategoryRepository.GetById(categoryId);
+                        product.ProductCategories.Add(property);
+                    }
+                    _unitOfWork.Save();
+                }
+                var count = _unitOfWork.ProductRepository.GetQuery(a => a.Url == model.Product.Url).Count();
+                if (count > 1)
+                {
+                    product.Url += "-" + product.Id;
+                    _unitOfWork.Save();
+                }
+                var propertyProducts = fc.GetValues("PropertyOfProducts");
+                var propertyNames = fc.GetValues("PropertyNames");
+                if (propertyProducts != null && propertyNames != null)
+                {
+                    for (var i = 0; i < propertyProducts.Length; i++)
+                    {
+                        var pp = propertyProducts[i];
+                        var pn = propertyNames[i];
+
+                        //if (string.IsNullOrEmpty(pn)) continue;
+
+                        var newPropery = new PropertyAndProductDetail
+                        {
+                            ProductId = model.Product.Id,
+                            PropertyOfProductId = Convert.ToInt32(pp),
+                            Name = pn
+                        };
+                        _unitOfWork.PropertyAndProductDetailRepository.Insert(newPropery);
+                    }
+                    _unitOfWork.Save();
+                }
 
                 return RedirectToAction("ListProduct", new { result = "update" });
-            }
-            model.ProjectCategoryList = ParentProductCategoryList;
-            if (model.ParentId > 0)
-            {
-                model.ChildCategoryList = new SelectList(ProductCategories.Where(a => a.ParentId == model.ParentId), "Id", "CategoryName");
             }
             return View(model);
         }
@@ -339,8 +460,134 @@ namespace banruou.Controllers
             _unitOfWork.Save();
             return true;
         }
+
+        public PartialViewResult GetPropertyByGroup(int groupId)
+        {
+            var groupProperty = _unitOfWork.ProductCategoryRepository.GetById(groupId);
+            return PartialView(groupProperty);
+        }
         #endregion
 
+        #region GroupProperty
+        public ActionResult PropertyOfProduct(int? id, int result = 0)
+        {
+            var model = new PropertyOfProduct
+            {
+                Sort = 1,
+                Active = true
+            };
+            if (id.HasValue)
+            {
+                model = _unitOfWork.PropertyOfProductRepository.GetById(id);
+            }
+            ViewBag.Result = result;
+            return View(model);
+        }
+        [HttpPost]
+        public ActionResult PropertyOfProduct(PropertyOfProduct model)
+        {
+            if (ModelState.IsValid)
+            {
+                _unitOfWork.PropertyOfProductRepository.AddOrUpdate(model);
+                _unitOfWork.Save();
+                return RedirectToAction("PropertyOfProduct", new { id = (int?)null, result = 1 });
+            }
+            return View(model);
+        }
+        [ChildActionOnly]
+        public PartialViewResult PropertyOfProductList()
+        {
+            var properties = _unitOfWork.PropertyOfProductRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
+            return PartialView(properties);
+        }
+        [HttpPost]
+        public bool DeletePropertyOfProduct(int id)
+        {
+            var propertyOfProduct = _unitOfWork.PropertyOfProductRepository.GetById(id);
+            if (propertyOfProduct == null)
+            {
+                return false;
+            }
+
+            _unitOfWork.PropertyOfProductRepository.Delete(propertyOfProduct);
+            _unitOfWork.Save();
+            return true;
+        }
+
+        public ActionResult GroupPropertyOfProduct(int? id, int result = 0)
+        {
+            var model = new AddOrUpdateGroupPropertyViewModel
+            {
+                GroupPropertyOfProduct = new GroupPropertyOfProduct
+                {
+                    Sort = 1,
+                    Active = true,
+                    PropertyOfProducts = new List<PropertyOfProduct>()
+                }
+            };
+
+            if (id.HasValue)
+            {
+                model.GroupPropertyOfProduct = _unitOfWork.GroupPropertyOfProductRepository.GetById(id);
+            }
+
+            model.PropertyOfProducts = _unitOfWork.PropertyOfProductRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
+
+            return View(model);
+        }
+        [HttpPost]
+        public ActionResult GroupPropertyOfProduct(AddOrUpdateGroupPropertyViewModel model, FormCollection fc)
+        {
+            if (ModelState.IsValid)
+            {
+                _unitOfWork.GroupPropertyOfProductRepository.AddOrUpdate(model.GroupPropertyOfProduct);
+                _unitOfWork.Save();
+
+                var propertyIds = fc.GetValues("PropertyId");
+                if (propertyIds != null)
+                {
+                    var group = _unitOfWork.GroupPropertyOfProductRepository.GetById(model.GroupPropertyOfProduct.Id);
+                    group.PropertyOfProducts?.Clear();
+
+                    foreach (var propertyId in propertyIds)
+                    {
+                        var id = Convert.ToInt32(propertyId);
+                        var property = _unitOfWork.PropertyOfProductRepository.GetById(id);
+                        if (property == null) continue;
+                        property.GroupPropertyOfProducts.Add(group);
+                        _unitOfWork.Save();
+                    }
+                }
+
+                return RedirectToAction("PropertyOfProduct", new { id = (int?)null, result = 1 });
+            }
+            model.PropertyOfProducts = _unitOfWork.PropertyOfProductRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
+            return View(model);
+        }
+
+        [ChildActionOnly]
+        public PartialViewResult GroupPropertyOfProductList()
+        {
+            var groupPropertyOfProducts = _unitOfWork.GroupPropertyOfProductRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
+            return PartialView(groupPropertyOfProducts);
+        }
+        [HttpPost]
+        public bool DeletePropertyAndGroup(int propertyId, int group)
+        {
+            try
+            {
+                var groupProperty = _unitOfWork.GroupPropertyOfProductRepository.GetById(group);
+                var property = _unitOfWork.PropertyOfProductRepository.GetById(propertyId);
+                groupProperty.PropertyOfProducts.Remove(property);
+                _unitOfWork.Save();
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
+        #endregion
 
         public JsonResult GetProductCategory(int? parentId)
         {
@@ -352,6 +599,12 @@ namespace banruou.Controllers
             var childCategories = ProductCategories.Where(a => a.ParentId == parentId);
             return Json(childCategories.Select(a => new { a.Id, a.CategoryName }), JsonRequestBehavior.AllowGet);
         }
+        public JsonResult GetProperties(int? parentId)
+        {
+            var categories = _unitOfWork.ProductCategoryRepository.Get(a => a.ParentId == parentId);
+            return Json(categories.Select(a => new { a.Id, Name = a.CategoryName }), JsonRequestBehavior.AllowGet);
+        }
+
         protected override void Dispose(bool disposing)
         {
             _unitOfWork.Dispose();

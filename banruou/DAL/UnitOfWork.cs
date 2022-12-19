@@ -1,5 +1,6 @@
 ﻿using banruou.Models;
 using System;
+
 namespace banruou.DAL
 {
     public class UnitOfWork : IDisposable
@@ -15,11 +16,15 @@ namespace banruou.DAL
         private GenericRepository<Article> _ArticleRepository;
         private GenericRepository<Order> _OrderRepository;
         private GenericRepository<Contact> _contactRepository;
+        private GenericRepository<PropertyOfProduct> _propertyOfProductRepository;
+        private GenericRepository<GroupPropertyOfProduct> _groupPropertyOfProductRepository;
+        private GenericRepository<PropertyAndProductDetail> _propertyAndProductDetailRepository;
 
-
+        public GenericRepository<PropertyAndProductDetail> PropertyAndProductDetailRepository => _propertyAndProductDetailRepository ?? (_propertyAndProductDetailRepository = new GenericRepository<PropertyAndProductDetail>(_context));
+        public GenericRepository<GroupPropertyOfProduct> GroupPropertyOfProductRepository => _groupPropertyOfProductRepository ?? (_groupPropertyOfProductRepository = new GenericRepository<GroupPropertyOfProduct>(_context));
+        public GenericRepository<PropertyOfProduct> PropertyOfProductRepository => _propertyOfProductRepository ?? (_propertyOfProductRepository = new GenericRepository<PropertyOfProduct>(_context));
         public GenericRepository<Contact> ContactRepository =>
             _contactRepository ?? (_contactRepository = new GenericRepository<Contact>(_context));
-
         public GenericRepository<Admin> AdminRepository =>
             _adminRepository ?? (_adminRepository = new GenericRepository<Admin>(_context));
         public GenericRepository<ConfigSite> ConfigSiteRepository =>

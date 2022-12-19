@@ -1,7 +1,8 @@
 ﻿@model banruou.ViewModel.CategoryProduct
 @using PagedList.Mvc
 @{
-    ViewBag.Title = "AllProduct";
+    ViewBag.Title = Model.ProductCategory.TitleMeta ?? Model.ProductCategory.CategoryName;
+    ViewBag.Description = Model.ProductCategory.DescriptionMeta ?? Model.ProductCategory.Description;
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @Html.Action("Header")
@@ -14,43 +15,41 @@
         }
         <li class="breadcrumb-item active" aria-current="page">@Model.ProductCategory.CategoryName</li>
     </ol>
-    <div class="list-item">
-        <div class="row">
-            <div class="col-lg-3">
-                <div class="list-category">
-                    @Html.Action("GetNavProduct", new{catId = Model.ProductCategory.Id})
-                </div>
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="list-category">
+                @Html.Action("GetNavProduct", new { catId = Model.ProductCategory.Id })
             </div>
-            @if (Model.Products.Any())
-            {
-                <div class="col-lg-9">
-                    <div class="gift-title text-center">
-                        <h1>@Model.ProductCategory.CategoryName</h1>
-                    </div>
+        </div>
+        @if (Model.Products.Any())
+        {
+            <div class="col-lg-9">
+                <div class="gift-title text-center">
+                    <h1>@Model.ProductCategory.CategoryName</h1>
+                </div>
 
-                    <div class="row mt-lg-4 mt-3">
-                        @foreach (var item in Model.Products)
-                        {
-                            <div class="col-lg-4 col-md-4 col-6">
-                                @Html.Partial("_itemProduct", item)
-                            </div>
-                        }
-                    </div>
-                    @if (Model.Products.PageCount > 1)
+                <div class="row mt-lg-4 mt-3">
+                    @foreach (var item in Model.Products)
                     {
-                        <div class="text-center">
-                            @Html.PagedListPager(Model.Products, Page => Url.Action("CategoryProduct", new { Page }))
+                        <div class="col-lg-4 col-md-4 col-6">
+                            @Html.Partial("_itemProduct", item)
                         </div>
                     }
                 </div>
-            }
-            else
-            {
-                <div class="col-lg-9 mb-5 mt-5">
-                    <p class="alert alert-success small">Nội dung hiện chưa được cập nhật. Vui lòng quay lại sau !!!!</p>
-                </div>
-            }
-        </div>
+                @if (Model.Products.PageCount > 1)
+                {
+                    <div class="text-center">
+                        @Html.PagedListPager(Model.Products, Page => Url.Action("CategoryProduct", new { Page }))
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="col-lg-9 mb-5 mt-5">
+                <p class="alert alert-success small">Nội dung hiện chưa được cập nhật. Vui lòng quay lại sau !!!!</p>
+            </div>
+        }
     </div>
 </div>
 @Html.Action("Footer")

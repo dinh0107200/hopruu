@@ -1,0 +1,4 @@
+user-agent: *
+allow : /
+
+sitemap: https://hopruou.com.vn/sitemap.xml

@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     @*<meta name="viewport" content="width=device-width" />*@
     <title>@ViewBag.Title</title>
-    <link rel="shortcut icon" href="~/favicon.png">
+    <link rel="shortcut icon" href="~/favicon.ico">
     @Styles.Render("~/Content/admincss", "~/Content/themes/base/css")
     <link href="~/Scripts/multi-upload/jquery.fileupload.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -17,10 +17,10 @@
             <div class="app-header__logo">
                 @if (config.Image != null)
                 {
-                    <a href="@Url.Action("Index","Home")" target="_blank"><img class="logo-admin" src="@Path.Combine("/images/configs/", config.Image)" alt="logo" /></a> }
-                else
-                {
-                    <a href="@Url.Action("Index","Home")" target="_blank"><img class="logo-admin" src="~/Content/images/logo-icon/logo.png" /></a>}
+                    <a href="@Url.Action("Index", "Home")" target="_blank">
+                        <img src="@Path.Combine("/images/configs/", config.Image)" class="logo-admin" />
+                    </a>
+                }
                 <a id="btn-show" onclick="myFunction()"><i class="fal fa-bars"></i><i class="fal fa-times"></i></a>
             </div>
             <div class="app-header__content">
@@ -57,6 +57,8 @@
                             <div>@Html.ActionLink("Đổi mật khẩu", "ChangePassword", "Vcms", null, new { @class = "text_link" })</div>
                             <div>@Html.ActionLink("Quản lý admin", "CreateAdmin", "Vcms", null, new { @class = "text_link" })</div>
                             <div>@Html.ActionLink("Thông tin chung", "ConfigSite", "Vcms", null, new { @class = "text_link" })</div>
+                            <div>@Html.ActionLink("Cấu hình Redirect 301", "RedirectConfig", "Vcms", null, new { @class = "text_link" })</div>
+                            <div>@Html.ActionLink("Cập nhật Robots File", "UpdateRobot", "Vcms", null, new { @class = "text_link" })</div>
                             <div>@Html.ActionLink("Đăng xuất", "Logout", "Vcms", null, new { @class = "text_link" })</div>
                         </div>
                     </li>
@@ -74,6 +76,7 @@
                             <div>@Html.ActionLink("Danh mục sản phẩm", "ProductCategory", "Product", null, new { @class = "text_link" })</div>
                             <div>@Html.ActionLink("Thêm mới sản phẩm", "Product", "Product", null, new { @class = "text_link" })</div>
                             <div>@Html.ActionLink("Danh sách sản phẩm", "ListProduct", "Product", null, new { @class = "text_link" })</div>
+                            <div>@Html.ActionLink("Quản lý thuộc tính", "GroupPropertyOfProduct", "Product", null, new { @class = "text_link" })</div>
                         </div>
                     </li>
                     <li data-id="5">
@@ -83,11 +86,11 @@
                         </div>
                     </li>
                     @*<li data-id="5">
-                        <a class="root"><i class="fal fa-question-circle icon"></i><span>Quản lý Câu hỏi</span><i class="fas fa-caret-down"></i></a>
-                        <div class="sub hidden">
-                            <div>@Html.ActionLink("Thêm mới câu hỏi", "Question", "Vcms", null, new { @class = "text_link" })</div>
-                        </div>
-                    </li>*@
+                            <a class="root"><i class="fal fa-question-circle icon"></i><span>Quản lý Câu hỏi</span><i class="fas fa-caret-down"></i></a>
+                            <div class="sub hidden">
+                                <div>@Html.ActionLink("Thêm mới câu hỏi", "Question", "Vcms", null, new { @class = "text_link" })</div>
+                            </div>
+                        </li>*@
                     <li data-id="8">
                         <a class="root"><i class="fal fa-file-edit icon"></i><span>Quản lý Quảng cáo</span><i class="fas fa-caret-down"></i></a>
                         <div class="sub hidden">

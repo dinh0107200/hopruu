@@ -1,4 +1,5 @@
 ﻿@model banruou.ViewModel.AllArticleViewModel
+@using System.Data
 @using PagedList.Mvc
 @{
     ViewBag.Title = "Tất cả bài viết";
@@ -12,7 +13,7 @@
         <li class="breadcrumb-item active">Tin tức</li>
     </ul>
 
-    <div class="row paddig-section">
+    <div class="row">
         <div class="col-md-3">
             <div class="list-category">
                 @Html.Action("GetNavMenu")
@@ -25,9 +26,12 @@
                     <div class="col-md-4">
                         <div class="feed-item">
                             <a href="@Url.Action("ArticleDetail", "Home", new { url = item.Url })">
-                                <div class="new-feed-item-img">
-                                    <img src="@Path.Combine("/images/articles/", item.Image)" alt="">
-                                </div>
+                                @if (item.Image != null)
+                                {
+                                    <div class="new-feed-item-img">
+                                        <img src="@Path.Combine("/images/articles/", item.Image)" alt="@item.Subject">
+                                    </div>
+                                }
                                 <div class="new-feed-item-name">
                                     <p>@item.Subject</p>
                                 </div>

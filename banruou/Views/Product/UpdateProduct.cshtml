@@ -2,7 +2,7 @@
 @{ ViewBag.Title = "Cập nhật sản phẩm";
     Layout = "~/Views/Shared/_AdminLayout.cshtml"; }
 <h2>Cập nhật sản phẩm</h2>
-<a class="btn quick-link" href="@Url.Action("ListProduct")"><i class="far fa-list mr-1"></i> Danh sách dự án</a>
+<a class="btn quick-link" href="@Url.Action("ListProduct")"><i class="far fa-list mr-1"></i> Danh sách sản phẩm</a>
 <div class="box_content">
     @using (Html.BeginForm("UpdateProduct", "Product", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
@@ -12,14 +12,14 @@
             <tr>
                 <td class="form_name">@Html.LabelFor(model => model.Product.ProductCategoryId)</td>
                 <td class="form_text">
-                    <select name="CategoryId" class="form_control w300" required="">
+                    <select name="CategoryIds" class="form_control w300" required="" onchange="loadProperty(this.value)">
                         <option value="">Danh mục sản phẩm</option>
                         @foreach (var category in Model.Categories.Where(a => a.ParentId == null))
                         {
-                            <option value="@category.Id" @if (category.Id == Model.Product.ProductCategoryId) { @Html.Raw("selected='selected'") }>@category.CategoryName</option>
+                            <option value="@category.Id" @if (Model.Product.ProductCategories.Any(c=>c.Id == category.Id)) { @Html.Raw("selected='selected'") }>@category.CategoryName</option>
                             foreach (var child in Model.Categories.Where(a => a.ParentId == category.Id))
                             {
-                                <option value="@child.Id" @if (child.Id == Model.Product.ProductCategoryId) { @Html.Raw("selected='selected'") }> -- @child.CategoryName</option>
+                                <option value="@child.Id" @if (Model.Product.ProductCategories.Any(c=>c.Id == child.Id)) { @Html.Raw("selected='selected'") }> -- @child.CategoryName</option>
                             }
                         }
                     </select>
@@ -72,7 +72,7 @@
                 <td class="form_name">@Html.LabelFor(model => model.Product.Price)</td>
                 <td class="form_text">@Html.EditorFor(model => model.Product.Price)</td>
             </tr>
-            <tr>
+            @*<tr>
                 <td class="form_name">@Html.LabelFor(model => model.Product.Country)</td>
                 <td class="form_text">@Html.EditorFor(model => model.Product.Country)</td>
             </tr>
@@ -86,10 +86,28 @@
             <tr>
                 <td class="form_name">@Html.LabelFor(model => model.Product.Material)</td>
                 <td class="form_text">@Html.EditorFor(model => model.Product.Material)</td>
-            </tr>
+            </tr>*@
             <tr>
                 <td class="form_name">@Html.LabelFor(model => model.Product.Body)</td>
                 <td class="form_text">@Html.EditorFor(model => model.Product.Body)</td>
+            </tr>
+            <tr>
+                <td class="form_name">Nhóm thuộc tính</td>
+                <td class="form_text">
+                    <div class="row" id="propertyList">
+                        @if (Model.Product.PropertyAndProductDetails.Any())
+                        {
+                            foreach (var propertyOfProduct in Model.Product.PropertyAndProductDetails)
+                            {
+                                <div class="col-6">
+                                    <label>@propertyOfProduct.PropertyOfProduct.Name</label>
+                                    <input type="text" class="form_control w300" name="PropertyNames" value="@propertyOfProduct.Name" />
+                                    <input type="hidden" name="PropertyOfProducts" value="@propertyOfProduct.PropertyOfProductId" />
+                                </div>
+                            }
+                        }
+                    </div>
+                </td>
             </tr>
             <tr>
                 <td class="form_name">@Html.LabelFor(model => model.Product.Url)</td>
@@ -181,6 +199,12 @@
             if (confirm('Bạn có chắc xóa ảnh này?')) {
                 $('#' + divid).parent().fadeOut().remove();
             }
+        }
+
+        function loadProperty(id) {
+            $.get("/Product/GetPropertyByGroup", { groupId: id }, function (data) {
+                $("#propertyList").html(data);
+            });
         }
     </script>
 }

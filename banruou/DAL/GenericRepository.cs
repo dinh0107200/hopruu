@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Web;
 
 namespace banruou.DAL
 {
@@ -85,6 +85,11 @@ namespace banruou.DAL
         public virtual void Insert(T entity)
         {
             DbSet.Add(entity);
+        }
+
+        public virtual void AddOrUpdate(T entity)
+        {
+            DbSet.AddOrUpdate(entity);
         }
 
         public virtual void Delete(object id)

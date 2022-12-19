@@ -12,6 +12,7 @@ namespace banruou
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));
+
             bundles.Add(new ScriptBundle("~/bundles/jqueryui").Include(
                         "~/Scripts/jquery-ui-{version}.js"));
 
@@ -39,8 +40,7 @@ namespace banruou
                       "~/Content/jquery.toast.css",
                       "~/Content/jquery.fancybox.css",
                       "~/Content/toctoc.css",
-                      "~/Content/layout.css"
-                      ));
+                      "~/Content/layout.css"));
 
             bundles.Add(new StyleBundle("~/Content/admincss").Include(
                       "~/Content/bootstrap.css",
@@ -49,8 +49,7 @@ namespace banruou
                       "~/Content/PagedList.css",
                       "~/Content/jquery.fancybox.css",
                       "~/Content/tagmanager.css",
-                      "~/Content/adminSite.css"
-                      ));
+                      "~/Content/adminSite.css"));
 
             bundles.Add(new StyleBundle("~/Content/themes/base/css").Include(
                       "~/Content/themes/base/*.css"));

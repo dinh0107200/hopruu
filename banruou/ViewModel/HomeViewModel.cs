@@ -24,11 +24,9 @@ namespace banruou.ViewModel
     }
     public class AllProductViewModel
     {
-        public PagedList.IPagedList<Product> Products { get; set; }
+        public IPagedList<Product> Products { get; set; }
         //public IEnumerable<Product> Products { get; set; }
         public IEnumerable<ProductCategory> ProductCategories { get; set; }
-        public int ProductCount { get; set; }
-        public int CountCategory { get; set; }
     }
     public class ProductViewModel
     {

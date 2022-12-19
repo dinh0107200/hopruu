@@ -34,6 +34,10 @@ namespace banruou.Models
         [Display(Name = "Nội dung"), UIHint("EditorBox")]
         public string Body { get; set; }
 
+        [Display(Name = "Nhóm thuộc tính")]
+        public int? GroupPropertyOfProductId { get; set; }
+        public virtual GroupPropertyOfProduct GroupPropertyOfProduct { get; set; }
+
         public virtual ICollection<Product> Products { get; set; }
         [ForeignKey("ParentId")]
         public virtual ProductCategory ParentCategory { get; set; }

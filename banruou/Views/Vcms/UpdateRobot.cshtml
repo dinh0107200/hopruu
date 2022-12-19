@@ -1,0 +1,30 @@
+﻿
+@{
+    ViewBag.Title = "Cập nhật file Robots";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Cập nhật file Robots</h2>
+<div class="box_content mt-0">
+    @using (Html.BeginForm())
+    {
+        if (ViewBag.Result == 1)
+        {
+            <div class="alert alert-success">Cập nhật thành công</div>
+        }
+        <table class="form_table">
+            <tr>
+                <td class="form_name w100" >Nội dung</td>
+                <td class="form_text">
+                    <textarea name="robots" class="form_control" rows="6">@ViewBag.Robot</textarea>
+                </td>
+            </tr>
+            <tr>
+                <td class="form_name"></td>
+                <td class="form_text">
+                    <input type="submit" value="Cập nhật" class="btn quick-link"/>
+                </td>
+            </tr>
+        </table>
+    }
+</div>

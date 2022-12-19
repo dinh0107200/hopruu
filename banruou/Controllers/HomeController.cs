@@ -1,4 +1,5 @@
 ﻿using banruou.DAL;
+using banruou.Filter;
 using banruou.Models;
 using banruou.ViewModel;
 using Helpers;
@@ -46,6 +47,7 @@ namespace banruou.Controllers
             };
             return View(model);
         }
+        [RedirectFilter]
         [Route("{url}.html", Order = 1)]
         public ActionResult ProductDetail(string url)
         {
@@ -57,40 +59,44 @@ namespace banruou.Controllers
             var model = new ProductDetailViewModel
             {
                 Product = product,
-                Products = _unitOfWork.ProductRepository.GetQuery(p =>
-                p.Active && (p.ProductCategoryId == product.ProductCategoryId && p.Id != product.Id), q => q.OrderByDescending(a => a.CreateDate), 12)
+                Products = _unitOfWork.ProductRepository.GetQuery(p => p.Active && p.ProductCategoryId == product.ProductCategoryId && p.Id != product.Id, q => q.OrderByDescending(a => a.Sort), 12)
             };
             return View(model);
         }
+        [RedirectFilter]
         [Route("san-pham")]
-        public ActionResult AllProduct(string url, int? Page)
+        public ActionResult AllProduct(int? page)
         {
-            var pageNumber = Page ?? 1;
-            var category = _unitOfWork.ProductCategoryRepository.GetQuery(a => a.Url == url || a.CategoryActive);
-            var product = _unitOfWork.ProductRepository.GetQuery(p => p.Active, o => o.OrderByDescending(p => p.CreateDate));
+            var pageNumber = page ?? 1;
+            //var categories = _unitOfWork.ProductCategoryRepository.GetQuery(a => a.Url == url || a.CategoryActive);
+            var product = _unitOfWork.ProductRepository.GetQuery(p => p.Active, o => o.OrderByDescending(p => p.Sort));
             var model = new AllProductViewModel
             {
                 Products = product.ToPagedList(pageNumber, 12),
-                ProductCategories = category,
-                ProductCount = product.Count(),
-                CountCategory = category.Count(),
+                //ProductCategories = categories,
             };
             return View(model);
         }
+        [RedirectFilter]
         [Route("{url:regex(^(?!.*(vcms|uploader|article|banner|contact)).*$)}", Order = 2)]
         public ActionResult CategoryProduct(string url, int? page)
         {
             var pageNumber = page ?? 1;
-            var category = _unitOfWork.ProductCategoryRepository.Get(a => a.Url == url && a.CategoryActive).FirstOrDefault();
-            var product = _unitOfWork.ProductRepository.Get(a => a.ProductCategory.CategoryName == category.CategoryName && a.Active);
+            var category = _unitOfWork.ProductCategoryRepository.GetQuery(a => a.Url == url && a.CategoryActive).FirstOrDefault();
+            if (category == null)
+            {
+                return RedirectToAction("AllProduct");
+            }
+            var product = _unitOfWork.ProductRepository.GetQuery(a => a.ProductCategoryId == category.Id && a.Active, q => q.OrderByDescending(a => a.Sort));
             var model = new CategoryProduct
             {
                 ProductCategory = category,
-                Products = product.ToPagedList(pageNumber, 12),
+                Products = product.ToPagedList(pageNumber, 12)
             };
             return View(model);
         }
-        public PartialViewResult GetNavMenu(string url)
+        [ChildActionOnly]
+        public PartialViewResult GetNavMenu()
         {
             var model = new GetNavMenu
             {
@@ -108,22 +114,24 @@ namespace banruou.Controllers
             };
             return PartialView(model);
         }
+        [RedirectFilter]
         [Route("blogs/{url}", Order = 3)]
         public ActionResult ShowArtilceCategory(string url)
         {
             var category = _unitOfWork.ArticleCategoryRepository.Get(a => a.Url == url && a.CategoryActive).FirstOrDefault();
-            var articles = _unitOfWork.ArticleRepository.Get(a => a.ArticleCategory.CategoryName == category.CategoryName && a.Active);
             if (category == null)
             {
                 return RedirectToAction("Index");
             }
+            var articles = _unitOfWork.ArticleRepository.GetQuery(a => a.ArticleCategoryId == category.Id && a.Active, q => q.OrderByDescending(a => a.CreateDate));
             var model = new ShowArtilceCategory
             {
                 ArticleCategory = category,
-                Articles = articles,
+                Articles = articles
             };
             return View(model);
         }
+        [RedirectFilter]
         [Route("blog/{url}", Order = 2)]
         public ActionResult ArticleCategory(int? page, string url)
         {
@@ -132,9 +140,7 @@ namespace banruou.Controllers
             {
                 return RedirectToAction("Index");
             }
-            var articles = _unitOfWork.ArticleRepository.GetQuery(
-                a => a.Active && (a.ArticleCategoryId == category.Id || a.ArticleCategory.ParentId == category.Id),
-                q => q.OrderByDescending(a => a.CreateDate));
+            var articles = _unitOfWork.ArticleRepository.GetQuery(a => a.Active && (a.ArticleCategoryId == category.Id || a.ArticleCategory.ParentId == category.Id), q => q.OrderByDescending(a => a.CreateDate));
             var pageNumber = page ?? 1;
             if (articles.Count() == 1)
             {
@@ -145,7 +151,7 @@ namespace banruou.Controllers
             {
                 Category = category,
                 Articles = articles.ToPagedList(pageNumber, 12),
-                ArticleCount = articles.Count(),
+                //ArticleCount = articles.Count(),
             };
 
             if (category.ParentId != null)
@@ -154,10 +160,10 @@ namespace banruou.Controllers
             }
             return View(model);
         }
-        public PartialViewResult GetAllProduct(int? page, int? catId, string url)
+        public PartialViewResult GetAllProduct(int? page, int? catId)
         {
             var pageNumber = page ?? 1;
-            var product = _unitOfWork.ProductRepository.GetQuery(a => a.Active, o => o.OrderByDescending(a => a.CreateDate)).AsNoTracking();
+            var product = _unitOfWork.ProductRepository.GetQuery(a => a.Active, o => o.OrderByDescending(a => a.Sort)).AsNoTracking();
             if (catId > 0)
             {
                 product = product.Where(p => p.ProductCategoryId == catId);
@@ -165,10 +171,11 @@ namespace banruou.Controllers
             var model = new GetAllProductViewModel
             {
                 Products = product.ToPagedList(pageNumber, 12),
-                CatId = catId,
+                CatId = catId
             };
             return PartialView(model);
         }
+        [RedirectFilter]
         [Route("blogs")]
         public ActionResult AllArtilce(int? page)
         {
@@ -177,7 +184,7 @@ namespace banruou.Controllers
             var model = new AllArticleViewModel
             {
                 Articles = artilce.ToPagedList(pageNumber, 12),
-                ArticleCount = artilce.Count(),
+                //ArticleCount = artilce.Count(),
             };
             return View(model);
         }
@@ -196,6 +203,7 @@ namespace banruou.Controllers
             };
             return View(model);
         }
+
         public PartialViewResult Order(string url)
         {
             var product = _unitOfWork.ProductRepository.GetQuery(a => a.Url == url).FirstOrDefault();
@@ -206,28 +214,27 @@ namespace banruou.Controllers
             return PartialView(model);
         }
         [HttpPost, ValidateAntiForgeryToken]
-        public PartialViewResult Order(OrderViewModel model, string url)
+        public JsonResult Order(OrderViewModel model, string url)
         {
             var product = _unitOfWork.ProductRepository.Get(a => a.Url == url).FirstOrDefault();
             if (product == null)
             {
-                return null;
+                return Json(new { status = 1, msg = "Sản phẩm không hợp lệ" });
             }
             model.Order.NameProduct = product.Name;
             model.Order.CreateDate = DateTime.Now;
             _unitOfWork.OrderRepository.Insert(model.Order);
             _unitOfWork.Save();
+
             var body = $"<p>Tên người liên hệ: {model.Order.Name},</p>" +
                        $"<p>Số điện thoại: {model.Order.Phone},</p>" +
                        $"<p>Email: {model.Order.Email},</p>" +
                        $"<p>Nội dung: {model.Order.Discription}</p>" +
                        $"<p>Đây là hệ thống gửi email tự động, vui lòng không phản hồi lại email này.</p>";
 
-            Task.Run(() => HtmlHelpers.SendEmail("gmail", "Email liên hệ từ " + Request.Url?.Host, body,
-                ConfigSite.Email, Email, Email, Password));
+            Task.Run(() => HtmlHelpers.SendEmail("gmail", "Email đặt hàn từ " + Request.Url?.Host, body, ConfigSite.Email, Email, Email, Password));
 
-            TempData["success"] = "Gửi liên hệ thành công ! \nChúng tôi sẽ liên lạc với bạn sớm nhất có thể.";
-            return PartialView(model);
+            return Json(new { status = 0, msg = "Gửi thông tin đơn hàng thành công." });
         }
         [ChildActionOnly]
         public PartialViewResult Header()

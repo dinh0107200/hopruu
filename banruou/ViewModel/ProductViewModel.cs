@@ -1,10 +1,6 @@
-﻿using System;
+﻿using banruou.Models;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using banruou.Models;
 namespace banruou.ViewModel
 {
     public class ListProjectViewModel
@@ -25,17 +21,29 @@ namespace banruou.ViewModel
     public class InsertProjectViewModel
     {
         public Product Product { get; set; }
-        [Display(Name = "Danh mục dự án con"), Required(ErrorMessage = "Hãy chọn danh mục dự án")]
-        public int ParentId { get; set; }
-        [Display(Name = "Danh mục dự án")]
-        public int? CategoryId { get; set; }
+        //[Display(Name = "Danh mục dự án con"), Required(ErrorMessage = "Hãy chọn danh mục dự án")]
+        //public int ParentId { get; set; }
+        //[Display(Name = "Danh mục dự án")]
+        //public int? CategoryId { get; set; }
         public IEnumerable<ProductCategory> Categories { get; set; }
-        public SelectList SelectCategories { get; set; }
-        public SelectList ChildCategoryList { get; set; }
-        public SelectList ProjectCategoryList { get; set; }
+        public IEnumerable<GroupPropertyOfProduct> GroupPropertyOfProducts { get; set; }
+
         public InsertProjectViewModel()
         {
-            ChildCategoryList = new SelectList(new List<ProductCategory>(), "Id", "CategoryName");
+            //ChildCategoryList = new SelectList(new List<ProductCategory>(), "Id", "CategoryName");
         }
     }
+
+    public class InsertProductCategoryViewModel
+    {
+        public ProductCategory Category { get; set; }
+        public IEnumerable<GroupPropertyOfProduct> GroupPropertyOfProducts { get; set; }
+    }
+
+    public class AddOrUpdateGroupPropertyViewModel
+    {
+        public GroupPropertyOfProduct GroupPropertyOfProduct { get; set; }
+        public IEnumerable<PropertyOfProduct> PropertyOfProducts { get; set; }
+    }
+
 }

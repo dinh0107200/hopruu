@@ -29,13 +29,13 @@
 
 <div class="container paddig-section">
     <div class="row">
-        <div class="col-lg-6">
+        <div class="col-lg-6" data-aos="fade-right">
             @if (config.AboutImage != null)
             {
                 <img src="@Path.Combine("/images/configs/", config.AboutImage)" alt="@config.Title" class="img-fluid" />
             }
         </div>
-        <div class="col-lg-6">
+        <div class="col-lg-6" data-aos="fade-left">
             <div class="content-detail">
                 @Html.Raw(config.AboutText)
             </div>
@@ -45,7 +45,7 @@
 </div>
 <div class="bg-light">
     <div class="container paddig-section">
-        <h1 class="text-center section-name">DANH MỤC SẢN PHẨM</h1>
+        <h1 class="text-center section-name" data-aos="zoom-in">DANH MỤC SẢN PHẨM</h1>
         <div class="category-slides">
             @foreach (var category in Model.Categories.Where(a => a.ParentId == null))
             {
@@ -72,6 +72,7 @@
         <div class="container">
             @foreach (var item in Model.HomeBlocks)
             {
+                var delay = 0;
                 <div class="gift-title text-center">
                     <h2>@item.Category.CategoryName</h2>
                 </div>
@@ -79,9 +80,10 @@
                     <div class="row">
                         @foreach (var product in item.Products)
                         {
-                            <div class=" col-lg-3 col-md-4 col-6">
+                            <div class="col-lg-3 col-md-4 col-6" data-aos="fade-up" data-aos-delay="@delay">
                                 @Html.Partial("_itemProduct", product)
                             </div>
+                            delay += 200;
                         }
                     </div>
                 </div>
@@ -91,6 +93,7 @@
 }
 @if (Model.NewArticles.Any())
 {
+    var delay = 0;
     <section class="classify">
         <div class="container">
             <div class="gift-title text-center">
@@ -100,7 +103,7 @@
                 <div class="row">
                     @foreach (var item in Model.NewArticles)
                     {
-                        <div class="col-6 col-md-3">
+                        <div class="col-6 col-md-3" data-aos="fade-up" data-aos-delay="@delay" >
                             <div class="feed-item">
                                 <a href="@Url.Action("ArticleDetail", "Home", new { url = item.Url })">
                                     @if (item.Image != null)
@@ -112,6 +115,7 @@
                                 </a>
                             </div>
                         </div>
+                        delay+=200;
                     }
                 </div>
                 <div class="show-all">

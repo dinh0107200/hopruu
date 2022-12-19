@@ -4,6 +4,7 @@
         <th>STT</th>
         <th>Hình ảnh</th>
         <th>Tên danh mục</th>
+        <th>Nhóm thuộc tính</th>
         <th>Đường dẫn</th>
         <th>Hoạt động</th>
         <th>Hiện menu</th>
@@ -26,6 +27,7 @@
                         <span>No Image</span>}
                 </td>
                 <td class="left"><strong>@category.CategoryName</strong></td>
+                <td>@(category.GroupPropertyOfProduct?.Name)</td>
                 <td>@category.Url</td>
                 <td>@Html.EditorFor(a => category.CategoryActive, new { htmlAttributes = new { id = "Active" } })</td>
                 <td>@Html.EditorFor(a => category.ShowMenu, new { htmlAttributes = new { id = "Menu" } })</td>
@@ -51,6 +53,7 @@
                             <span>No Image</span>}
                     </td>
                     <td class="left"><strong><i class="fal fa-window-minimize"></i> @child.CategoryName</strong></td>
+                    <td>@(child.GroupPropertyOfProduct?.Name)</td>
                     <td>@child.Url</td>
                     <td>@Html.EditorFor(a => child.CategoryActive, new { htmlAttributes = new { id = "Active" } })</td>
                     <td>@Html.EditorFor(a => child.ShowMenu, new { htmlAttributes = new { id = "Menu" } })</td>

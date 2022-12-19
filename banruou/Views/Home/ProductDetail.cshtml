@@ -1,9 +1,10 @@
 ﻿@model banruou.ViewModel.ProductDetailViewModel
 @using banruou.Models
+@using Helpers
 @{
     var config = (ConfigSite)HttpContext.Current.Application["ConfigSite"];
     ViewBag.Title = Model.Product.TitleMeta ?? Model.Product.Name;
-    ViewBag.Description = Model.Product.DescriptionMeta ?? Model.Product.Body;
+    ViewBag.Description = Model.Product.DescriptionMeta ?? Html.CutString(Html.RemoveHtml(Model.Product.Body), 150);
     ViewBag.Canonical = Request.Url?.GetLeftPart(UriPartial.Authority) + Url.Action("ProductDetail", new { url = Model.Product.Url });
     if (Model.Product.Image != null)
     {
@@ -15,10 +16,13 @@
     <div class="container">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="@Url.Action("Index")">Trang chủ</a></li>
-            <li class="breadcrumb-item"><a href="@Url.Action( "CategoryProduct" ,"Home" , new { url = Model.Product.ProductCategory.Url })">@Model.Product.ProductCategory.CategoryName</a></li>
+            @foreach (var category in Model.Product.ProductCategories)
+            {
+                <li class="breadcrumb-item"><a href="@Url.Action( "CategoryProduct" ,"Home" , new { url = category.Url })">@category.CategoryName</a></li>
+            }
             <li class="breadcrumb-item active" aria-current="page">@Model.Product.Name</li>
         </ol>
-        <div class="row paddig-section">
+        <div class="row">
             <div class="col-lg-6">
                 @if (Model.Product.ListImage != null)
                 {
@@ -61,39 +65,49 @@
                     }
                     <hr />
                 </div>
-                <div class="product-detail-discription">
-                    @if (Model.Product.Country != null)
+                @if (Model.Product.PropertyAndProductDetails.Any())
+                {
+                    foreach (var property in Model.Product.PropertyAndProductDetails)
                     {
                         <div class="detail-discription-item text-muted">
-                            <span>Xuất sứ :</span>
-                            <span>@Model.Product.Country</span>
+                            <span>@property.PropertyOfProduct.Name</span>
+                            <span>: @property.Name</span>
                         </div>
                     }
-                    @if (Model.Product.Material != null)
-                    {
-                        <div class="detail-discription-item text-muted">
-                            <span>Chất liệu :</span>
-                            <span>@Model.Product.Material</span>
-                        </div>
-                    }
-                    @if (Model.Product.Capacity != null)
-                    {
-                        <div class="detail-discription-item text-muted">
-                            <span>Sức chứa :</span>
-                            <span>@Model.Product.Capacity</span>
-                        </div>
-                    }
-                    @if (Model.Product.Application != null)
-                    {
-                        <div class="detail-discription-item text-muted">
-                            <span>Ứng dụng :</span>
-                            <span>@Model.Product.Application</span>
-                        </div>
-                    }
-                </div>
+                }
+                @*<div class="product-detail-discription">
+                        @if (Model.Product.Country != null)
+                        {
+                            <div class="detail-discription-item text-muted">
+                                <span>Xuất sứ :</span>
+                                <span>@Model.Product.Country</span>
+                            </div>
+                        }
+                        @if (Model.Product.Material != null)
+                        {
+                            <div class="detail-discription-item text-muted">
+                                <span>Chất liệu :</span>
+                                <span>@Model.Product.Material</span>
+                            </div>
+                        }
+                        @if (Model.Product.Capacity != null)
+                        {
+                            <div class="detail-discription-item text-muted">
+                                <span>Sức chứa :</span>
+                                <span>@Model.Product.Capacity</span>
+                            </div>
+                        }
+                        @if (Model.Product.Application != null)
+                        {
+                            <div class="detail-discription-item text-muted">
+                                <span>Ứng dụng :</span>
+                                <span>@Model.Product.Application</span>
+                            </div>
+                        }
+                    </div>*@
                 <div class="row my-3">
                     <div class="col-6">
-                        <a class="btn btn-danger btn-block" data-bs-toggle="modal" href="#exampleModalToggle" role="button"> <i class="fa fa-bags-shopping"></i> Đặt mua hàng</a>
+                        <a class="btn btn-danger btn-block" data-toggle="modal" data-target="#exampleModalToggle" role="button"><i class="fa fa-bags-shopping"></i> Đặt mua hàng</a>
                     </div>
                     <div class="col-6">
                         <a href="tel:@config.Hotline" class="btn btn-primary btn-block"><i class="fa fa-headphones"></i> Liên hệ tư vấn</a>
@@ -142,6 +156,7 @@
 
 @section scripts
 {
+    @Scripts.Render("~/bundles/jqueryval")
     <script>
         productJs();
     </script>

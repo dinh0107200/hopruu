@@ -1,0 +1,66 @@
+﻿@model banruou.ViewModel.AddOrUpdateGroupPropertyViewModel
+@{
+    ViewBag.Title = "Cập nhật nhóm thuộc tính";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="row">
+    <div class="col-lg-5">
+        <h2>Nhóm thuộc tính</h2>
+        <a href="@Url.Action("PropertyOfProduct")" class="btn quick-link">Thêm thuộc tính</a>
+        <a href="@Url.Action("GroupPropertyOfProduct")" class="btn quick-link">Nhóm thuộc tính</a>
+        <div class="box_content">
+            @if (ViewBag.Result == 1)
+            {
+                <div class="alert alert-success">Cập nhật thành công</div>
+            }
+            @using (Html.BeginForm())
+            {
+                @Html.ValidationSummary(true)
+                if (Model.GroupPropertyOfProduct.Id > 0)
+                {
+                    @Html.HiddenFor(a => a.GroupPropertyOfProduct.Id)
+                }
+                <table class="form_table">
+                    <tr>
+                        <td class="form_name" style="width: 100px;">@Html.LabelFor(a => a.GroupPropertyOfProduct.Name)</td>
+                        <td class="form_text">@Html.EditorFor(a => a.GroupPropertyOfProduct.Name)</td>
+                    </tr>
+                    <tr>
+                        <td class="form_name">@Html.LabelFor(a => a.GroupPropertyOfProduct.Sort)</td>
+                        <td class="form_text">@Html.EditorFor(a => a.GroupPropertyOfProduct.Sort)</td>
+                    </tr>
+                    <tr>
+                        <td class="form_name">@Html.LabelFor(a => a.GroupPropertyOfProduct.Active)</td>
+                        <td class="form_text">@Html.EditorFor(a => a.GroupPropertyOfProduct.Active)</td>
+                    </tr>
+                    @foreach (var property in Model.PropertyOfProducts)
+                    {
+                        <tr>
+                            <td class="form_name">@property.Name</td>
+                            <td class="form_text">
+                                @if (Model.GroupPropertyOfProduct.PropertyOfProducts.Any())
+                                {
+                                    <input type="checkbox" name="PropertyId" value="@property.Id" @if (Model.GroupPropertyOfProduct.PropertyOfProducts.Any(c => c.Id == property.Id)) { @Html.Raw("checked='checked'") } />
+                                }
+                                else
+                                {
+                                    <input type="checkbox" name="PropertyId" value="@property.Id" />
+                                }
+                            </td>
+                        </tr>
+                    }
+                    <tr>
+                        <td class="form_name"></td>
+                        <td class="form_text"><input type="submit" value="Cập nhật" class="btn quick-link" /></td>
+                    </tr>
+                </table>
+            }
+        </div>
+        @Html.Action("PropertyOfProductList")
+    </div>
+    <div class="col-lg-7">
+        @Html.Action("GroupPropertyOfProductList")
+    </div>
+</div>
+

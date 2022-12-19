@@ -1,15 +1,16 @@
 ﻿@model banruou.ViewModel.ListProjectViewModel
 @using PagedList.Mvc
-@using Helpers
 @{ ViewBag.Title = "Danh sách sản phẩm";
     Layout = "~/Views/Shared/_AdminLayout.cshtml"; }
-<h2>Danh sách dự án</h2>
+<h2>Danh sách sản phẩm</h2>
 @if (ViewBag.Result == "success")
 {
-<div id="AlertBox" class="alert alert-success"><strong>Thêm mới dự án thành công</strong></div>}
+    <div id="AlertBox" class="alert alert-success"><strong>Thêm mới sản phẩm thành công</strong></div>
+}
 @if (ViewBag.Result == "update")
 {
-<div id="AlertBox" class="alert alert-success"><strong>Cập nhật dự án thành công</strong></div>}
+    <div id="AlertBox" class="alert alert-success"><strong>Cập nhật sản phẩm thành công</strong></div>
+}
 <a class="btn quick-link" href="@Url.Action("Product")"><i class="fal fa-plus-circle mr-1"></i>Thêm sản phẩm</a>
 <div class="box_content">
     <form action="@Url.Action("ListProduct")" method="get">
@@ -55,40 +56,45 @@
                 </tr>
                 @foreach (var product in Model.Products)
                 {
-    <tr data-id="@product.Id">
-        <td>
-            <input type="hidden" name="ProductId" value="@product.Id" />
-            @Html.EditorFor(a => product.Sort)
-        </td>
-        <td>
-            @if (product.ListImage != null)
-            {
-        <a href="@Url.Action("UpdateProduct", new { proId = product.Id })">
-            <img class="img-border" src="@Path.Combine("/images/Product/", product.ListImage.Split(',')[0])?w=100&h=100" style="width: 100px; height: 80px" />
-        </a> }
-    else
-    {
-        @:NO PICTURE
-    }
-        </td>
-        <td class="left">
-            <p><a href="@Url.Action("UpdateProduct", new { proId = product.Id })"><strong>@product.Name</strong></a></p>
-        </td>
-        <td>@product.ProductCategory.CategoryName</td>
-        <td>@Html.EditorFor(a => product.Active, new { htmlAttributes = new { id = "Active" } })</td>
-        <td>@Html.EditorFor(a => product.Home, new { htmlAttributes = new { id = "Home" } })</td>
+                    <tr data-id="@product.Id">
+                        <td>
+                            <input type="hidden" name="ProductId" value="@product.Id" />
+                            @Html.EditorFor(a => product.Sort)
+                        </td>
+                        <td>
+                            @if (product.ListImage != null)
+                            {
+                                <a href="@Url.Action("ProductDetail", "Home", new { url = product.Url })" target="_blank">
+                                    <img class="img-border" src="@Path.Combine("/images/Product/", product.ListImage.Split(',')[0])?w=100&h=100" style="width: 100px; height: 80px" />
+                                </a>
+                            }
+                            else
+                            {
+                                @:NO PICTURE
+                            }
+                        </td>
+                        <td class="left">
+                            <p><a href="@Url.Action("UpdateProduct", new { proId = product.Id })"><strong>@product.Name</strong></a></p>
+                        </td>
+                        <td>
+                            @string.Join(",", product.ProductCategories.Select(a => a.CategoryName))
+                        </td>
+                        <td>@Html.EditorFor(a => product.Active, new { htmlAttributes = new { id = "Active" } })</td>
+                        <td>@Html.EditorFor(a => product.Home, new { htmlAttributes = new { id = "Home" } })</td>
 
-        <td>
-            <a href="javascript:;" onclick="updateInfo(@product.Id)">Cập nhật</a> -
-            @Html.ActionLink("Sửa", "UpdateProduct", new { proId = product.Id })
-            - <a href="javascript:;" onclick="deleteProject('@product.Id')" class="red-warring">Xóa</a>
-        </td>
-    </tr>}
+                        <td>
+                            <a href="javascript:;" onclick="updateInfo(@product.Id)">Cập nhật</a> -
+                            @Html.ActionLink("Sửa", "UpdateProduct", new { proId = product.Id })
+                            - <a href="javascript:;" onclick="deleteProject('@product.Id')" class="red-warring">Xóa</a>
+                        </td>
+                    </tr>
+                }
                 @if (Model.Products.PageCount > 1)
                 {
-    <tr>
-        <td colspan="9">@Html.PagedListPager(Model.Products, page => Url.Action("ListProject", new { page, catId = Model.CatId, parentId = Model.ParentId, name = Model.Name, sort = Model.Sort }))</td>
-    </tr>}
+                    <tr>
+                        <td colspan="9">@Html.PagedListPager(Model.Products, page => Url.Action("ListProduct", new { page, catId = Model.CatId, parentId = Model.ParentId, name = Model.Name, sort = Model.Sort }))</td>
+                    </tr>
+                }
             </tbody>
         </table>
     </form>
@@ -103,22 +109,22 @@
                         $.toast({
                             text: 'Xóa dự án thành công',
                             position: 'bottom-right',
-                            icon: 'success',
-                        })
+                            icon: 'success'
+                        });
                         $("tr[data-id='" + id + "']").fadeOut();
                     }
                     else {
                         $.toast({
                             text: 'Quá trình thực hiện không thành công. Hãy thử lại',
-                            icon: 'error',
-                        })
+                            icon: 'error'
+                        });
                     }
                 });
             }
         }
         function updateStatus(id) {
             var elm = $('tr[data-id="' + id + '"]');
-            var status = elm.find("#ProjectStatus").prop("checked");
+            const status = elm.find("#ProjectStatus").prop("checked");
 
             $.post("/Product/UpdateProductQuick", { proId: id, status },
                 function (data) {
@@ -129,8 +135,8 @@
                         $.toast({
                             text: 'Quá trình thực hiện không thành công. Hãy thử lại',
                             position: 'bottom-right',
-                            icon: 'error',
-                        })
+                            icon: 'error'
+                        });
                         window.location.reload();
                     };
                 });
@@ -158,28 +164,30 @@
         //        });
         //}
         function updateInfo(id) {
-            var divId = $("tr[data-id ='" + id + "']");
-            var sort = divId.find("#product_Sort").val();
-            var active = divId.find("input#Active").prop("checked");
+            const divId = $("tr[data-id ='" + id + "']");
+            const sort = divId.find("#product_Sort").val();
+            const active = divId.find("input#Active").prop("checked");
             if (sort == "") {
                 alert("Bạn hãy nhập số thứ tự");
             }
             console.log($.post("/Product/QuickUpdate"))
-            $.post("/Product/QuickUpdate", { proId: id, sort, active }, function (data) {
-                if (data) {
-                    $.toast({
-                        text: 'Cập nhật thành công',
-                        position: 'bottom-right',
-                        icon: 'success',
-                    })
-                } else {
-                    $.toast({
-                        text: 'Quá trình thực hiện không thành công. Hãy thử lại',
-                        icon: 'error',
-                    })
-                }
-            })
+            $.post("/Product/QuickUpdate",
+                { proId: id, sort, active },
+                function (data) {
+                    if (data) {
+                        $.toast({
+                            text: 'Cập nhật thành công',
+                            position: 'bottom-right',
+                            icon: 'success'
+                        });
+                    } else {
+                        $.toast({
+                            text: 'Quá trình thực hiện không thành công. Hãy thử lại',
+                            icon: 'error'
+                        });
+                    }
+                });
         }
-        
+
     </script>
 } 

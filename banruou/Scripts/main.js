@@ -1,4 +1,6 @@
-﻿$(document).ready(function () {
+﻿AOS.init({ once: true });
+
+$(document).ready(function () {
 
     $.toctoc({
         target: '.post-context',
@@ -26,7 +28,7 @@
         return false;
     });
 
-    $(".order_btn > a").click(function(event) {
+    $(".order_btn > a").click(function (event) {
         event.preventDefault();
     });
 
@@ -116,22 +118,31 @@ function productJs() {
             }
         ]
     });
-
+    $("#orderForm").on("submit", function (e) {
+        e.preventDefault();
+        if ($(this).valid()) {
+            $.post("/Home/Order", $(this).serialize(),
+                function (data) {
+                    alert(data.msg);
+                    if (data.status === 0) {
+                        window.reload();
+                    }
+                });
+        }
+    });
 }
 
 const listMenu = document.querySelector('.menu-nav');
 const menu = document.querySelectorAll('.icon-item');
 const itemMenu = document.querySelector('.menu-item');
 
-function changeMenu() {
-    for (i = 0; i < menu.length; i++) {
-        menu[i].classList.toggle('active');
-    }
-}
-
-function showMenu() {
-    itemMenu.classList.toggle('active');
-}
-
-listMenu.addEventListener('click', showMenu);
-listMenu.addEventListener('click', changeMenu);
+//function changeMenu() {
+//    for (i = 0; i < menu.length; i++) {
+//        menu[i].classList.toggle('active');
+//    }
+//}
+//function showMenu() {
+//    itemMenu.classList.toggle('active');
+//}
+//listMenu.addEventListener('click', showMenu);
+//listMenu.addEventListener('click', changeMenu);

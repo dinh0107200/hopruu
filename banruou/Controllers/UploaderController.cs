@@ -21,7 +21,7 @@ namespace banruou.Controllers
         public ActionResult GetFile(string name, bool thumbnail = false)
         {
             var file = GetFileInfo(name);
-            string mimeMapping = MimeMapping.GetMimeMapping(file.Name);
+            var mimeMapping = MimeMapping.GetMimeMapping(file.Name);
             if (!thumbnail)
                 return File(file.FullName, mimeMapping);
             return Thumb(file, mimeMapping);
@@ -118,7 +118,7 @@ namespace banruou.Controllers
             {
                 HtmlHelpers.CreateFolder(Server.MapPath(folder));
 
-                var randomName = DateTime.Now.ToFileTimeUtc() + Path.GetExtension(fileData.FileName);
+                var randomName = HtmlHelpers.ConvertToUnSign(null, Path.GetFileNameWithoutExtension(fileData.FileName)) + "-" + DateTime.Now.Millisecond + Path.GetExtension(fileData.FileName);
 
                 var fileName = Server.MapPath(Path.Combine(folder, randomName));
 

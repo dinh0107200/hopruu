@@ -16,7 +16,7 @@ namespace banruou.Controllers
     [Authorize]
     public class VcmsController : Controller
     {
-        public readonly UnitOfWork _unitOfWork = new UnitOfWork();
+        private readonly UnitOfWork _unitOfWork = new UnitOfWork();
         // GET: Vcms
         #region Login
         [AllowAnonymous]
@@ -35,7 +35,7 @@ namespace banruou.Controllers
                 if (admin != null && HtmlHelpers.VerifyHash(model.Password, "SHA256", admin.Password))
                 {
                     var ticket = new FormsAuthenticationTicket(1, model.Username.ToLower(), DateTime.Now, DateTime.Now.AddDays(30), true,
-                        admin.ToString(), FormsAuthentication.FormsCookiePath);
+                        admin.Role.ToString(), FormsAuthentication.FormsCookiePath);
 
                     var encTicket = FormsAuthentication.Encrypt(ticket);
                     // Create the cookie.
@@ -394,6 +394,55 @@ namespace banruou.Controllers
             return true;
         }
         #endregion
+
+        public ActionResult RedirectConfig(int result = 0)
+        {
+            var redirect = System.IO.File.ReadAllText(Server.MapPath(Path.Combine("/images/Redirect.txt")));
+            ViewBag.Config = redirect;
+            ViewBag.Result = result;
+            return View();
+        }
+        [HttpPost]
+        public ActionResult RedirectConfig(FormCollection fc)
+        {
+            var config = fc["Config"];
+            try
+            {
+                System.IO.File.WriteAllText(Server.MapPath(Path.Combine("/images/Redirect.txt")), config);
+                return RedirectToAction("RedirectConfig", new { result = 1 });
+            }
+            catch (Exception e)
+            {
+                ViewBag.Config = config;
+                return View();
+            }
+
+        }
+
+        public ActionResult UpdateRobot(int result = 0)
+        {
+            //if (Role != RoleAdmin.Admin)
+            //{
+            //    return RedirectToAction("Index", new { error = 403 });
+            //}
+
+            var robot = System.IO.File.ReadAllText(Server.MapPath("/robots.txt"));
+            ViewBag.Robot = robot;
+            ViewBag.Result = result;
+            return View();
+        }
+        [HttpPost]
+        public ActionResult UpdateRobot(string robots)
+        {
+            //if (Role != RoleAdmin.Admin)
+            //{
+            //    return RedirectToAction("Index", new { error = 403 });
+            //}
+
+            System.IO.File.WriteAllText(Server.MapPath("/robots.txt"), robots);
+            return RedirectToAction("UpdateRobot", new { result = 1 });
+        }
+
 
         protected override void Dispose(bool disposing)
         {

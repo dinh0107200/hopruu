@@ -1,5 +1,5 @@
-﻿@model banruou.Models.ProductCategory
-@{ 
+﻿@model banruou.ViewModel.InsertProductCategoryViewModel
+@{
     ViewBag.Title = "Cập nhật danh mục";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
@@ -10,71 +10,81 @@
         <div class="col-sm-12">
             @using (Html.BeginForm("UpdateCategory", "Product", FormMethod.Post, new { enctype = "multipart/form-data" }))
             {
-@Html.ValidationSummary(true)
-                @Html.HiddenFor(model => model.Id)
-            <table class="form_table form-table-cat">
-                <tr>
-                    <td class="form_name">@Html.LabelFor(a => Model.ParentId)</td>
-                    <td class="form_text">@Html.DropDownListFor(a => Model.ParentId, (SelectList)ViewBag.RootCats, "Danh mục cha", new { @class = "form_control w300" })</td>
-                </tr>
-                <tr>
-                    <td class="form_name">@Html.LabelFor(a => Model.CategoryName)</td>
-                    <td class="form_text">@Html.EditorFor(a => Model.CategoryName)</td>
-                </tr>
-                <tr>
-                    <td class="form_name">@Html.LabelFor(a => Model.Description)</td>
-                    <td class="form_text">@Html.EditorFor(a => Model.Description)</td>
-                </tr>
-                <tr>
-                    <td class="form_name">@Html.LabelFor(a => Model.Image)</td>
-                    <td class="form_text">@Html.TextBoxFor(a => Model.Image, new { type = "file" }) <span class="red-warring">Chấp nhận ảnh jpg, png, gif, jpeg < 4MB</span></td>
-                </tr>
-                @if (Model.Image != null)
-                {
-            <tr>
-                <td class="form_name"></td>
-                <td class="form_text"><img class="img-border" src="@Path.Combine("/images/ProductCategory/",  Model.Image)" /></td>
-            </tr>
-}
-                <tr>
-                    <td class="form_name">@Html.LabelFor(a => Model.CategorySort)</td>
-                    <td class="form_text">@Html.EditorFor(a => Model.CategorySort)</td>
-                </tr>
-                <tr>
-                    <td class="form_name">@Html.LabelFor(a => Model.ShowMenu)</td>
-                    <td class="form_text">@Html.CheckBoxFor(a => Model.ShowMenu)</td>
-                </tr>
-                <tr>
-                    <td class="form_name">@Html.LabelFor(a => Model.ShowHome)</td>
-                    <td class="form_text">@Html.CheckBoxFor(a => Model.ShowHome)</td>
-                </tr>
-                <tr>
-                    <td class="form_name">@Html.LabelFor(a => Model.CategoryActive)</td>
-                    <td class="form_text">@Html.CheckBoxFor(a => Model.CategoryActive, new { @checked = "checked" })</td>
-                </tr>
-                <tr>
-                    <td class="form_name">@Html.LabelFor(a => Model.ShowFooter)</td>
-                    <td class="form_text">@Html.CheckBoxFor(a => Model.ShowFooter, new { @checked = "checked" })</td>
-                </tr>
-                <tr>
-                    <td class="form_name">@Html.LabelFor(a => Model.Url)</td>
-                    <td class="form_text">@Html.EditorFor(a => Model.Url)</td>
-                </tr>
-                <tr>
-                    <td class="form_name">@Html.LabelFor(a => Model.TitleMeta)</td>
-                    <td class="form_text">@Html.EditorFor(a => Model.TitleMeta)</td>
-                </tr>
-                <tr>
-                    <td class="form_name">@Html.LabelFor(a => Model.DescriptionMeta)</td>
-                    <td class="form_text">@Html.EditorFor(a => Model.DescriptionMeta)</td>
-                </tr>
-                <tr>
-                    <td class="form_name"></td>
-                    <td class="form_text">
-                        <input type="submit" class="btn quick-link" value="Cập nhật" />
-                    </td>
-                </tr>
-            </table>            }
+                @Html.ValidationSummary(true)
+                @Html.HiddenFor(model => model.Category.Id)
+                <table class="form_table form-table-cat">
+                    <tr>
+                        <td class="form_name">@Html.LabelFor(a => Model.Category.ParentId)</td>
+                        <td class="form_text">@Html.DropDownListFor(a => Model.Category.ParentId, (SelectList)ViewBag.RootCats, "Danh mục cha", new { @class = "form_control w300" })</td>
+                    </tr>
+                    <tr>
+                        <td class="form_name">@Html.LabelFor(a => Model.Category.CategoryName)</td>
+                        <td class="form_text">@Html.EditorFor(a => Model.Category.CategoryName)</td>
+                    </tr>
+                    <tr>
+                        <td class="form_name">@Html.LabelFor(a => Model.Category.Description)</td>
+                        <td class="form_text">@Html.EditorFor(a => Model.Category.Description)</td>
+                    </tr>
+                    <tr>
+                        <td class="form_name">@Html.LabelFor(a => Model.Category.Image)</td>
+                        <td class="form_text">@Html.TextBoxFor(a => Model.Category.Image, new { type = "file" }) <span class="red-warring">Chấp nhận ảnh jpg, png, gif, jpeg < 4MB</span></td>
+                    </tr>
+                    @if (Model.Category.Image != null)
+                    {
+                        <tr>
+                            <td class="form_name"></td>
+                            <td class="form_text"><img class="img-border" src="@Path.Combine("/images/ProductCategory/",  Model.Category.Image)" /></td>
+                        </tr>
+                    }
+                    <tr>
+                        <td class="form_name">Nhóm thuộc tính</td>
+                        <td class="form_text">
+                            @foreach (var group in Model.GroupPropertyOfProducts)
+                            {
+                                <label><input type="radio" name="GroupProperty" value="@group.Id" @if (group.Id == Model.Category.GroupPropertyOfProductId) { @Html.Raw("checked='checked'") } /> @group.Name</label>
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="form_name">@Html.LabelFor(a => Model.Category.CategorySort)</td>
+                        <td class="form_text">@Html.EditorFor(a => Model.Category.CategorySort)</td>
+                    </tr>
+                    <tr>
+                        <td class="form_name">@Html.LabelFor(a => Model.Category.ShowMenu)</td>
+                        <td class="form_text">@Html.CheckBoxFor(a => Model.Category.ShowMenu)</td>
+                    </tr>
+                    <tr>
+                        <td class="form_name">@Html.LabelFor(a => Model.Category.ShowHome)</td>
+                        <td class="form_text">@Html.CheckBoxFor(a => Model.Category.ShowHome)</td>
+                    </tr>
+                    <tr>
+                        <td class="form_name">@Html.LabelFor(a => Model.Category.CategoryActive)</td>
+                        <td class="form_text">@Html.CheckBoxFor(a => Model.Category.CategoryActive, new { @checked = "checked" })</td>
+                    </tr>
+                    <tr>
+                        <td class="form_name">@Html.LabelFor(a => Model.Category.ShowFooter)</td>
+                        <td class="form_text">@Html.CheckBoxFor(a => Model.Category.ShowFooter, new { @checked = "checked" })</td>
+                    </tr>
+                    <tr>
+                        <td class="form_name">@Html.LabelFor(a => Model.Category.Url)</td>
+                        <td class="form_text">@Html.EditorFor(a => Model.Category.Url)</td>
+                    </tr>
+                    <tr>
+                        <td class="form_name">@Html.LabelFor(a => Model.Category.TitleMeta)</td>
+                        <td class="form_text">@Html.EditorFor(a => Model.Category.TitleMeta)</td>
+                    </tr>
+                    <tr>
+                        <td class="form_name">@Html.LabelFor(a => Model.Category.DescriptionMeta)</td>
+                        <td class="form_text">@Html.EditorFor(a => Model.Category.DescriptionMeta)</td>
+                    </tr>
+                    <tr>
+                        <td class="form_name"></td>
+                        <td class="form_text">
+                            <input type="submit" class="btn quick-link" value="Cập nhật" />
+                        </td>
+                    </tr>
+                </table>
+            }
         </div>
         <div class="col-sm-12">
             @Html.Action("ListCategory", "Product")

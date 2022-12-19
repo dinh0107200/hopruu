@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace banruou.Models
@@ -18,7 +19,6 @@ namespace banruou.Models
         public int? Price { get; set; }
         [Display(Name = "Quốc gia"), StringLength(100, ErrorMessage = "Tối đa 100 ký tự")]
         public string Country { get; set; }
-
         [Display(Name = "Dung tích"), StringLength(100, ErrorMessage = "Tối đa 100 ký tự")]
         public string Capacity { get; set; }
         [Display(Name = "Ứng dụng")]
@@ -39,13 +39,16 @@ namespace banruou.Models
         public bool Hot { get; set; }
         [Display(Name = "Hiện trang chủ")]
         public bool Home { get; set; }
-        [Display(Name = "Đường dẫn"), StringLength(500, ErrorMessage = "Tối đa 500 ký tự"), UIHint("TextArea")]
+        [Display(Name = "Đường dẫn"), StringLength(500, ErrorMessage = "Tối đa 500 ký tự"), UIHint("TextBox")]
         public string Url { get; set; }
         [Display(Name = "Thẻ tiêu đề"), StringLength(100, ErrorMessage = "Tối đa 100 ký tự"), UIHint("TextBox")]
         public string TitleMeta { get; set; }
         [Display(Name = "Thẻ mô tả"), StringLength(500, ErrorMessage = "Tối đa 500 ký tự"), UIHint("TextArea")]
         public string DescriptionMeta { get; set; }
-        public virtual ProductCategory ProductCategory { get; set; }
+
+        public virtual ICollection<PropertyAndProductDetail> PropertyAndProductDetails { get; set; }
+        public virtual ICollection<ProductCategory> ProductCategories { get; set; }
+
         public Product()
         {
             CreateDate = DateTime.Now;

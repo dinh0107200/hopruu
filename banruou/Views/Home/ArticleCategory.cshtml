@@ -6,8 +6,6 @@
     ViewBag.Canonical = Request.Url?.GetLeftPart(UriPartial.Authority) + Url.Action("ArticleCategory", "Home", new { url = Model.Category.Url });
 }
 @Html.Action("Header")
-@if (Model.Articles.Any())
-{
     <section class="list-new-feed">
         <div class="container">
             <ul class="breadcrumb">
@@ -15,49 +13,53 @@
                 @if (Model.RootCategory != null)
                 {
                     <li class="breadcrumb-item"><a href="@Url.Action("ArticleCategory", new{url = Model.RootCategory.Url})">@Model.RootCategory.CategoryName</a></li>
-
                 }
                 <li class="breadcrumb-item active">@Model.Category.CategoryName</li>
             </ul>
+            <div class="gift-title text-center">
+                <h1>@Model.Category.CategoryName</h1>
+            </div>
 
-            <div class="row">
-                @foreach (var item in Model.Articles)
-                {
-                    <div class="col-md-3">
-                        <div class="feed-item">
-                            <a href="@Url.Action("ArticleDetail", "Home", new { url = item.Url })">
-                                <div class="new-feed-item-img">
-                                    <img src="@Path.Combine("/images/articles/", item.Image)" alt="">
-                                </div>
-                                <div class="new-feed-item-name">
-                                    <p>@item.Subject</p>
-                                </div>
-                                <hr>
-                                <div class="new-feed-item-description">
-                                    <p>@item.Description</p>
-                                </div>
-                            </a>
+            @if (Model.Articles.Any())
+            {
+                <div class="row mt-lg-4 mt-3">
+                    @foreach (var item in Model.Articles)
+                    {
+                        <div class="col-md-3">
+                            <div class="feed-item">
+                                <a href="@Url.Action("ArticleDetail", "Home", new { url = item.Url })">
+                                    @if (item.Image != null)
+                                    {
+                                        <div class="new-feed-item-img">
+                                            <img src="@Path.Combine("/images/articles/", item.Image)" alt="@item.Subject">
+                                        </div>
+                                    }
+                                    <div class="new-feed-item-name">
+                                        @item.Subject
+                                    </div>
+                                    <hr>
+                                    <div class="new-feed-item-description">
+                                        @item.Description
+                                    </div>
+                                </a>
+                            </div>
                         </div>
+                    }
+                </div>
+                if (Model.Articles.PageCount > 1)
+                {
+                    <div class="text-center">
+                        @Html.PagedListPager(Model.Articles, page => Url.Action("ArticleCategory", new { page, url = Model.Category.Url }))
                     </div>
                 }
-            </div>
-            @if (Model.Articles.PageCount > 1)
+            }
+            else
             {
-                <div class="text-center">
-                    @Html.PagedListPager(Model.Articles, page => Url.Action("ArticleCategory", new { page, url = Model.Category.Url }))
+                <div class="mb-5 mt-5">
+                    <p class="alert alert-success small">Nội dung hiện chưa được cập nhật. Vui lòng quay lại sau !!!!</p>
                 </div>
             }
         </div>
     </section>
-}
-else
-{
-    <div class="container">
-        <div class="mb-5 mt-5">
-            <p class="alert alert-success small">Nội dung hiện chưa được cập nhật. Vui lòng quay lại sau !!!!</p>
-        </div>
-    </div>
-
-}
 @Html.Action("Footer")
 

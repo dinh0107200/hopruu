@@ -2,10 +2,11 @@
 
 html {
     scroll-behavior: smooth;
+    scroll-padding-top: 90px;
 }
 
 body {
-    @include Roboto-Regular;
+    @include lato-400;
 }
 
 .container {
@@ -56,6 +57,9 @@ a, i, img {
 }
 
 .header {
+    position: sticky;
+    top: 0;
+    z-index: 999;
     display: flex;
     align-items: center;
     @include background-color;
@@ -80,6 +84,7 @@ a, i, img {
 
 .list-menu {
     display: flex;
+    @include playfair;
 }
 
 .menu-item li:hover .child-menu {
@@ -114,12 +119,12 @@ a, i, img {
     li {
         padding: 10px;
         position: relative;
+        font-size: 1.125rem;
+        font-weight: 700;
 
         a {
             color: #fff;
-            text-transform: uppercase;
             text-decoration: none;
-            @include Roboto-Regular;
             background-image: linear-gradient( to right, #fd4e19, #fd4e19 50%, #fff 50%);
             background-size: 200% 100%;
             background-position: -100%;
@@ -163,6 +168,7 @@ a, i, img {
 
             li {
                 padding: .25rem 1rem;
+                font-weight: 400;
             }
         }
     }
@@ -312,6 +318,10 @@ a, i, img {
 
 .category-slides {
     margin-top: 2rem;
+
+    & > .item-category:not(:first-child) {
+        display: none;
+    }
 
     .slick-list {
         margin-left: -1.5rem;
@@ -497,6 +507,7 @@ a, i, img {
 .gift-title {
     position: relative;
     text-align: center;
+    @include playfair;
 
     h1, h2 {
         text-transform: uppercase;
@@ -530,6 +541,7 @@ a, i, img {
 .section-name {
     font-size: 2rem;
     font-weight: 700;
+    @include playfair;
 }
 
 .product-info {
@@ -605,17 +617,8 @@ a, i, img {
     }
 }
 
-.list-category-title {
-    background: #fd4e19;
-    color: #fff;
-    text-align: center;
-    padding: .5rem 1rem;
-    text-transform: uppercase;
-    font-size: 1.25rem;
-}
-
 .list-category {
-    top: 20px;
+    top: 100px;
     position: sticky;
 }
 
@@ -690,6 +693,7 @@ a, i, img {
     font-weight: 700;
     color: #fff;
     margin-bottom: 1rem;
+    @include playfair;
 }
 
 .showroom-title {
@@ -761,7 +765,7 @@ a, i, img {
         font-size: 24px;
         font-weight: 900;
         z-index: 9999;
-        width: 5 00px;
+        width: 500px;
         margin: 0 auto;
         background: #fff;
         font-size: 24px;
@@ -1317,10 +1321,10 @@ a, i, img {
 }
 
 .feed-item {
-    width: 100%;
     box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
     margin-bottom: 20px;
     border-radius: .5rem;
+    overflow: hidden;
 
     img {
         width: 100%;
@@ -1382,13 +1386,9 @@ a, i, img {
 }
 
 .post-title {
-    display: flex;
-    font-size: 24px;
-    font-weight: 500;
-
-    h3 {
-        font-weight: 600;
-    }
+    @include playfair;
+    font-size: 1.75rem;
+    font-weight: 700;
 }
 
 .post-date {
@@ -1486,8 +1486,9 @@ a, i, img {
 }
 
 .product-detail-name {
-    font-size: 1.5rem;
+    font-size: 2rem;
     font-weight: 700;
+    @include playfair;
 }
 
 .price-detail {
@@ -1505,6 +1506,12 @@ a, i, img {
 
 .detail-discription-item {
     line-height: 25px;
+
+    span:first-child {
+        font-weight: 700;
+        width: 120px;
+        display: inline-block;
+    }
 }
 
 .introduction {
@@ -1596,6 +1603,11 @@ a, i, img {
     justify-content: space-evenly;
 }
 
+.hot-new {
+    position: sticky;
+    top: 100px;
+}
+
 .hot-new-img {
     width: 100px;
 
@@ -1618,18 +1630,17 @@ a, i, img {
     margin-left: 10px;
 }
 
-.hot-new-heading {
-    width: 100%;
-    height: 50px;
+.hot-new-heading, .list-category-title {
+    line-height: 50px;
     background: #df7332;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     text-transform: uppercase;
+    text-align: center;
     color: #ffff;
-    font-size: 18px;
+    font-size: 1.125rem;
     border-top-left-radius: 20px;
     border-bottom-right-radius: 20px;
+    @include playfair;
+    font-weight: 700;
 }
 
 .artilce {
@@ -1851,12 +1862,6 @@ a, i, img {
         padding-top: 150px;
     }
 
-    .new-feed-item-img {
-        img {
-            height: 150px;
-        }
-    }
-
     .new-feed-item-imgs {
         img {
             height: 470px;
@@ -1870,10 +1875,6 @@ a, i, img {
 
     .product-detail {
         padding-top: 120px;
-    }
-
-    .post {
-        padding-top: 125px;
     }
 
     .post-title {
@@ -2078,9 +2079,7 @@ a, i, img {
     }
 
     .product__item-price {
-        p {
-            font-size: 14px;
-        }
+        font-size: 14px;
     }
 
     .product-list-title {
@@ -2127,28 +2126,18 @@ a, i, img {
         margin: 0 10px;
     }
 
-    .new-feed-item-img {
-        height: auto;
-
-        img {
-            height: 150px;
-        }
-    }
-
     .new-feed-item-description {
-        p {
-            text-align: justify;
-            max-height: 70px;
-            color: #7c7c7c;
-            -webkit-box-orient: vertical;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            word-break: break-word;
-            font-size: 14px;
-            line-height: 17px;
-        }
+        text-align: justify;
+        max-height: 70px;
+        color: #7c7c7c;
+        -webkit-box-orient: vertical;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        word-break: break-word;
+        font-size: 14px;
+        line-height: 17px;
     }
 
     .gift-content {
@@ -2166,15 +2155,6 @@ a, i, img {
 
     .post-context img {
         height: auto;
-    }
-
-    .post-title {
-        margin-top: 0;
-        font-size: 18px;
-    }
-
-    .post {
-        padding-top: 93px;
     }
 
     .post nav {
@@ -2203,17 +2183,12 @@ a, i, img {
     }
 
     .gift {
-        p {
-            margin: 0 auto;
-        }
-
+        margin: 0 auto;
         margin-top: 30px;
 
         .gift-title {
-            p {
-                font-size: 18px;
-                width: 180px;
-            }
+            font-size: 18px;
+            width: 180px;
         }
     }
 
@@ -2233,10 +2208,7 @@ a, i, img {
 
     .product-price {
         text-align: center;
-
-        p {
-            font-size: 14px;
-        }
+        font-size: 14px;
     }
 
     .hot-sale {
@@ -2479,10 +2451,6 @@ a, i, img {
 
         .related-item {
             margin-top: 0;
-        }
-
-        .post {
-            padding-top: 100px;
         }
     }
 

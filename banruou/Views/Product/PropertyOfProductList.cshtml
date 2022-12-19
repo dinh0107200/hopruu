@@ -1,0 +1,40 @@
+﻿@model IEnumerable<banruou.Models.PropertyOfProduct>
+
+<h2>Danh sách thuộc tính</h2>
+<div class="box_content mt-0">
+    <table class="table table-bordered">
+        <tr class="bg-info">
+            <th>STT</th>
+            <th>Tên</th>
+            <th>Hoạt động</th>
+            <th></th>
+        </tr>
+        @foreach (var propertyOfProduct in Model)
+        {
+            <tr data-id="@propertyOfProduct.Id">
+                <td>@propertyOfProduct.Sort</td>
+                <td>@propertyOfProduct.Name</td>
+                <td>@Html.DisplayFor(a => propertyOfProduct.Active)</td>
+                <td class="text-right">
+                    <a href="@Url.Action("PropertyOfProduct", new {id = propertyOfProduct.Id})">Sửa</a> - 
+                    <a class="text-danger" href="javascript:;" onclick="deletePropertyOfProduct(@propertyOfProduct.Id)">Xóa</a>
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+<script>
+    function deletePropertyOfProduct(id) {
+        if (confirm("Bạn có chắc chắn xóa thuộc tính này?")) {
+            $.post("/Product/DeletePropertyOfProduct", { id: id }, function (data) {
+                if (data === "True") {
+                    alert("Xóa thuộc tính thành công");
+                    $("[data-id=" + id + "]").remove();
+                }
+                else {
+                    alert("Quá trình thực hiện không thành công");
+                }
+            })
+        }
+    }
+</script>

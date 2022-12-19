@@ -1,16 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using banruou.DAL;
 using banruou.Models;
-using banruou.DAL;
 using banruou.ViewModel;
 using Helpers;
+using PagedList;
+using System;
+using System.Collections.Generic;
+using System.Data.Entity;
 using System.Drawing;
 using System.IO;
-using PagedList;
-using System.Data.Entity;
+using System.Linq;
+using System.Web.Mvc;
 
 namespace banruou.Controllers
 {
@@ -149,13 +148,16 @@ namespace banruou.Controllers
             _unitOfWork.Save();
             return true;
         }
-        public bool UpdateArticleCat(int sort = 1, bool active = false, bool menu = false, bool home = false, int articleCatId = 0)
+        [HttpPost]
+        public bool UpdateArticleCat(int sort = 1, bool active = false, bool menu = false, bool footer = false, int articleCatId = 0)
         {
             var articleCat = _unitOfWork.ArticleCategoryRepository.GetById(articleCatId);
             if (articleCat == null)
             {
                 return false;
             }
+            articleCat.ShowMenu = menu;
+            articleCat.ShowFooter = footer;
             articleCat.CategorySort = sort;
             articleCat.CategoryActive = active;
 

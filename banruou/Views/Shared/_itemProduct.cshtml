@@ -14,11 +14,11 @@
     </div>
     <div class="product-name">
         <a href="@Url.Action("ProductDetail" , "Home" , new { Model.Url})">
-            <p>@Model.Name</p>
+            @Model.Name
         </a>
     </div>
-    <div class="product-price ">
-        <p class="">@($"{Model.Price:#,##0.##}") đ</p>
+    <div class="product-price">
+        @($"{Model.Price:#,##0.##}") đ
     </div>
     <div class="product-btn">
         <a href="@Url.Action("ProductDetail" , "Home" , new { Model.Url})">

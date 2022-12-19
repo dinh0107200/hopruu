@@ -13,7 +13,7 @@
 @Html.Action("Header")
 
 <section class="post">
-    <nav aria-label="breadcrumb" style="background: #cccccc24; margin-bottom: 30px; ">
+    <nav aria-label="breadcrumb">
         <div class="container">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="@Url.Action("Index")">Trang chủ</a></li>
@@ -26,13 +26,9 @@
         <div class="row">
             <div class="col-12 col-lg-8">
                 <div class="artilce">
-                    <div class="post-title">
-                        <h3>@Model.Article.Subject</h3>
-                        <hr />
-                    </div>
-                    <div>
-                        <p class="text-muted">Ngày đăng: @($"{Model.Article.CreateDate:dd/MM/yyyy}") </p>
-                    </div>
+                    <h1 class="post-title">@Model.Article.Subject</h1>
+                    <hr />
+                    <p class="text-muted">Ngày đăng: @($"{Model.Article.CreateDate:dd/MM/yyyy}") </p>
                     <div id="toctoc" class="border"></div>
                     <div class="content">
                         <div class="post-context product-artilce-content">

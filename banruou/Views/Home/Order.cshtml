@@ -5,11 +5,11 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalToggleLabel">Sản phẩm : @Model.Products.Name</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
                 </div>
                 <div class="modal-body">
-                    <h3>Thông tin của bạn</h3>
-                    <form method="post">
+                    <p class="font-weight-bold">Thông tin của bạn</p>
+                    <form method="post" id="orderForm">
                         @Html.ValidationSummary(true)
                         @Html.AntiForgeryToken()
                         <div class="oder-form-item">
@@ -19,31 +19,24 @@
                         <div class="oder-form-item">
                             @Html.TextBoxFor(a => a.Order.Address, new { @placeholder = "Địa chỉ" })
                             @Html.ValidationMessageFor(a => a.Order.Address)
-
                         </div>
                         <div class="oder-form-item">
                             @Html.TextBoxFor(a => a.Order.Phone, new { @placeholder = "Số điện thoại" })
                             @Html.ValidationMessageFor(a => a.Order.Phone)
-
                         </div>
                         <div class="oder-form-item">
                             @Html.TextBoxFor(a => a.Order.Email, new { @placeholder = "Email của bạn" })
                             @Html.ValidationMessageFor(a => a.Order.Email)
-
                         </div>
                         <div class="oder-form-item form_name">
-                            <tr>
-                                <td class="form_text">@Html.TextAreaFor(model => model.Order.Discription , new { @class="w-100",@placeholder = "Lời nhắn (nếu có)" , rows = 5})</td>
-                            </tr>
+                            @Html.TextAreaFor(model => model.Order.Discription , new { @class="w-100",@placeholder = "Lời nhắn (nếu có)" , rows = 5})
                         </div>
                         <div class="modal-footer">
                             <button class="btn btn-primary" type="submit">Gửi yêu cầu</button>
                         </div>
                     </form>
                 </div>
-
             </div>
         </div>
     </div>
 </section>
-

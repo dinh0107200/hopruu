@@ -1,0 +1,13 @@
+﻿@model banruou.Models.ProductCategory
+
+@if (Model.GroupPropertyOfProduct != null)
+{
+    foreach (var propertyOfProduct in Model.GroupPropertyOfProduct.PropertyOfProducts)
+    {
+        <div class="col-6">
+            <label>@propertyOfProduct.Name</label>
+            <input type="text" class="form_control w300" name="PropertyNames" />
+            <input type="hidden" name="PropertyOfProducts" value="@propertyOfProduct.Id"/>
+        </div>
+    }
+}

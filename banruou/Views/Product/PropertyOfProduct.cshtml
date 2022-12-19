@@ -1,0 +1,49 @@
+﻿@model banruou.Models.PropertyOfProduct
+@{
+    ViewBag.Title = "Thuộc tính sản phẩm";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="row">
+    <div class="col-lg-4">
+        <h2>Thuộc tính sản phẩm</h2>
+        <a href="@Url.Action("PropertyOfProduct")" class="btn quick-link">Thêm thuộc tính</a>
+        <a href="@Url.Action("GroupPropertyOfProduct")" class="btn quick-link">Nhóm thuộc tính</a>
+        <div class="box_content">
+            @if (ViewBag.Result == 1)
+            {
+                <div class="alert alert-success">Cập nhật thành công</div>
+            }
+            @using (Html.BeginForm())
+            {
+                @Html.ValidationSummary(true)
+                if (Model.Id > 0)
+                {
+                    @Html.HiddenFor(a => a.Id)
+                }
+                <table class="form_table">
+                    <tr>
+                        <td class="form_name" style="width: 100px;">@Html.LabelFor(a => a.Name)</td>
+                        <td class="form_text">@Html.EditorFor(a => a.Name)</td>
+                    </tr>
+                    <tr>
+                        <td class="form_name">@Html.LabelFor(a => a.Sort)</td>
+                        <td class="form_text">@Html.EditorFor(a => a.Sort)</td>
+                    </tr>
+                    <tr>
+                        <td class="form_name">@Html.LabelFor(a => a.Active)</td>
+                        <td class="form_text">@Html.EditorFor(a => a.Active)</td>
+                    </tr>
+                    <tr>
+                        <td class="form_name"></td>
+                        <td class="form_text"><input type="submit" value="Cập nhật" class="btn quick-link" /></td>
+                    </tr>
+                </table>
+            }
+        </div>
+        @Html.Action("PropertyOfProductList")
+    </div>
+    <div class="col-lg-8">
+        @Html.Action("GroupPropertyOfProductList")
+    </div>
+</div>

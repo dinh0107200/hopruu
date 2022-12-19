@@ -1,0 +1,47 @@
+﻿@model IEnumerable<banruou.Models.GroupPropertyOfProduct>
+
+<h2>Nhóm thuộc tính</h2>
+<div class="box_content mt-0">
+    <div class="row">
+        @foreach (var group in Model)
+        {
+            <div class="col-lg-6">
+                <table class="table table-bordered">
+                    <tr class="bg-info">
+                        <th>@group.Sort</th>
+                        <th>@group.Name</th>
+                        <th class="text-right">
+                            <a href="@Url.Action("GroupPropertyOfProduct", new{id = group.Id})" class="text-white">Sửa</a> |
+                            <a href="" class="text-white">Xóa</a>
+                        </th>
+                    </tr>
+                    @foreach (var propertyOfProduct in group.PropertyOfProducts.OrderBy(a => a.Sort))
+                    {
+                        <tr data-id="@propertyOfProduct.Id-@group.Id">
+                            <td>@propertyOfProduct.Sort</td>
+                            <td>@propertyOfProduct.Name</td>
+                            <td class="text-right">
+                                <a class="text-danger" href="javascript:;" onclick="deletePropertyAndGroup(@propertyOfProduct.Id, @group.Id)">Xóa</a>
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+        }
+    </div>
+</div>
+<script>
+    function deletePropertyAndGroup(propertyId, id) {
+        if (confirm("Bạn có chắc chắn xóa thuộc tính này?")) {
+            $.post("/Product/DeletePropertyAndGroup", { propertyId: propertyId, group: id }, function (data) {
+                if (data === "True") {
+                    alert("Xóa thuộc tính thành công");
+                    $("[data-id=" + propertyId + "-" + id + "]").remove();
+                }
+                else {
+                    alert("Quá trình thực hiện không thành công");
+                }
+            })
+        }
+    }
+</script>
