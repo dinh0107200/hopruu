@@ -230,6 +230,7 @@ namespace banruou.Controllers
                        $"<p>Số điện thoại: {model.Order.Phone},</p>" +
                        $"<p>Email: {model.Order.Email},</p>" +
                        $"<p>Nội dung: {model.Order.Discription}</p>" +
+                       $"<p>Sản phẩm: {model.Order.NameProduct}</p>" +
                        $"<p>Đây là hệ thống gửi email tự động, vui lòng không phản hồi lại email này.</p>";
 
             Task.Run(() => HtmlHelpers.SendEmail("gmail", "Email đặt hàn từ " + Request.Url?.Host, body, ConfigSite.Email, Email, Email, Password));
