@@ -435,30 +435,59 @@ namespace banruou.Controllers
             return true;
         }
         [HttpPost]
-        public bool QuickUpdate(bool? status, bool active, bool home, int sort = 0, int proId = 0)
+        public bool QuickUpdate(bool active = false, bool home = false, bool hot = false, int sort = 0, int proId = 0)
         {
             var product = _unitOfWork.ProductRepository.GetById(proId);
             if (product == null)
             {
                 return false;
             }
-            if (status != null)
-            {
-                product.Active = Convert.ToBoolean(status);
-            }
-            if (status != null)
-            {
-                product.Home = Convert.ToBoolean(status);
-            }
             if (sort >= 0)
             {
                 product.Sort = sort;
             }
-            //project.Hot = hot;
+            product.Hot = hot;
             product.Active = active;
             product.Home = home;
             _unitOfWork.Save();
             return true;
+        }
+        [HttpPost]
+        public JsonResult UpdateProductAll(FormCollection fc)
+        {
+            var ids = fc.GetValues("Id");
+            if (ids == null)
+            {
+                return Json(new { status = 1, msg = "Dữ liệu không hợp lệ" });
+            }
+
+            for (var i = 0; i < ids.Length; i++)
+            {
+                var id = Convert.ToInt32(ids[i]);
+                var s = fc["Sort-" + id];
+                if (string.IsNullOrEmpty(s)) continue;
+                var sort = Convert.ToInt32(s);
+                var active = false;
+                var hot = false;
+                var home = false;
+                var ac = fc["Active-" + id];
+                if (ac != null)
+                {
+                    active = true;
+                }
+                var hott = fc["Hot-" + id];
+                if (hott != null)
+                {
+                    hot = true;
+                }
+                var ho = fc["Home-" + id];
+                if (ho != null)
+                {
+                    home = true;
+                }
+                _unitOfWork.ProductCategoryRepository.RunRawSql("UPDATE Products SET Sort = @p0, Active = @p1, Hot = @p2, Home = @p3 WHERE Id = @p4", sort, active, hot, home, id);
+            }
+            return Json(new { status = 0, msg = "Cập nhật dữ liệu thành công" });
         }
 
         public PartialViewResult GetPropertyByGroup(int groupId)

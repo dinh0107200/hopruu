@@ -87,7 +87,7 @@ namespace banruou.Controllers
             {
                 return RedirectToAction("AllProduct");
             }
-            var product = _unitOfWork.ProductRepository.GetQuery(a => a.ProductCategoryId == category.Id && a.Active, q => q.OrderByDescending(a => a.Sort));
+            var product = _unitOfWork.ProductRepository.GetQuery(a => a.ProductCategories.Any(c => c.Id == category.Id) && a.Active, q => q.OrderByDescending(a => a.Sort));
             var model = new CategoryProduct
             {
                 ProductCategory = category,

@@ -42,14 +42,18 @@
         </div>
     </form>
     <p>Có tổng số <strong>@Model.Products.TotalItemCount</strong> sản phẩm</p>
-    <form id="projectList">
+    <form id="productList">
+        <p><button type="submit" class="btn-search">Cập nhật</button></p>
+
         <table class="list_table tablecenter table-striped">
             <tbody>
                 <tr>
                     <th style="width: 100px">STT</th>
                     <th style="width: 50px">Hình ảnh</th>
-                    <th>Tên dự án</th>
+                    <th>Tên sản phẩm</th>
+                    <th>Giá</th>
                     <th>Danh mục</th>
+                    <th style="width: 130px">Bán chạy</th>
                     <th style="width: 130px">Hoạt động</th>
                     <th style="width: 130px">Hiện trang chủ</th>
                     <th style="width: 140px;"></th>
@@ -58,8 +62,8 @@
                 {
                     <tr data-id="@product.Id">
                         <td>
-                            <input type="hidden" name="ProductId" value="@product.Id" />
-                            @Html.EditorFor(a => product.Sort)
+                            <input type="hidden" name="Id" value="@product.Id" />
+                            <input type="number" name="Sort-@product.Id" id="Sort" value="@product.Sort" class="form_control w100" />
                         </td>
                         <td>
                             @if (product.ListImage != null)
@@ -77,11 +81,33 @@
                             <p><a href="@Url.Action("UpdateProduct", new { proId = product.Id })"><strong>@product.Name</strong></a></p>
                         </td>
                         <td>
+                            @if (product.Price != null)
+                            {
+                                @(product.Price?.ToString("N0"))
+                            }
+                            else
+                            {
+                                @:-
+                            }
+                        </td>
+                        <td>
                             @string.Join(",", product.ProductCategories.Select(a => a.CategoryName))
                         </td>
-                        <td>@Html.EditorFor(a => product.Active, new { htmlAttributes = new { id = "Active" } })</td>
-                        <td>@Html.EditorFor(a => product.Home, new { htmlAttributes = new { id = "Home" } })</td>
-
+                        <td>
+                            <input type="checkbox" name="Hot-@product.Id" id="Hot" value="true"
+                                   @if (product.Hot) { @Html.Raw("checked='checked'") } />
+                            @*@Html.EditorFor(a => product.Active, new { htmlAttributes = new { id = "Active" } })*@
+                        </td>
+                        <td>
+                            <input type="checkbox" name="Active-@product.Id" id="Active" value="true"
+                                   @if (product.Active) { @Html.Raw("checked='checked'") } />
+                            @*@Html.EditorFor(a => product.Active, new { htmlAttributes = new { id = "Active" } })*@
+                        </td>
+                        <td>
+                            <input type="checkbox" name="Home-@product.Id" id="Home" value="true"
+                                   @if (product.Home) { @Html.Raw("checked='checked'") } />
+                            @*@Html.EditorFor(a => product.Home, new { htmlAttributes = new { id = "Home" } })*@
+                        </td>
                         <td>
                             <a href="javascript:;" onclick="updateInfo(@product.Id)">Cập nhật</a> -
                             @Html.ActionLink("Sửa", "UpdateProduct", new { proId = product.Id })
@@ -103,11 +129,11 @@
 {
     <script type="text/javascript">
         function deleteProject(id) {
-            if (confirm("Bạn có chắc chắn xóa bài viết này không?")) {
+            if (confirm("Bạn có chắc chắn xóa sản phẩm này không?")) {
                 $.post("/Product/DeleteProduct", { proId: id }, function (data) {
                     if (data) {
                         $.toast({
-                            text: 'Xóa dự án thành công',
+                            text: 'Xóa sản phẩm thành công',
                             position: 'bottom-right',
                             icon: 'success'
                         });
@@ -141,38 +167,16 @@
                     };
                 });
         }
-        //function updateInfo(id) {
-        //    var elm = $('tr[data-id="' + id + '"]');
-        //    var sort = elm.find("#product_Sort").val();
-        //    var active = elm.find("input#Active").prop("checked");
-        //    $.post("/Product/UpdateProductQuick", { proId: id, sort, active },
-        //        function (data) {
-        //            if (data) {
-        //                $.toast({
-        //                    text: 'Cập nhật thành công',
-        //                    position: 'bottom-right',
-        //                    icon: 'success',
-        //                })
-        //            } else {
-        //                $.toast({
-        //                    text: 'Quá trình thực hiện không thành công. Hãy thử lại',
-        //                    position: 'bottom-right',
-        //                    icon: 'error',
-        //                })
-        //                window.location.reload();
-        //            };
-        //        });
-        //}
         function updateInfo(id) {
             const divId = $("tr[data-id ='" + id + "']");
-            const sort = divId.find("#product_Sort").val();
-            const active = divId.find("input#Active").prop("checked");
+            const sort = divId.find("#Sort").val();
+            const active = divId.find("#Active").prop("checked");
+            const home = divId.find("#Home").prop("checked");
+            const hot = divId.find("#Hot").prop("checked");
             if (sort == "") {
                 alert("Bạn hãy nhập số thứ tự");
             }
-            console.log($.post("/Product/QuickUpdate"))
-            $.post("/Product/QuickUpdate",
-                { proId: id, sort, active },
+            $.post("/Product/QuickUpdate", { proId: id, sort, active, home, hot },
                 function (data) {
                     if (data) {
                         $.toast({
@@ -188,6 +192,12 @@
                     }
                 });
         }
+        $("#productList").on("submit", function (e) {
+            e.preventDefault();
+            $.post("/Product/UpdateProductAll", $(this).serialize(), function (data) {
+                $.toast(data.msg);
+            });
+        });
 
     </script>
 } 
