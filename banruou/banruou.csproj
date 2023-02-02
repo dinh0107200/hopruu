@@ -664,6 +664,10 @@
     <Content Include="Views\Product\GroupPropertyOfProductList.cshtml" />
     <Content Include="Views\Product\PropertyOfProduct.cshtml" />
     <Content Include="Views\Product\PropertyOfProductList.cshtml" />
+    <Content Include="webfonts\UTMAvo-BoldItalic.woff2" />
+    <Content Include="webfonts\UTMAvo-Italic.woff2" />
+    <Content Include="webfonts\UTMAvo.woff2" />
+    <Content Include="webfonts\UTMAvoBold.woff2" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

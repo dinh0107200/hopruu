@@ -29,6 +29,37 @@ $blue: #3a91c5;
 }
 
 @font-face {
+    font-family: 'UTM Avo';
+    src: url('../webfonts/UTMAvoBold.woff2') format('woff2');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'UTM Avo';
+    src: url('../webfonts/UTMAvo.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'UTM Avo';
+    src: url('../webfonts/UTMAvo-Italic.woff2') format('woff2');
+    font-weight: normal;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'UTM Avo';
+    src: url('../webfonts/UTMAvo-BoldItalic.woff2') format('woff2');
+    font-weight: bold;
+    font-style: italic;
+    font-display: swap;
+}
+@font-face {
     font-display: swap;
     font-family: 'lato-bold';
     src: url('../webfonts/lato-bold.woff2') format('woff2');
@@ -71,4 +102,7 @@ $blue: #3a91c5;
 
 @mixin playfair {
     font-family: 'Playfair Display', serif;
+}
+@mixin avo {
+    font-family: 'UTM Avo', serif;
 }

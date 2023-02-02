@@ -84,7 +84,7 @@ a, i, img {
 
 .list-menu {
     display: flex;
-    @include playfair;
+    @include avo;
 }
 
 .menu-item li:hover .child-menu {
@@ -507,7 +507,7 @@ a, i, img {
 .gift-title {
     position: relative;
     text-align: center;
-    @include playfair;
+    @include avo;
 
     h1, h2 {
         text-transform: uppercase;
@@ -541,7 +541,7 @@ a, i, img {
 .section-name {
     font-size: 2rem;
     font-weight: 700;
-    @include playfair;
+    @include avo;
 }
 
 .product-info {
@@ -693,7 +693,7 @@ a, i, img {
     font-weight: 700;
     color: #fff;
     margin-bottom: 1rem;
-    @include playfair;
+    @include avo;
 }
 
 .showroom-title {
@@ -1386,7 +1386,7 @@ a, i, img {
 }
 
 .post-title {
-    @include playfair;
+    @include avo;
     font-size: 1.75rem;
     font-weight: 700;
 }
@@ -1488,7 +1488,7 @@ a, i, img {
 .product-detail-name {
     font-size: 2rem;
     font-weight: 700;
-    @include playfair;
+    @include avo;
 }
 
 .price-detail {
@@ -1639,7 +1639,7 @@ a, i, img {
     font-size: 1.125rem;
     border-top-left-radius: 20px;
     border-bottom-right-radius: 20px;
-    @include playfair;
+    @include avo;
     font-weight: 700;
 }
 

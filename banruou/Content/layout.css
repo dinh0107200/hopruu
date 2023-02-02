@@ -13,6 +13,34 @@
 }
 
 @font-face {
+  font-family: "UTM Avo";
+  src: url("../webfonts/UTMAvoBold.woff2") format("woff2");
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "UTM Avo";
+  src: url("../webfonts/UTMAvo.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "UTM Avo";
+  src: url("../webfonts/UTMAvo-Italic.woff2") format("woff2");
+  font-weight: normal;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "UTM Avo";
+  src: url("../webfonts/UTMAvo-BoldItalic.woff2") format("woff2");
+  font-weight: bold;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
   font-display: swap;
   font-family: "lato-bold";
   src: url("../webfonts/lato-bold.woff2") format("woff2");
@@ -103,7 +131,7 @@ a, i, img {
 
 .list-menu {
   display: flex;
-  font-family: "Playfair Display", serif;
+  font-family: "UTM Avo", serif;
 }
 
 .menu-item li:hover .child-menu {
@@ -480,7 +508,7 @@ a, i, img {
 .gift-title {
   position: relative;
   text-align: center;
-  font-family: "Playfair Display", serif;
+  font-family: "UTM Avo", serif;
 }
 .gift-title h1, .gift-title h2 {
   text-transform: uppercase;
@@ -513,7 +541,7 @@ a, i, img {
 .section-name {
   font-size: 2rem;
   font-weight: 700;
-  font-family: "Playfair Display", serif;
+  font-family: "UTM Avo", serif;
 }
 
 .product-info {
@@ -653,7 +681,7 @@ a, i, img {
   font-weight: 700;
   color: #fff;
   margin-bottom: 1rem;
-  font-family: "Playfair Display", serif;
+  font-family: "UTM Avo", serif;
 }
 
 .showroom-title {
@@ -1283,7 +1311,7 @@ a, i, img {
 }
 
 .post-title {
-  font-family: "Playfair Display", serif;
+  font-family: "UTM Avo", serif;
   font-size: 1.75rem;
   font-weight: 700;
 }
@@ -1375,7 +1403,7 @@ a, i, img {
 .product-detail-name {
   font-size: 2rem;
   font-weight: 700;
-  font-family: "Playfair Display", serif;
+  font-family: "UTM Avo", serif;
 }
 
 .price-detail {
@@ -1511,7 +1539,7 @@ a, i, img {
   font-size: 1.125rem;
   border-top-left-radius: 20px;
   border-bottom-right-radius: 20px;
-  font-family: "Playfair Display", serif;
+  font-family: "UTM Avo", serif;
   font-weight: 700;
 }
 

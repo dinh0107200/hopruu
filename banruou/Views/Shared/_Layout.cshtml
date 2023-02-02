@@ -24,13 +24,7 @@
     <meta property="og:site_name" content="@Html.Raw(ViewBag.Title)">
     <meta property="og:image" content="@ViewBag.ImagShare" />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&display=swap" rel="stylesheet">
-
     @Styles.Render("~/content/css")
-
-
     @if (config.GoogleAnalytics != null)
     {
         @Html.Raw(config.GoogleAnalytics)
